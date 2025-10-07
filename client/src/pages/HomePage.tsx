@@ -23,6 +23,10 @@ import {
 } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import CountUpAnimation from '../components/CountUpAnimation.tsx';
+import BackToTopButton from '../components/BackToTopButton.tsx';
+import ReturnHomeButton from '../components/ReturnHomeButton.tsx';
+import WhatsAppWidget from '../components/WhatsAppWidget.tsx';
 import { useQuery } from 'react-query';
 // import { getLatestNews, getOrganizationStats } from '../data/contentManager';
 
@@ -99,6 +103,7 @@ const HomePage: React.FC = () => {
           background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%)`,
           color: 'white',
           py: 8,
+          pt: 16, // Added top padding to prevent navbar overlap
           textAlign: 'center',
         }}
       >
@@ -178,9 +183,13 @@ const HomePage: React.FC = () => {
                   backgroundColor: 'primary.50',
                 }}
               >
-                <Typography variant="h4" color="primary" fontWeight="bold">
-                  {stat.number}
-                </Typography>
+                <CountUpAnimation
+                  end={stat.number}
+                  variant="h4"
+                  color="primary"
+                  fontWeight="bold"
+                  duration={2500}
+                />
                 <Typography variant="body2" color="text.secondary">
                   {stat.label}
                 </Typography>
@@ -239,7 +248,24 @@ const HomePage: React.FC = () => {
                   <CardActions sx={{ justifyContent: 'center', pb: 2 }}>
                     <Button
                       size="small"
-                      onClick={() => navigate('/programs')}
+                      onClick={() => {
+                        switch (program.key) {
+                          case 'soupkitchen':
+                            navigate('/programs/soup-kitchen');
+                            break;
+                          case 'education':
+                            navigate('/programs/education');
+                            break;
+                          case 'healthcare':
+                            navigate('/programs/healthcare');
+                            break;
+                          case 'agriculture':
+                            navigate('/programs/agriculture');
+                            break;
+                          default:
+                            navigate('/programs');
+                        }
+                      }}
                       sx={{ color: program.color }}
                     >
                       Learn More
@@ -376,6 +402,15 @@ const HomePage: React.FC = () => {
           </Box>
         </Container>
       </Box>
+
+      {/* Floating Components */}
+      <BackToTopButton />
+      <ReturnHomeButton variant="compact" position="top-left" />
+      <WhatsAppWidget 
+        phoneNumber="+263774671893"
+        welcomeMessage="Hello! Thank you for your interest in Caritas Mutare. How can we help you today?"
+        position="bottom-left"
+      />
     </Box>
   );
 };

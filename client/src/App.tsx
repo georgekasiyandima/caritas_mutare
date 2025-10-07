@@ -12,6 +12,10 @@ import DonatePage from './pages/DonatePage.tsx';
 import VolunteerPage from './pages/VolunteerPage.tsx';
 import ContactPage from './pages/ContactPage.tsx';
 import LeadershipPage from './pages/LeadershipPage.tsx';
+import SoupKitchenPage from './pages/programs/SoupKitchenPage.tsx';
+import EducationPage from './pages/programs/EducationPage.tsx';
+import HealthcarePage from './pages/programs/HealthcarePage.tsx';
+import AgriculturePage from './pages/programs/AgriculturePage.tsx';
 import AdminLoginPage from './pages/admin/AdminLoginPage.tsx';
 import AdminDashboard from './pages/admin/AdminDashboard.tsx';
 import { AuthProvider } from './contexts/AuthContext.tsx';
@@ -31,6 +35,10 @@ function App() {
               <Route path="/about" element={<AboutPage />} />
               <Route path="/leadership" element={<LeadershipPage />} />
               <Route path="/programs" element={<ProgramsPage />} />
+              <Route path="/programs/soup-kitchen" element={<SoupKitchenPage />} />
+              <Route path="/programs/education" element={<EducationPage />} />
+              <Route path="/programs/healthcare" element={<HealthcarePage />} />
+              <Route path="/programs/agriculture" element={<AgriculturePage />} />
               <Route path="/news" element={<NewsPage />} />
               <Route path="/news/:id" element={<NewsDetailPage />} />
               <Route path="/donate" element={<DonatePage />} />

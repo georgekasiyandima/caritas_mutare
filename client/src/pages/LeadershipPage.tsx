@@ -16,6 +16,8 @@ import {
   Handshake as PartnershipIcon,
 } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
+import BackToTopButton from '../components/BackToTopButton.tsx';
+import ReturnHomeButton from '../components/ReturnHomeButton.tsx';
 
 interface LeadershipMember {
   id: number;
@@ -111,7 +113,8 @@ const LeadershipPage: React.FC = () => {
   };
 
   return (
-    <Container maxWidth="lg" sx={{ py: 6 }}>
+    <Box sx={{ minHeight: '100vh', backgroundColor: 'background.default' }}>
+      <Container maxWidth="lg" sx={{ py: 6 }}>
       {/* Page Header */}
       <Box sx={{ textAlign: 'center', mb: 6 }}>
         <Typography variant="h3" component="h1" gutterBottom sx={{ fontWeight: 'bold', color: 'primary.main' }}>
@@ -309,6 +312,11 @@ const LeadershipPage: React.FC = () => {
         </Typography>
       </Box>
     </Container>
+
+      {/* Floating Components */}
+      <BackToTopButton />
+      <ReturnHomeButton variant="compact" position="top-left" />
+    </Box>
   );
 };
 
