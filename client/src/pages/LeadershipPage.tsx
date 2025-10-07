@@ -58,25 +58,29 @@ const LeadershipPage: React.FC = () => {
       id: 1,
       name: "Caritas Internationalis",
       description: "Global confederation of Catholic relief, development and social service organizations",
-      type: "International Partner"
+      type: "International Partner",
+      logo: "/cariInter01.png"
     },
     {
       id: 2,
       name: "Caritas Zimbabwe",
       description: "National Caritas organization coordinating humanitarian efforts across Zimbabwe",
-      type: "National Partner"
+      type: "National Partner",
+      logo: "/carizim1.png"
     },
     {
       id: 3,
       name: "Catholic Relief Services (CRS)",
       description: "International humanitarian agency providing emergency relief and development programs",
-      type: "International Partner"
+      type: "International Partner",
+      logo: "/crslogo1.png"
     },
     {
       id: 4,
-      name: "Local Community Organizations",
-      description: "Various community-based organizations and groups working in the diocese",
-      type: "Local Partner"
+      name: "Ministry of Health and Child Care Zimbabwe",
+      description: "Government ministry supporting health programs and child welfare initiatives",
+      type: "Government Partner",
+      logo: "/minhlogo1.png"
     }
   ];
 
@@ -212,6 +216,7 @@ const LeadershipPage: React.FC = () => {
                   flexDirection: 'column',
                   textAlign: 'center',
                   p: 3,
+                  minHeight: '280px',
                   transition: 'transform 0.2s',
                   '&:hover': {
                     transform: 'translateY(-2px)',
@@ -219,23 +224,74 @@ const LeadershipPage: React.FC = () => {
                   },
                 }}
               >
-                <CardContent sx={{ flexGrow: 1 }}>
-                  <PartnershipIcon sx={{ fontSize: 48, color: 'primary.main', mb: 2 }} />
+                <CardContent sx={{ 
+                  flexGrow: 1, 
+                  display: 'flex', 
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
+                  p: 0
+                }}>
+                  {/* Logo Section - Fixed Height */}
+                  <Box sx={{ 
+                    display: 'flex', 
+                    justifyContent: 'center', 
+                    alignItems: 'center',
+                    mb: 2,
+                    minHeight: '80px'
+                  }}>
+                    <img 
+                      src={partner.logo} 
+                      alt={`${partner.name} logo`}
+                      style={{
+                        height: '60px',
+                        width: '120px',
+                        objectFit: 'contain'
+                      }}
+                    />
+                  </Box>
                   
-                  <Typography variant="h6" component="h3" gutterBottom sx={{ fontWeight: 'bold' }}>
-                    {partner.name}
-                  </Typography>
-                  
-                  <Chip
-                    label={partner.type}
-                    size="small"
-                    color="success"
-                    sx={{ mb: 2 }}
-                  />
-                  
-                  <Typography variant="body2" color="text.secondary">
-                    {partner.description}
-                  </Typography>
+                  {/* Content Section */}
+                  <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                    <Box>
+                      <Typography 
+                        variant="h6" 
+                        component="h3" 
+                        sx={{ 
+                          fontWeight: 'bold',
+                          fontSize: '1rem',
+                          lineHeight: 1.3,
+                          mb: 1,
+                          minHeight: '2.6rem',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center'
+                        }}
+                      >
+                        {partner.name}
+                      </Typography>
+                      
+                      <Chip
+                        label={partner.type}
+                        size="small"
+                        color="success"
+                        sx={{ mb: 2, fontSize: '0.75rem' }}
+                      />
+                    </Box>
+                    
+                    <Typography 
+                      variant="body2" 
+                      color="text.secondary"
+                      sx={{
+                        fontSize: '0.875rem',
+                        lineHeight: 1.4,
+                        minHeight: '3.5rem',
+                        display: 'flex',
+                        alignItems: 'center'
+                      }}
+                    >
+                      {partner.description}
+                    </Typography>
+                  </Box>
                 </CardContent>
               </Card>
             </Grid>

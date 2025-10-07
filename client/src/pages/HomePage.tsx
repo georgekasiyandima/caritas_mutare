@@ -19,6 +19,7 @@ import {
   Agriculture as AgricultureIcon,
   Work as WorkIcon,
   CrisisAlert as EmergencyIcon,
+  Restaurant as RestaurantIcon,
 } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -70,6 +71,11 @@ const HomePage: React.FC = () => {
       key: 'livelihood',
       icon: <WorkIcon sx={{ fontSize: 48, color: 'warning.main' }} />,
       color: 'warning.main',
+    },
+    {
+      key: 'soupkitchen',
+      icon: <RestaurantIcon sx={{ fontSize: 48, color: 'primary.main' }} />,
+      color: 'primary.main',
     },
     {
       key: 'emergency',

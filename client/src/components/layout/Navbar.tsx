@@ -148,11 +148,9 @@ const Navbar: React.FC = () => {
               src="/cari2.png"
               alt="Caritas Mutare Logo"
               sx={{ 
-                width: 50, 
-                height: 50, 
+                width: 70, 
+                height: 70, 
                 mr: 2,
-                border: '2px solid',
-                borderColor: 'primary.main'
               }}
             />
             <Box>

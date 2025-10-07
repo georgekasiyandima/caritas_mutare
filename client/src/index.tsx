@@ -22,7 +22,7 @@ const queryClient = new QueryClient({
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#d32f2f', // Caritas red
+      main: '#d32f2f', // Caritas red (brick red)
       light: '#ff6659',
       dark: '#9a0007',
     },

@@ -45,6 +45,10 @@
       "title": "Livelihood Support",
       "description": "Creating economic opportunities through microfinance and skills development"
     },
+    "soupkitchen": {
+      "title": "Soup Kitchen",
+      "description": "Monthly community meals served every last Friday to support vulnerable families"
+    },
     "emergency": {
       "title": "Emergency Response",
       "description": "Providing immediate assistance during crises and natural disasters"
@@ -107,7 +111,7 @@
     "quickLinks": "Quick Links",
     "contactInfo": "Contact Information",
     "followUs": "Follow Us",
-    "copyright": "© 2024 Caritas Mutare. All rights reserved.",
+    "copyright": "© Caritas Mutare. All rights reserved.",
     "poweredBy": "Powered by faith, hope, and love"
   },
   "common": {
