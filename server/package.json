@@ -1,0 +1,22 @@
+{
+  "name": "caritas-mutare-server",
+  "version": "1.0.0",
+  "description": "Backend server for Caritas Mutare web application",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "jest",
+    "test:watch": "jest --watch"
+  },
+  "keywords": [
+    "express",
+    "nodejs",
+    "sqlite",
+    "caritas",
+    "mutare"
+  ],
+  "author": "Ubuntu Tech and Code the Dream Development Team",
+  "license": "MIT"
+}
+

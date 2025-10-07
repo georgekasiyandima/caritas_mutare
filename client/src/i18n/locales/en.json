@@ -1,0 +1,158 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "leadership": "Leadership",
+    "programs": "Programs",
+    "news": "News",
+    "donate": "Donate",
+    "volunteer": "Volunteer",
+    "contact": "Contact",
+    "admin": "Admin"
+  },
+  "hero": {
+    "title": "Caritas Mutare",
+    "subtitle": "Catholic Community Development Organization",
+    "description": "Serving the Diocese of Mutare, Zimbabwe with compassion, hope, and community development initiatives.",
+    "learnMore": "Learn More",
+    "donateNow": "Donate Now"
+  },
+  "about": {
+    "title": "About Caritas Mutare",
+    "mission": "Our Mission",
+    "missionText": "To serve the poor and promote integral human development through community-based programs that address the root causes of poverty and injustice.",
+    "vision": "Our Vision",
+    "visionText": "A just and compassionate society where every person can live with dignity and reach their full potential.",
+    "values": "Our Values",
+    "valuesText": "We are guided by Catholic social teaching, working with communities to create lasting change through solidarity, subsidiarity, and the common good."
+  },
+  "programs": {
+    "title": "Our Programs",
+    "description": "We implement various community development programs across the Diocese of Mutare",
+    "education": {
+      "title": "Education & Training",
+      "description": "Providing access to quality education and vocational training for children and adults"
+    },
+    "healthcare": {
+      "title": "Healthcare & Nutrition",
+      "description": "Improving health outcomes through medical care, nutrition programs, and health education"
+    },
+    "agriculture": {
+      "title": "Agriculture & Food Security",
+      "description": "Supporting sustainable farming practices and food security initiatives"
+    },
+    "livelihood": {
+      "title": "Livelihood Support",
+      "description": "Creating economic opportunities through microfinance and skills development"
+    },
+    "emergency": {
+      "title": "Emergency Response",
+      "description": "Providing immediate assistance during crises and natural disasters"
+    }
+  },
+  "news": {
+    "title": "News & Updates",
+    "readMore": "Read More",
+    "publishedOn": "Published on",
+    "noArticles": "No articles found"
+  },
+  "donate": {
+    "title": "Support Our Mission",
+    "description": "Your donation helps us continue our important work in community development",
+    "amount": "Donation Amount",
+    "currency": "Currency",
+    "donorInfo": "Donor Information",
+    "name": "Full Name",
+    "email": "Email Address",
+    "phone": "Phone Number",
+    "message": "Message (Optional)",
+    "anonymous": "Make this donation anonymous",
+    "submit": "Donate Now",
+    "thankYou": "Thank you for your generous donation!",
+    "processing": "Processing your donation..."
+  },
+  "volunteer": {
+    "title": "Volunteer with Us",
+    "description": "Join our mission to serve the community and make a difference",
+    "personalInfo": "Personal Information",
+    "fullName": "Full Name",
+    "email": "Email Address",
+    "phone": "Phone Number",
+    "skills": "Skills & Experience",
+    "availability": "Availability",
+    "interests": "Areas of Interest",
+    "message": "Additional Information",
+    "submit": "Submit Application",
+    "thankYou": "Thank you for your interest in volunteering!",
+    "processing": "Submitting your application..."
+  },
+  "contact": {
+    "title": "Contact Us",
+    "description": "Get in touch with us for more information or to get involved",
+    "address": "Address",
+    "phone": "Phone",
+    "email": "Email",
+    "form": {
+      "name": "Name",
+      "email": "Email",
+      "subject": "Subject",
+      "message": "Message",
+      "submit": "Send Message",
+      "thankYou": "Thank you for your message!",
+      "processing": "Sending your message..."
+    }
+  },
+  "footer": {
+    "description": "Caritas Mutare is committed to serving the community through Catholic social teaching and community development programs.",
+    "quickLinks": "Quick Links",
+    "contactInfo": "Contact Information",
+    "followUs": "Follow Us",
+    "copyright": "© 2024 Caritas Mutare. All rights reserved.",
+    "poweredBy": "Powered by faith, hope, and love"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "retry": "Retry",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "close": "Close",
+    "save": "Save",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "delete": "Delete",
+    "search": "Search",
+    "filter": "Filter",
+    "sort": "Sort",
+    "view": "View",
+    "more": "More",
+    "less": "Less"
+  },
+  "admin": {
+    "login": {
+      "title": "Admin Login",
+      "username": "Username",
+      "password": "Password",
+      "login": "Login",
+      "invalidCredentials": "Invalid username or password"
+    },
+    "dashboard": {
+      "title": "Admin Dashboard",
+      "overview": "Overview",
+      "statistics": "Statistics",
+      "recentActivity": "Recent Activity"
+    }
+  },
+  "errors": {
+    "pageNotFound": "Page not found",
+    "serverError": "Server error",
+    "networkError": "Network error",
+    "unauthorized": "Unauthorized access"
+  }
+}
+
+
+
+
+

@@ -1,0 +1,158 @@
+{
+  "nav": {
+    "home": "Imba",
+    "about": "Nezvedu",
+    "leadership": "Hutungamiri",
+    "programs": "Zvirongwa",
+    "news": "Nhau",
+    "donate": "Ipa",
+    "volunteer": "Zvipira",
+    "contact": "Taura Nesu",
+    "admin": "Admin"
+  },
+  "hero": {
+    "title": "Caritas Mutare",
+    "subtitle": "Sangano revaCatholic rinobatsira nharaunda",
+    "description": "Tinobatsira Diocese yeMutare, Zimbabwe nechinzwiro, tariro, uye zvirongwa zvekusimudzira nharaunda.",
+    "learnMore": "Dzidza Zvimwe",
+    "donateNow": "Ipa Zvino"
+  },
+  "about": {
+    "title": "Nezve Caritas Mutare",
+    "mission": "Chinangwa Chedu",
+    "missionText": "Kushandira varombo uye kusimudzira budiriro yevanhu kuburikidza nezvirongwa zvinobatsira nharaunda zvinogadzirisa zvikonzero zvehurombo nekusaruramisira.",
+    "vision": "Chiratidzo Chedu",
+    "visionText": "Nharaunda yakarurama uye ine tsitsi umo munhu wese anogona kurarama nezvikudzo uye kusvika pachikwaniso chavo chese.",
+    "values": "Hunhu Hwedu",
+    "valuesText": "Tinotungamirwa nedzidziso yeCatholic yenharaunda, tichishanda nemunharaunda kugadzira shanduko isingaperi kuburikidza nekubatana, kuzvimirira, uye chinhu chakanaka chese."
+  },
+  "programs": {
+    "title": "Zvirongwa Zvedu",
+    "description": "Tinoita zvirongwa zvakasiyana-siyana zvekusimudzira nharaunda muDiocese yeMutare",
+    "education": {
+      "title": "Dzidzo neKudzidzisa",
+      "description": "Kupa mukana wekuwana dzidzo yemhando yepamusoro uye kudzidziswa kwehunyanzvi kuvana nevakuru"
+    },
+    "healthcare": {
+      "title": "Hutano neKudya",
+      "description": "Kuvandudza hutano hwevanhu kuburikidza nekurapa, zvirongwa zvekudya, uye dzidziso yehutano"
+    },
+    "agriculture": {
+      "title": "Kurima neKudya Kwakachengeteka",
+      "description": "Kutsigira nzira dzekurima dzakasimba uye zvirongwa zvekudya kwakachengeteka"
+    },
+    "livelihood": {
+      "title": "Kutsigira Hupenyu",
+      "description": "Kugadzira mikana yehupfumi kuburikidza nemari diki uye kusimudzira hunyanzvi"
+    },
+    "emergency": {
+      "title": "Kupindura Njodzi",
+      "description": "Kupa rubatsiro rwekukurumidza panguva yenhamo uye njodzi dzechisikigo"
+    }
+  },
+  "news": {
+    "title": "Nhau neZvitsva",
+    "readMore": "Verenga Zvimwe",
+    "publishedOn": "Yakabudiswa musi wa",
+    "noArticles": "Hapana zvinyorwa zvinowanikwa"
+  },
+  "donate": {
+    "title": "Tsigira Chinangwa Chedu",
+    "description": "Mupiro wako unotibatsira kuenderera mberi nebasa redu rinokosha rekusimudzira nharaunda",
+    "amount": "Mari YeMupiro",
+    "currency": "Mari",
+    "donorInfo": "Ruzivo rweAnopa",
+    "name": "Zita Rizere",
+    "email": "Email Kero",
+    "phone": "Nhare",
+    "message": "Shoko (Risingasungirwi)",
+    "anonymous": "Ita kuti mupiro uyu usazivikanwe",
+    "submit": "Ipa Zvino",
+    "thankYou": "Tinokutendai nekupa kwenyu kwakapfuma!",
+    "processing": "Tiri kugadzirisa mupiro wako..."
+  },
+  "volunteer": {
+    "title": "Zvipira Nesu",
+    "description": "Joinwai chinangwa chedu chekushandira nharaunda uye kuita shanduko",
+    "personalInfo": "Ruzivo Rwemunhu",
+    "fullName": "Zita Rizere",
+    "email": "Email Kero",
+    "phone": "Nhare",
+    "skills": "Unyanzvi neZvavakawana",
+    "availability": "Kuvapo",
+    "interests": "Nzvimbo Dzekufarira",
+    "message": "Ruzivo Rwemamwe",
+    "submit": "Tumira Chikumbiro",
+    "thankYou": "Tinokutendai nekufarira kuzvipira!",
+    "processing": "Tiri kutuma chikumbiro chako..."
+  },
+  "contact": {
+    "title": "Taura Nesu",
+    "description": "Taura nesu kuti uwane rumwe ruzivo kana kuti ubatanidzwe",
+    "address": "Kero",
+    "phone": "Nhare",
+    "email": "Email",
+    "form": {
+      "name": "Zita",
+      "email": "Email",
+      "subject": "Chinyorwa",
+      "message": "Shoko",
+      "submit": "Tumira Shoko",
+      "thankYou": "Tinokutendai neshoko renyu!",
+      "processing": "Tiri kutumira shoko renyu..."
+    }
+  },
+  "footer": {
+    "description": "Caritas Mutare yakazvipira kushandira nharaunda kuburikidza nedzidziso yeCatholic yenharaunda uye zvirongwa zvekusimudzira nharaunda.",
+    "quickLinks": "Zvipfupi Zvinongedzo",
+    "contactInfo": "Ruzivo Rwekutaura",
+    "followUs": "Teverai Isu",
+    "copyright": "© 2024 Caritas Mutare. Kodzero dzese dzakachengetedzwa.",
+    "poweredBy": "Zvinofambiswa nekutenda, tariro, uye rudo"
+  },
+  "common": {
+    "loading": "Tiri kurodha...",
+    "error": "Chikanganiso chakaitika",
+    "retry": "Edza Zvakare",
+    "back": "Dzokera",
+    "next": "Inotevera",
+    "previous": "Yapfuura",
+    "close": "Vhara",
+    "save": "Chengeta",
+    "cancel": "Kanzura",
+    "edit": "Gadzirisa",
+    "delete": "Delete",
+    "search": "Tsvaga",
+    "filter": "Sefa",
+    "sort": "Rongedza",
+    "view": "Ona",
+    "more": "Zvimwe",
+    "less": "Zvishoma"
+  },
+  "admin": {
+    "login": {
+      "title": "Admin Login",
+      "username": "Username",
+      "password": "Password",
+      "login": "Login",
+      "invalidCredentials": "Invalid username or password"
+    },
+    "dashboard": {
+      "title": "Admin Dashboard",
+      "overview": "Overview",
+      "statistics": "Statistics",
+      "recentActivity": "Recent Activity"
+    }
+  },
+  "errors": {
+    "pageNotFound": "Peji harina kuwanikwa",
+    "serverError": "Chikanganiso cheserver",
+    "networkError": "Chikanganiso chenetwork",
+    "unauthorized": "Kupinda kusingabvumirwi"
+  }
+}
+
+
+
+
+
