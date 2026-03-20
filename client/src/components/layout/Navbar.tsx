@@ -24,7 +24,7 @@ import {
 } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../../contexts/AuthContext.tsx';
+import { useAuth } from '../../contexts/AuthContext';
 
 const Navbar: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -50,7 +50,7 @@ const Navbar: React.FC = () => {
     { key: 'home', path: '/' },
     { key: 'about', path: '/about' },
     { key: 'leadership', path: '/leadership' },
-    { key: 'programs', path: '/programs' },
+    { key: 'programs', path: '/programs' }, // label comes from nav.programs -> \"Projects\"
     { key: 'news', path: '/news' },
     { key: 'donate', path: '/donate' },
     { key: 'volunteer', path: '/volunteer' },
@@ -142,45 +142,30 @@ const Navbar: React.FC = () => {
   return (
     <>
       <AppBar position="fixed" elevation={0} sx={{ backgroundColor: 'white', color: 'text.primary' }}>
-        <Toolbar>
-          <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1 }}>
-            <Avatar
-              src="/cari2.png"
-              alt="Caritas Mutare Logo"
-              sx={{ 
-                width: 70, 
-                height: 70, 
-                mr: 2,
+        <Toolbar disableGutters sx={{ minHeight: { xs: 56, sm: 64 }, px: 2 }}>
+          <Box
+            component={Link}
+            to="/"
+            sx={{
+              display: 'block',
+              flexGrow: 1,
+              textDecoration: 'none',
+              lineHeight: 0,
+              '&:focus': { outline: 'none' },
+              '&:focus-visible': { outline: '1px solid', outlineColor: 'primary.main', outlineOffset: 4 },
+            }}
+          >
+            <Box
+              component="img"
+              src="/images/logo/caritas-zimbabwe-mutare.png"
+              alt="Caritas Zimbabwe - Diocese of Mutare"
+              sx={{
+                display: 'block',
+                height: { xs: 44, sm: 48 },
+                maxWidth: 240,
+                objectFit: 'contain',
               }}
             />
-            <Box>
-              <Typography
-                variant="h6"
-                component={Link}
-                to="/"
-                sx={{
-                  textDecoration: 'none',
-                  color: 'black',
-                  fontWeight: 'bold',
-                  fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
-                  fontSize: '1.2rem',
-                  lineHeight: 1.2,
-                }}
-              >
-                Caritas Zimbabwe Mutare
-              </Typography>
-              <Typography
-                variant="caption"
-                sx={{
-                  color: 'text.secondary',
-                  fontSize: '0.75rem',
-                  display: 'block',
-                  lineHeight: 1,
-                }}
-              >
-                Catholic Community Development Organization
-              </Typography>
-            </Box>
           </Box>
 
           {isMobile ? (

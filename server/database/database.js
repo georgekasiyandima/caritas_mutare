@@ -45,6 +45,7 @@ function initializeTables() {
       excerpt_en TEXT,
       excerpt_sh TEXT,
       featured_image TEXT,
+      gallery TEXT,
       status TEXT DEFAULT 'draft',
       author_id INTEGER,
       published_at DATETIME,
@@ -53,6 +54,13 @@ function initializeTables() {
       FOREIGN KEY (author_id) REFERENCES users (id)
     )
   `);
+
+  // Add gallery column if missing (for existing databases)
+  db.run('ALTER TABLE news ADD COLUMN gallery TEXT', (err) => {
+    if (err && !err.message.includes('duplicate column')) {
+      console.error('News gallery column:', err.message);
+    }
+  });
 
   // Programs table
   db.run(`

@@ -10,13 +10,15 @@ import {
 } from '@mui/material';
 import {
   Facebook as FacebookIcon,
-  Twitter as TwitterIcon,
   Instagram as InstagramIcon,
   Email as EmailIcon,
   Phone as PhoneIcon,
   LocationOn as LocationIcon,
 } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
+import { Link as RouterLink } from 'react-router-dom';
+import PartnerLogoStrip from '../PartnerLogoStrip';
+import { mockContactInfo } from '../../data/mockData';
 
 const Footer: React.FC = () => {
   const { t } = useTranslation();
@@ -24,7 +26,7 @@ const Footer: React.FC = () => {
   const quickLinks = [
     { key: 'about', path: '/about' },
     { key: 'leadership', path: '/leadership' },
-    { key: 'programs', path: '/programs' },
+    { key: 'programs', path: '/programs' }, // label comes from nav.programs -> \"Projects\"
     { key: 'news', path: '/news' },
     { key: 'donate', path: '/donate' },
     { key: 'volunteer', path: '/volunteer' },
@@ -52,14 +54,83 @@ const Footer: React.FC = () => {
               {t('footer.description')}
             </Typography>
             <Box sx={{ display: 'flex', gap: 1 }}>
-              <IconButton color="inherit" size="small">
+              <IconButton
+                color="inherit"
+                size="small"
+                component="a"
+                href={mockContactInfo.social_media.facebook}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <FacebookIcon />
               </IconButton>
-              <IconButton color="inherit" size="small">
-                <TwitterIcon />
+              <IconButton
+                color="inherit"
+                size="small"
+                component="a"
+                href={mockContactInfo.social_media.twitter}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Box
+                  sx={{
+                    width: 18,
+                    height: 18,
+                    borderRadius: '4px',
+                    border: '1.5px solid currentColor',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: 11,
+                    fontWeight: 700,
+                    fontFamily:
+                      'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+                  }}
+                >
+                  X
+                </Box>
               </IconButton>
-              <IconButton color="inherit" size="small">
+              <IconButton
+                color="inherit"
+                size="small"
+                component="a"
+                href={mockContactInfo.social_media.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <InstagramIcon />
+              </IconButton>
+              <IconButton
+                color="inherit"
+                size="small"
+                component="a"
+                href={`mailto:${mockContactInfo.email.general}`}
+              >
+                <EmailIcon />
+              </IconButton>
+              <IconButton color="inherit" size="small" component="a" href="#">
+                <Box
+                  sx={{
+                    width: 20,
+                    height: 14,
+                    borderRadius: '6px',
+                    backgroundColor: '#FF0000',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <Box
+                    component="span"
+                    sx={{
+                      width: 8,
+                      height: 8,
+                      borderLeft: '6px solid white',
+                      borderTop: '4px solid transparent',
+                      borderBottom: '4px solid transparent',
+                    }}
+                  />
+                </Box>
               </IconButton>
             </Box>
           </Grid>
@@ -73,7 +144,8 @@ const Footer: React.FC = () => {
               {quickLinks.map((link) => (
                 <Link
                   key={link.key}
-                  href={link.path}
+                  component={RouterLink}
+                  to={link.path}
                   color="inherit"
                   underline="hover"
                   sx={{ textDecoration: 'none' }}
@@ -114,7 +186,10 @@ const Footer: React.FC = () => {
 
         <Divider sx={{ my: 3, backgroundColor: 'grey.700' }} />
 
-        <Box sx={{ textAlign: 'center' }}>
+        {/* Partner logos on a light band so they stay visible on the dark footer */}
+        <PartnerLogoStrip title="Our partners" variant="light" compact />
+
+        <Box sx={{ textAlign: 'center', pt: 2 }}>
           <Typography variant="body2" sx={{ opacity: 0.8 }}>
             {t('footer.copyright')}
           </Typography>

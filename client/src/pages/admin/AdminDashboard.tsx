@@ -9,7 +9,7 @@ import {
   Paper,
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { useAuth } from '../../contexts/AuthContext.tsx';
+import { useAuth } from '../../contexts/AuthContext';
 
 const AdminDashboard: React.FC = () => {
   const { t } = useTranslation();

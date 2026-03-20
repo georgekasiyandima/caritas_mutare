@@ -4,8 +4,8 @@ import { BrowserRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import App from './App.tsx';
-import LoadingSpinner from './components/LoadingSpinner.tsx';
+import App from './App';
+import LoadingSpinner from './components/LoadingSpinner';
 import './i18n/i18n.ts';
 
 // Create a client
@@ -22,9 +22,9 @@ const queryClient = new QueryClient({
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#d32f2f', // Caritas red (brick red)
-      light: '#ff6659',
-      dark: '#9a0007',
+      main: '#7D0000', // Caritas red (dark maroon)
+      light: '#a33232',
+      dark: '#5c0000',
     },
     secondary: {
       main: '#ffffff', // Caritas white

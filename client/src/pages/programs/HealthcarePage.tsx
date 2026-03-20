@@ -1,5 +1,5 @@
 import React from 'react';
-import WorkInProgressPage from '../../components/WorkInProgressPage.tsx';
+import WorkInProgressPage from '../../components/WorkInProgressPage';
 
 const HealthcarePage: React.FC = () => {
   return (

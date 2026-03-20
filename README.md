@@ -6,6 +6,17 @@ A modern web application for Caritas Mutare, the Catholic community development 
 
 To provide a comprehensive digital platform that showcases Caritas Mutare's community development work, facilitates donations, and serves as a central hub for community engagement and support.
 
+## 📐 Architecture & planning
+
+Official architecture and design are documented in the repo:
+
+- **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)** — Technical architecture, principles (composition over inheritance, separate concerns, derived state, testability), and structure.
+- **[docs/DESIGN_AND_CONTENT_PLAN.md](docs/DESIGN_AND_CONTENT_PLAN.md)** — Design system, typography, how we represent projects and donors, NGO best practices, and asset usage.
+
+Canonical project data (from Caritas Mutare's material) lives in **`client/src/data/caritasProjects.ts`** and is the single source of truth for programme content.
+
+For what to do next (partner strip, programme pages, leadership, fonts, deploy), see **[docs/NEXT_STEPS.md](docs/NEXT_STEPS.md)**.
+
 ## 🛠️ Technology Stack
 
 ### Frontend

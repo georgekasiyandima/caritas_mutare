@@ -4,7 +4,7 @@
   "description": "Digital platform for Caritas Mutare - Catholic community development organization",
   "main": "server/index.js",
   "scripts": {
-    "dev": "fkill :5000 :3000 -f -s && concurrently \"npm:backend\" \"npm:frontend\"",
+    "dev": "concurrently \"npm:backend\" \"npm:frontend\"",
     "test": "jest --watchAll --verbose",
     "build": "cross-env NODE_ENV=production npm run build:client",
     "build:client": "cd client && npm run build",

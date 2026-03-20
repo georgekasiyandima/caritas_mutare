@@ -29,8 +29,7 @@ import {
 } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
 import { useMutation } from 'react-query';
-import BackToTopButton from '../components/BackToTopButton.tsx';
-import ReturnHomeButton from '../components/ReturnHomeButton.tsx';
+import BackToTopButton from '../components/BackToTopButton';
 
 const VolunteerPage: React.FC = () => {
   const { t } = useTranslation();
@@ -51,8 +50,8 @@ const VolunteerPage: React.FC = () => {
   const volunteerOpportunities = [
     {
       icon: <SchoolIcon sx={{ fontSize: 40, color: 'primary.main' }} />,
-      title: 'Education Programs',
-      description: 'Help with tutoring, literacy programs, and educational workshops for children and adults.',
+      title: 'Education Projects',
+      description: 'Help with tutoring, literacy projects, and educational workshops for children and adults.',
       skills: ['Teaching', 'Mentoring', 'Communication'],
       timeCommitment: '2-4 hours/week'
     },
@@ -66,14 +65,14 @@ const VolunteerPage: React.FC = () => {
     {
       icon: <AgricultureIcon sx={{ fontSize: 40, color: 'success.main' }} />,
       title: 'Agricultural Projects',
-      description: 'Support farming initiatives, food security programs, and sustainable agriculture.',
+      description: 'Support farming initiatives, food security projects, and sustainable agriculture.',
       skills: ['Farming', 'Gardening', 'Sustainability'],
       timeCommitment: '3-6 hours/week'
     },
     {
       icon: <PeopleIcon sx={{ fontSize: 40, color: 'warning.main' }} />,
       title: 'Community Outreach',
-      description: 'Engage with community members, organize events, and support social programs.',
+      description: 'Engage with community members, organize events, and support social projects.',
       skills: ['Community Engagement', 'Event Planning', 'Social Work'],
       timeCommitment: '2-5 hours/week'
     },
@@ -154,7 +153,7 @@ const VolunteerPage: React.FC = () => {
                 Your volunteer application has been received successfully. Our team will review your application and contact you within 2-3 business days to discuss next steps.
             </Typography>
               <Typography variant="body2" color="text.secondary" sx={{ mb: 4 }}>
-                In the meantime, feel free to explore our programs and learn more about our community impact.
+                In the meantime, feel free to explore our projects and learn more about our community impact.
             </Typography>
               <Button
                 variant="contained"
@@ -175,7 +174,6 @@ const VolunteerPage: React.FC = () => {
         </Card>
       </Container>
         <BackToTopButton />
-        <ReturnHomeButton variant="compact" position="top-left" />
       </Box>
     );
   }
@@ -511,7 +509,6 @@ const VolunteerPage: React.FC = () => {
 
       {/* Floating Components */}
       <BackToTopButton />
-      <ReturnHomeButton variant="compact" position="top-left" />
     </Box>
   );
 };

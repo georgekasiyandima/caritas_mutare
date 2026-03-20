@@ -42,8 +42,7 @@ import {
 } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
 import { useMutation } from 'react-query';
-import BackToTopButton from '../components/BackToTopButton.tsx';
-import ReturnHomeButton from '../components/ReturnHomeButton.tsx';
+import BackToTopButton from '../components/BackToTopButton';
 
 const DonatePage: React.FC = () => {
   const { t } = useTranslation();
@@ -100,7 +99,7 @@ const DonatePage: React.FC = () => {
       icon: <PeopleIcon sx={{ fontSize: 40, color: 'info.main' }} />,
       amount: '$200',
       impact: 'Community Development',
-      description: 'Support community workshops and training programs'
+      description: 'Support community workshops and training projects'
     }
   ];
 
@@ -207,7 +206,6 @@ const DonatePage: React.FC = () => {
           </Card>
         </Container>
         <BackToTopButton />
-        <ReturnHomeButton variant="compact" position="top-left" />
       </Box>
     );
   }
@@ -616,7 +614,6 @@ const DonatePage: React.FC = () => {
 
       {/* Floating Components */}
       <BackToTopButton />
-      <ReturnHomeButton variant="compact" position="top-left" />
     </Box>
   );
 };

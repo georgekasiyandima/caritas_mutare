@@ -16,8 +16,8 @@ import {
   Handshake as PartnershipIcon,
 } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
-import BackToTopButton from '../components/BackToTopButton.tsx';
-import ReturnHomeButton from '../components/ReturnHomeButton.tsx';
+import BackToTopButton from '../components/BackToTopButton';
+import { partnerLogosForSite } from '../lib/caritasProjects';
 
 interface LeadershipMember {
   id: number;
@@ -28,7 +28,7 @@ interface LeadershipMember {
   image?: string;
   email?: string;
   phone?: string;
-  category: 'director' | 'bishop' | 'partner';
+  category: 'director' | 'bishop' | 'management' | 'partner';
 }
 
 const LeadershipPage: React.FC = () => {
@@ -36,55 +36,91 @@ const LeadershipPage: React.FC = () => {
 
   const leadership: LeadershipMember[] = [
     {
+      id: 0,
+      name: "Bishop Paul Horan (O'CARM)",
+      position: "Bishop of the Diocese of Mutare",
+      role: "Overall authority",
+      description:
+        "As the Bishop of the Diocese of Mutare, Bishop Paul Horan provides spiritual guidance and overall authority for Caritas Mutare, ensuring the organization remains rooted in Catholic social teaching and serves communities with compassion and integrity.",
+      image: "/images/leadership/bishop-horan.png",
+      category: "bishop",
+    },
+    {
       id: 1,
-      name: "Fr. E Gumbeze",
-      position: "Director",
-      role: "Executive Director",
-      description: "Leading Caritas Mutare with extensive experience in community development and humanitarian work. Fr. Gumbeze oversees all programs and operations, ensuring the organization's mission is carried out effectively across the diocese.",
+      name: "Fr. Ernest Gumbeze",
+      position: "Development Coordinator",
+      role: "Development Coordinator",
+      description:
+        "Leads Caritas Mutare’s mission and strategy, coordinating all projects and operations across the Diocese. Fr. Gumbeze provides overall development leadership and represents Caritas within the diocesan structures.",
       email: "egumbeze@caritasmutare.org",
       phone: "+263 77 467 1893",
-      category: "director"
+      category: "director",
     },
     {
       id: 2,
-      name: "Bishop P. Horan",
-      position: "Bishop of the Diocese of Mutare",
-      role: "Overall Authority",
-      description: "As the Bishop of the Diocese of Mutare, Bishop P. Horan provides spiritual guidance and overall authority for Caritas Mutare. His leadership ensures the organization remains true to Catholic social teaching and serves the community with compassion and integrity.",
-      category: "bishop"
-    }
-  ];
-
-  const partners = [
-    {
-      id: 1,
-      name: "Caritas Internationalis",
-      description: "Global confederation of Catholic relief, development and social service organizations",
-      type: "International Partner",
-      logo: "/cariInter01.png"
-    },
-    {
-      id: 2,
-      name: "Caritas Zimbabwe",
-      description: "National Caritas organization coordinating humanitarian efforts across Zimbabwe",
-      type: "National Partner",
-      logo: "/carizim1.png"
+      name: "Sister Angeline",
+      position: "Coordinator – Own projects",
+      role: "Strategic direction for Caritas-owned projects",
+      description:
+        "Oversees Caritas Mutare’s own projects, providing strategic direction and day-to-day oversight. Ensures that initiatives such as Mai Maria Village, the Soup Kitchen and education projects remain sustainable and aligned with Caritas values.",
+      category: "management",
     },
     {
       id: 3,
-      name: "Catholic Relief Services (CRS)",
-      description: "International humanitarian agency providing emergency relief and development programs",
-      type: "International Partner",
-      logo: "/crslogo1.png"
+      name: "Programs Manager",
+      position: "Programs Manager",
+      role: "Oversight of all organizational projects",
+      description:
+        "Coordinates the full project portfolio, ensuring effective planning, implementation and reporting across all thematic areas. Works closely with project officers, M&E and finance to deliver quality and impact.",
+      category: "management",
     },
     {
       id: 4,
-      name: "Ministry of Health and Child Care Zimbabwe",
-      description: "Government ministry supporting health programs and child welfare initiatives",
-      type: "Government Partner",
-      logo: "/minhlogo1.png"
-    }
+      name: "Finance Manager",
+      position: "Finance & Administration Manager",
+      role: "Finance, HR and administration oversight",
+      description:
+        "Leads the Finance Department, overseeing financial management, human resources and administration. Supported by the Finance Assistant and Administration Officer to ensure resources are used transparently and accountably.",
+      category: "management",
+    },
+    {
+      id: 5,
+      name: "Finance Assistant & Administration Officer",
+      position: "Finance Assistant & Administration Officer",
+      role: "Support to finance and administration",
+      description:
+        "Provides day-to-day support with bookkeeping, payments, documentation and office administration, helping projects run smoothly and in line with donor and diocesan requirements.",
+      category: "management",
+    },
+    {
+      id: 6,
+      name: "M&E Officer",
+      position: "Monitoring & Evaluation Officer",
+      role: "Tracking results and learning",
+      description:
+        "Designs and implements monitoring and evaluation systems, tracks project performance and documents learning. Works with project officers and the Programs Manager to ensure evidence-based decision-making.",
+      category: "management",
+    },
+    {
+      id: 7,
+      name: "Project Officers",
+      position: "Project Officers",
+      role: "Frontline project implementation",
+      description:
+        "Lead day-to-day implementation of specific projects in communities, coordinating with local structures and partners to deliver activities and support participants.",
+      category: "management",
+    },
   ];
+
+  const partners = partnerLogosForSite
+    .filter((p) => p.name !== 'Caritas Mutare')
+    .map((p, index) => ({
+      id: index + 1,
+      name: p.name,
+      description: '',
+      type: 'Key partner',
+      logo: p.logoUrl,
+    }));
 
   const getCategoryIcon = (category: string) => {
     switch (category) {
@@ -92,6 +128,8 @@ const LeadershipPage: React.FC = () => {
         return <PersonIcon sx={{ fontSize: 40, color: 'primary.main' }} />;
       case 'bishop':
         return <ChurchIcon sx={{ fontSize: 40, color: 'primary.main' }} />;
+      case 'management':
+        return <PersonIcon sx={{ fontSize: 40, color: 'primary.main' }} />;
       case 'partner':
         return <PartnershipIcon sx={{ fontSize: 40, color: 'primary.main' }} />;
       default:
@@ -105,6 +143,8 @@ const LeadershipPage: React.FC = () => {
         return 'primary';
       case 'bishop':
         return 'secondary';
+      case 'management':
+        return 'primary';
       case 'partner':
         return 'success';
       default:
@@ -112,90 +152,152 @@ const LeadershipPage: React.FC = () => {
     }
   };
 
+  const bishop = leadership.find((m) => m.category === 'bishop');
+  const managementAndDirectors = leadership.filter((m) => m.category === 'director' || m.category === 'management');
+
   return (
     <Box sx={{ minHeight: '100vh', backgroundColor: 'background.default' }}>
       <Container maxWidth="lg" sx={{ py: 6 }}>
-      {/* Page Header */}
-      <Box sx={{ textAlign: 'center', mb: 6 }}>
-        <Typography variant="h3" component="h1" gutterBottom sx={{ fontWeight: 'bold', color: 'primary.main' }}>
-          Leadership & Partners
-        </Typography>
-        <Typography variant="h6" sx={{ color: 'text.secondary', maxWidth: 600, mx: 'auto' }}>
-          Meet the dedicated leaders and partners who guide Caritas Mutare in serving the community with compassion and excellence.
-        </Typography>
-      </Box>
+        {/* Page Header */}
+        <Box sx={{ textAlign: 'center', mb: 6 }}>
+          <Typography variant="h3" component="h1" gutterBottom sx={{ fontWeight: 'bold', color: 'primary.main' }}>
+            Leadership & Partners
+          </Typography>
+          <Typography variant="h6" sx={{ color: 'text.secondary', maxWidth: 700, mx: 'auto' }}>
+            Caritas Mutare is guided by the Bishop of the Diocese and a dedicated management team that oversees projects,
+            finances and learning in close collaboration with partners.
+          </Typography>
+        </Box>
 
-      {/* Leadership Section */}
-      <Box sx={{ mb: 6 }}>
-        <Typography variant="h4" component="h2" gutterBottom sx={{ fontWeight: 'bold', mb: 4, textAlign: 'center' }}>
-          Our Leadership
-        </Typography>
-        
-        <Grid container spacing={4}>
-          {leadership.map((member) => (
-            <Grid item xs={12} md={6} key={member.id}>
-              <Card
-                sx={{
-                  height: '100%',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  transition: 'transform 0.2s, box-shadow 0.2s',
-                  '&:hover': {
-                    transform: 'translateY(-4px)',
-                    boxShadow: 4,
-                  },
-                }}
+        {/* Leadership Section */}
+        <Box sx={{ mb: 6 }}>
+          <Typography
+            variant="h4"
+            component="h2"
+            gutterBottom
+            sx={{ fontWeight: 'bold', mb: 4, textAlign: 'center' }}
+          >
+            Our leadership structure
+          </Typography>
+
+          {/* Bishop – overall authority */}
+          {bishop && (
+            <Box sx={{ mb: 4 }}>
+              <Typography
+                variant="subtitle1"
+                sx={{ textTransform: 'uppercase', letterSpacing: 1, color: 'text.secondary', mb: 2, textAlign: 'center' }}
               >
-                <CardContent sx={{ flexGrow: 1, textAlign: 'center', p: 4 }}>
-                  <Box sx={{ mb: 3 }}>
-                    {member.image ? (
-                      <Avatar
-                        src={member.image}
-                        alt={member.name}
-                        sx={{ width: 120, height: 120, mx: 'auto', mb: 2 }}
+                Overall authority
+              </Typography>
+              <Grid container justifyContent="center">
+                <Grid item xs={12} md={8}>
+                  <Card
+                    sx={{
+                      display: 'flex',
+                      flexDirection: { xs: 'column', md: 'row' },
+                      alignItems: 'center',
+                      p: 3,
+                      borderRadius: 3,
+                      boxShadow: 3,
+                    }}
+                  >
+                    <Box sx={{ textAlign: 'center', mr: { md: 3 }, mb: { xs: 2, md: 0 } }}>
+                      {bishop.image ? (
+                        <Avatar
+                          src={bishop.image}
+                          alt={bishop.name}
+                          sx={{ width: 120, height: 120, mx: 'auto', mb: 2 }}
+                        />
+                      ) : (
+                        <Box sx={{ mb: 2 }}>{getCategoryIcon(bishop.category)}</Box>
+                      )}
+                      <Chip
+                        label={bishop.position}
+                        color={getCategoryColor(bishop.category) as any}
+                        sx={{ mb: 1 }}
                       />
-                    ) : (
+                    </Box>
+                    <Box sx={{ textAlign: { xs: 'center', md: 'left' } }}>
+                      <Typography variant="h5" component="h3" gutterBottom sx={{ fontWeight: 'bold' }}>
+                        {bishop.name}
+                      </Typography>
+                      <Typography variant="body1" color="text.secondary">
+                        {bishop.description}
+                      </Typography>
+                    </Box>
+                  </Card>
+                </Grid>
+              </Grid>
+            </Box>
+          )}
+
+          {/* Management and coordination team */}
+          <Box sx={{ mt: 4 }}>
+            <Typography
+              variant="subtitle1"
+              sx={{
+                textTransform: 'uppercase',
+                letterSpacing: 1,
+                color: 'text.secondary',
+                mb: 2,
+                textAlign: 'center',
+              }}
+            >
+              Management & coordination
+            </Typography>
+            <Grid container spacing={4}>
+              {managementAndDirectors.map((member) => (
+                <Grid item xs={12} md={4} key={member.id}>
+                  <Card
+                    sx={{
+                      height: '100%',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      transition: 'transform 0.2s, box-shadow 0.2s',
+                      '&:hover': {
+                        transform: 'translateY(-4px)',
+                        boxShadow: 4,
+                      },
+                    }}
+                  >
+                    <CardContent sx={{ flexGrow: 1, textAlign: 'center', p: 3 }}>
                       <Box sx={{ mb: 2 }}>
-                        {getCategoryIcon(member.category)}
+                        {member.image ? (
+                          <Avatar
+                            src={member.image}
+                            alt={member.name}
+                            sx={{ width: 80, height: 80, mx: 'auto', mb: 1 }}
+                          />
+                        ) : (
+                          <Box sx={{ mb: 1 }}>{getCategoryIcon(member.category)}</Box>
+                        )}
                       </Box>
-                    )}
-                  </Box>
-                  
-                  <Chip
-                    label={member.position}
-                    color={getCategoryColor(member.category) as any}
-                    sx={{ mb: 2 }}
-                  />
-                  
-                  <Typography variant="h5" component="h3" gutterBottom sx={{ fontWeight: 'bold' }}>
-                    {member.name}
-                  </Typography>
-                  
-                  <Typography variant="h6" color="primary" gutterBottom sx={{ mb: 3 }}>
-                    {member.role}
-                  </Typography>
-                  
-                  <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
-                    {member.description}
-                  </Typography>
-                  
-                  {member.email && (
-                    <Typography variant="body2" sx={{ mb: 1 }}>
-                      <strong>Email:</strong> {member.email}
-                    </Typography>
-                  )}
-                  
-                  {member.phone && (
-                    <Typography variant="body2">
-                      <strong>Phone:</strong> {member.phone}
-                    </Typography>
-                  )}
-                </CardContent>
-              </Card>
+
+                      <Chip
+                        label={member.position}
+                        color={getCategoryColor(member.category) as any}
+                        size="small"
+                        sx={{ mb: 1 }}
+                      />
+
+                      <Typography variant="h6" component="h3" gutterBottom sx={{ fontWeight: 'bold' }}>
+                        {member.name}
+                      </Typography>
+
+                      <Typography variant="body2" color="primary" gutterBottom>
+                        {member.role}
+                      </Typography>
+
+                      <Typography variant="body2" color="text.secondary">
+                        {member.description}
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                </Grid>
+              ))}
             </Grid>
-          ))}
-        </Grid>
-      </Box>
+          </Box>
+        </Box>
 
       <Divider sx={{ my: 6 }} />
 
@@ -315,7 +417,6 @@ const LeadershipPage: React.FC = () => {
 
       {/* Floating Components */}
       <BackToTopButton />
-      <ReturnHomeButton variant="compact" position="top-left" />
     </Box>
   );
 };

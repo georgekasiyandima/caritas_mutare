@@ -30,9 +30,8 @@ import {
 } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import CountUpAnimation from '../../components/CountUpAnimation.tsx';
-import BackToTopButton from '../../components/BackToTopButton.tsx';
-import ReturnHomeButton from '../../components/ReturnHomeButton.tsx';
+import CountUpAnimation from '../../components/CountUpAnimation';
+import BackToTopButton from '../../components/BackToTopButton';
 
 const SoupKitchenPage: React.FC = () => {
   const { t } = useTranslation();
@@ -731,7 +730,6 @@ const SoupKitchenPage: React.FC = () => {
 
       {/* Floating Components */}
       <BackToTopButton />
-      <ReturnHomeButton variant="compact" position="top-left" />
     </Box>
   );
 };

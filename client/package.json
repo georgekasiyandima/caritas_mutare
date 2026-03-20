@@ -28,10 +28,11 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "vercel-build": "react-scripts build",
-    "test": "react-scripts test",
+    "start": "craco start",
+    "build": "craco build",
+    "build:no-sourcemaps": "GENERATE_SOURCEMAP=false DISABLE_ESLINT_PLUGIN=true craco build",
+    "vercel-build": "craco build",
+    "test": "craco test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -53,6 +54,7 @@
     ]
   },
   "devDependencies": {
+    "@craco/craco": "^7.1.0",
     "@types/react-router-dom": "^5.3.3"
   },
   "proxy": "http://localhost:5000"

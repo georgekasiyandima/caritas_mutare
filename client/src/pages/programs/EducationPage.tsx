@@ -1,11 +1,11 @@
 import React from 'react';
-import WorkInProgressPage from '../../components/WorkInProgressPage.tsx';
+import WorkInProgressPage from '../../components/WorkInProgressPage';
 
 const EducationPage: React.FC = () => {
   return (
     <WorkInProgressPage
       title="Education Program"
-      description="We're developing a comprehensive education program page that will showcase our community learning initiatives, training programs, and educational impact."
+      description="We're developing a comprehensive education projects page that will showcase our community learning initiatives, training projects, and educational impact."
       expectedLaunch="February 2025"
       features={[
         "Interactive program showcase",

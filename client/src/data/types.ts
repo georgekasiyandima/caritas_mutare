@@ -115,3 +115,44 @@ export interface Achievement {
   category: 'program_success' | 'award' | 'milestone' | 'partnership';
   image?: string;
 }
+
+/** Canonical project type for donor-funded and own initiatives (from org material). */
+export interface CaritasProject {
+  id: string;
+  slug: string;
+  acronym?: string;
+  title_en: string;
+  title_sh: string;
+  summary_en: string;
+  summary_sh: string;
+  description_en: string;
+  description_sh: string;
+  /** Donor names (e.g. "Oak Foundation", "CAFOD"). */
+  donors: string[];
+  /** Partner names (e.g. "Trocaire Zimbabwe", "CBM Global Zimbabwe"). */
+  partners: string[];
+  /** Logo paths under public/ (e.g. "/images/partners/cafod.png"). */
+  donorLogoUrls?: string[];
+  partnerLogoUrls?: string[];
+  /** Target description (e.g. "1200 individuals", "500 households"). */
+  target: string;
+  /** Location (wards, districts). */
+  location: string;
+  /** Duration (e.g. "Oct 2024 – Oct 2026", "Ongoing"). */
+  duration: string;
+  /** Staff count or "All Caritas Staff" etc. */
+  staff?: string;
+  theoryOfChange_en?: string;
+  theoryOfChange_sh?: string;
+  keyPathways: string[];
+  /** Route for programme page (e.g. "/programs/soup-kitchen"). */
+  route: string;
+  /** Hero image path. */
+  heroImage?: string;
+  /** Gallery image paths. */
+  galleryImages?: string[];
+  status: 'active' | 'completed' | 'ongoing';
+  /** MUI icon name or programme category for card styling. */
+  icon?: string;
+  color?: string;
+}

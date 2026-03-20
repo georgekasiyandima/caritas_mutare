@@ -1,14 +1,14 @@
 {
   "nav": {
-    "home": "Home",
-    "about": "About",
-    "leadership": "Leadership",
-    "programs": "Programs",
-    "news": "News",
-    "donate": "Donate",
-    "volunteer": "Volunteer",
-    "contact": "Contact",
-    "admin": "Admin"
+  "home": "Home",
+  "about": "About",
+  "leadership": "Leadership",
+  "programs": "Projects",
+  "news": "News",
+  "donate": "Donate",
+  "volunteer": "Volunteer",
+  "contact": "Contact",
+  "admin": "Admin"
   },
   "hero": {
     "title": "Caritas Mutare",
@@ -18,41 +18,41 @@
     "donateNow": "Donate Now"
   },
   "about": {
-    "title": "About Caritas Mutare",
-    "mission": "Our Mission",
-    "missionText": "To serve the poor and promote integral human development through community-based programs that address the root causes of poverty and injustice.",
-    "vision": "Our Vision",
-    "visionText": "A just and compassionate society where every person can live with dignity and reach their full potential.",
-    "values": "Our Values",
-    "valuesText": "We are guided by Catholic social teaching, working with communities to create lasting change through solidarity, subsidiarity, and the common good."
+  "title": "About Caritas Mutare",
+  "mission": "Our Mission",
+  "missionText": "To serve the poor and promote integral human development through community-based projects that address the root causes of poverty and injustice.",
+  "vision": "Our Vision",
+  "visionText": "A just and compassionate society where every person can live with dignity and reach their full potential.",
+  "values": "Our Values",
+  "valuesText": "We are guided by Catholic social teaching, working with communities to create lasting change through solidarity, subsidiarity, and the common good."
   },
   "programs": {
-    "title": "Our Programs",
-    "description": "We implement various community development programs across the Diocese of Mutare",
-    "education": {
-      "title": "Education & Training",
-      "description": "Providing access to quality education and vocational training for children and adults"
-    },
-    "healthcare": {
-      "title": "Healthcare & Nutrition",
-      "description": "Improving health outcomes through medical care, nutrition programs, and health education"
-    },
-    "agriculture": {
-      "title": "Agriculture & Food Security",
-      "description": "Supporting sustainable farming practices and food security initiatives"
-    },
-    "livelihood": {
-      "title": "Livelihood Support",
-      "description": "Creating economic opportunities through microfinance and skills development"
-    },
-    "soupkitchen": {
-      "title": "Soup Kitchen",
-      "description": "Monthly community meals served every last Friday to support vulnerable families"
-    },
-    "emergency": {
-      "title": "Emergency Response",
-      "description": "Providing immediate assistance during crises and natural disasters"
-    }
+  "title": "Our Projects",
+  "description": "We implement various community development projects across the Diocese of Mutare",
+  "education": {
+    "title": "Education & Training",
+    "description": "Providing access to quality education and vocational training for children and adults"
+  },
+  "healthcare": {
+    "title": "Healthcare & Nutrition",
+    "description": "Improving health outcomes through medical care, nutrition projects, and health education"
+  },
+  "agriculture": {
+    "title": "Agriculture & Food Security",
+    "description": "Supporting sustainable farming practices and food security initiatives"
+  },
+  "livelihood": {
+    "title": "Livelihood Support",
+    "description": "Creating economic opportunities through microfinance and skills development"
+  },
+  "soupkitchen": {
+    "title": "Soup Kitchen",
+    "description": "Monthly community meals served every last Friday to support vulnerable families"
+  },
+  "emergency": {
+    "title": "Emergency Response",
+    "description": "Providing immediate assistance during crises and natural disasters"
+  }
   },
   "news": {
     "title": "News & Updates",
@@ -107,7 +107,7 @@
     }
   },
   "footer": {
-    "description": "Caritas Mutare is committed to serving the community through Catholic social teaching and community development programs.",
+  "description": "Caritas Mutare is committed to serving the community through Catholic social teaching and community development projects.",
     "quickLinks": "Quick Links",
     "contactInfo": "Contact Information",
     "followUs": "Follow Us",

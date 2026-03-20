@@ -20,10 +20,18 @@ router.get('/', async (req, res) => {
     }
 
     const news = await dbAll(
-      `SELECT id, title_en, title_sh, excerpt_en, excerpt_sh, featured_image, published_at, created_at
+      `SELECT id, title_en, title_sh, excerpt_en, excerpt_sh, featured_image, published_at, created_at, content_en
        FROM news ${whereClause} ORDER BY published_at DESC LIMIT ? OFFSET ?`,
       [...params, parseInt(limit), offset]
     );
+
+    const wordsPerMinute = 200;
+    const newsWithReadTime = news.map((n) => {
+      const words = (n.content_en || '').trim().split(/\s+/).filter(Boolean).length;
+      const read_time_minutes = Math.max(1, Math.ceil(words / wordsPerMinute));
+      const { content_en: _, ...rest } = n;
+      return { ...rest, read_time_minutes };
+    });
 
     const totalCount = await dbGet(
       `SELECT COUNT(*) as count FROM news ${whereClause}`,
@@ -31,7 +39,7 @@ router.get('/', async (req, res) => {
     );
 
     res.json({
-      news,
+      news: newsWithReadTime,
       pagination: {
         page: parseInt(page),
         limit: parseInt(limit),
@@ -57,6 +65,17 @@ router.get('/:id', async (req, res) => {
       return res.status(404).json({ message: 'Article not found' });
     }
 
+    if (article.gallery) {
+      try {
+        article.gallery = JSON.parse(article.gallery);
+      } catch (e) {
+        article.gallery = null;
+      }
+    }
+
+    const words = (article.content_en || '').trim().split(/\s+/).filter(Boolean).length;
+    article.read_time_minutes = Math.max(1, Math.ceil(words / 200));
+
     res.json({ article });
   } catch (error) {
     console.error('Error fetching article:', error);
@@ -69,14 +88,21 @@ router.get('/featured/latest', async (req, res) => {
   try {
     const { limit = 5 } = req.query;
 
-    const articles = await dbAll(
-      `SELECT id, title_en, title_sh, excerpt_en, excerpt_sh, featured_image, published_at
+    const rows = await dbAll(
+      `SELECT id, title_en, title_sh, excerpt_en, excerpt_sh, featured_image, published_at, content_en
        FROM news 
        WHERE status = "published" 
        ORDER BY published_at DESC 
        LIMIT ?`,
       [parseInt(limit)]
     );
+
+    const articles = rows.map((r) => {
+      const words = (r.content_en || '').trim().split(/\s+/).filter(Boolean).length;
+      const read_time_minutes = Math.max(1, Math.ceil(words / 200));
+      const { content_en: _, ...rest } = r;
+      return { ...rest, read_time_minutes };
+    });
 
     res.json({ articles });
   } catch (error) {
@@ -153,15 +179,17 @@ router.post('/', [
       excerpt_en,
       excerpt_sh,
       featured_image,
+      gallery,
       status = 'draft'
     } = req.body;
 
     const published_at = status === 'published' ? new Date().toISOString() : null;
+    const galleryStr = typeof gallery === 'string' ? gallery : (gallery ? JSON.stringify(gallery) : null);
 
     const result = await dbRun(
-      `INSERT INTO news (title_en, title_sh, content_en, content_sh, excerpt_en, excerpt_sh, featured_image, status, author_id, published_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [title_en, title_sh, content_en, content_sh, excerpt_en, excerpt_sh, featured_image, status, req.user.id, published_at]
+      `INSERT INTO news (title_en, title_sh, content_en, content_sh, excerpt_en, excerpt_sh, featured_image, gallery, status, author_id, published_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [title_en, title_sh, content_en, content_sh, excerpt_en, excerpt_sh, featured_image, galleryStr, status, req.user.id, published_at]
     );
 
     const article = await dbGet('SELECT * FROM news WHERE id = ?', [result.id]);
@@ -195,6 +223,7 @@ router.put('/:id', [
       excerpt_en,
       excerpt_sh,
       featured_image,
+      gallery,
       status
     } = req.body;
 
@@ -211,13 +240,15 @@ router.put('/:id', [
       published_at = new Date().toISOString();
     }
 
+    const galleryStr = typeof gallery === 'string' ? gallery : (gallery ? JSON.stringify(gallery) : null);
+
     const result = await dbRun(
       `UPDATE news 
        SET title_en = ?, title_sh = ?, content_en = ?, content_sh = ?, 
-           excerpt_en = ?, excerpt_sh = ?, featured_image = ?, status = ?, 
+           excerpt_en = ?, excerpt_sh = ?, featured_image = ?, gallery = ?, status = ?, 
            published_at = ?, updated_at = CURRENT_TIMESTAMP
        WHERE id = ?`,
-      [title_en, title_sh, content_en, content_sh, excerpt_en, excerpt_sh, featured_image, status, published_at, req.params.id]
+      [title_en, title_sh, content_en, content_sh, excerpt_en, excerpt_sh, featured_image, galleryStr, status, published_at, req.params.id]
     );
 
     if (result.changes === 0) {

@@ -13,21 +13,17 @@ import {
   useTheme,
   useMediaQuery,
 } from '@mui/material';
-import {
-  School as SchoolIcon,
-  LocalHospital as HealthIcon,
-  Agriculture as AgricultureIcon,
-  Work as WorkIcon,
-  CrisisAlert as EmergencyIcon,
-  Restaurant as RestaurantIcon,
-} from '@mui/icons-material';
+import { Category as CategoryIcon } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import CountUpAnimation from '../components/CountUpAnimation.tsx';
-import BackToTopButton from '../components/BackToTopButton.tsx';
-import ReturnHomeButton from '../components/ReturnHomeButton.tsx';
-import WhatsAppWidget from '../components/WhatsAppWidget.tsx';
+import CountUpAnimation from '../components/CountUpAnimation';
+import BackToTopButton from '../components/BackToTopButton';
+import WhatsAppWidget from '../components/WhatsAppWidget';
+import PartnerLogoStrip from '../components/PartnerLogoStrip';
+import ImageCarousel from '../components/ImageCarousel';
+import SocialRail from '../components/SocialRail';
 import { useQuery } from 'react-query';
+import { getActiveProjects, generalImpactImages } from '../lib/caritasProjects';
 // import { getLatestNews, getOrganizationStats } from '../data/contentManager';
 
 const HomePage: React.FC = () => {
@@ -55,38 +51,19 @@ const HomePage: React.FC = () => {
     initialData: { articles: [] } // Use empty array as fallback
   });
 
-  const programs = [
-    {
-      key: 'education',
-      icon: <SchoolIcon sx={{ fontSize: 48, color: 'primary.main' }} />,
-      color: 'primary.main',
-    },
-    {
-      key: 'healthcare',
-      icon: <HealthIcon sx={{ fontSize: 48, color: 'primary.main' }} />,
-      color: 'primary.main',
-    },
-    {
-      key: 'agriculture',
-      icon: <AgricultureIcon sx={{ fontSize: 48, color: 'success.main' }} />,
-      color: 'success.main',
-    },
-    {
-      key: 'livelihood',
-      icon: <WorkIcon sx={{ fontSize: 48, color: 'warning.main' }} />,
-      color: 'warning.main',
-    },
-    {
-      key: 'soupkitchen',
-      icon: <RestaurantIcon sx={{ fontSize: 48, color: 'primary.main' }} />,
-      color: 'primary.main',
-    },
-    {
-      key: 'emergency',
-      icon: <EmergencyIcon sx={{ fontSize: 48, color: 'error.main' }} />,
-      color: 'error.main',
-    },
-  ];
+  const featuredProjects = getActiveProjects().slice(0, 6);
+
+  // Carousel: mix general impact images with project highlights (hero + first gallery image per project)
+  const carouselImages = React.useMemo(() => {
+    const list: { src: string; alt: string }[] = [...generalImpactImages];
+    getActiveProjects().forEach((p) => {
+      if (p.heroImage) list.push({ src: p.heroImage, alt: p.title_en });
+      if (p.galleryImages?.[0] && p.galleryImages[0] !== p.heroImage) {
+        list.push({ src: p.galleryImages[0], alt: `${p.title_en} - gallery` });
+      }
+    });
+    return list;
+  }, []);
 
   const statsData = [
     { number: `${organizationStats.families_served}+`, label: 'Families Served' },
@@ -169,6 +146,9 @@ const HomePage: React.FC = () => {
         </Container>
       </Box>
 
+      {/* Partner logos strip */}
+      <PartnerLogoStrip title="Supported by" variant="light" compact />
+
       {/* Statistics Section */}
       <Container maxWidth="lg" sx={{ py: 6 }}>
         <Grid container spacing={4}>
@@ -199,7 +179,7 @@ const HomePage: React.FC = () => {
         </Grid>
       </Container>
 
-      {/* Programs Section */}
+      {/* Projects Section */}
       <Box sx={{ backgroundColor: 'grey.50', py: 6 }}>
         <Container maxWidth="lg">
           <Typography
@@ -220,8 +200,8 @@ const HomePage: React.FC = () => {
           </Typography>
 
           <Grid container spacing={3}>
-            {programs.map((program) => (
-              <Grid item xs={12} sm={6} md={4} key={program.key}>
+            {featuredProjects.map((project) => (
+              <Grid item xs={12} sm={6} md={4} key={project.id}>
                 <Card
                   sx={{
                     height: '100%',
@@ -234,39 +214,49 @@ const HomePage: React.FC = () => {
                     },
                   }}
                 >
-                  <CardContent sx={{ flexGrow: 1, textAlign: 'center', py: 4 }}>
-                    <Box sx={{ mb: 2 }}>
-                      {program.icon}
-                    </Box>
+                  {project.heroImage && (
+                    <CardMedia
+                      component="img"
+                      height="140"
+                      image={project.heroImage}
+                      alt={project.title_en}
+                      sx={{ objectFit: 'cover' }}
+                    />
+                  )}
+                  <CardContent sx={{ flexGrow: 1, textAlign: 'center', py: 2 }}>
+                    {!project.heroImage && (
+                      <Box sx={{ mb: 1 }}>
+                        <CategoryIcon sx={{ fontSize: 40, color: 'primary.main' }} />
+                      </Box>
+                    )}
                     <Typography variant="h6" component="h3" gutterBottom>
-                      {t(`programs.${program.key}.title`)}
+                      {project.acronym ? `${project.acronym}: ` : ''}{project.title_en}
                     </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      {t(`programs.${program.key}.description`)}
+                    <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                      {project.summary_en}
                     </Typography>
+                    <Typography variant="caption" display="block" color="text.secondary">
+                      {project.target} · {project.duration}
+                    </Typography>
+                    {(project.donorLogoUrls?.length ?? 0) > 0 && (
+                      <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1, mt: 1, flexWrap: 'wrap' }}>
+                        {project.donorLogoUrls?.slice(0, 3).map((url) => (
+                          <Box
+                            key={url}
+                            component="img"
+                            src={url}
+                            alt=""
+                            sx={{ height: 24, objectFit: 'contain' }}
+                          />
+                        ))}
+                      </Box>
+                    )}
                   </CardContent>
                   <CardActions sx={{ justifyContent: 'center', pb: 2 }}>
                     <Button
                       size="small"
-                      onClick={() => {
-                        switch (program.key) {
-                          case 'soupkitchen':
-                            navigate('/programs/soup-kitchen');
-                            break;
-                          case 'education':
-                            navigate('/programs/education');
-                            break;
-                          case 'healthcare':
-                            navigate('/programs/healthcare');
-                            break;
-                          case 'agriculture':
-                            navigate('/programs/agriculture');
-                            break;
-                          default:
-                            navigate('/programs');
-                        }
-                      }}
-                      sx={{ color: program.color }}
+                      onClick={() => navigate(project.route)}
+                      sx={{ color: 'primary.main' }}
                     >
                       Learn More
                     </Button>
@@ -275,6 +265,11 @@ const HomePage: React.FC = () => {
               </Grid>
             ))}
           </Grid>
+          <Box sx={{ textAlign: 'center', mt: 3 }}>
+            <Button variant="outlined" onClick={() => navigate('/programs')} sx={{ textTransform: 'none' }}>
+              View all projects
+            </Button>
+          </Box>
         </Container>
       </Box>
 
@@ -323,9 +318,17 @@ const HomePage: React.FC = () => {
                     <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
                       {article.excerpt_en}
                     </Typography>
-                    <Typography variant="caption" color="text.secondary">
-                      {new Date(article.published_at).toLocaleDateString()}
-                    </Typography>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap' }}>
+                      <Typography variant="caption" color="text.secondary">
+                        {new Date(article.published_at).toLocaleDateString()}
+                      </Typography>
+                      {article.read_time_minutes != null && (
+                        <>
+                          <Typography variant="caption" color="text.secondary" sx={{ opacity: 0.8 }}>·</Typography>
+                          <Typography variant="caption" color="text.secondary">{article.read_time_minutes} min read</Typography>
+                        </>
+                      )}
+                    </Box>
                   </CardContent>
                   <CardActions>
                     <Button size="small">
@@ -347,6 +350,21 @@ const HomePage: React.FC = () => {
             </Button>
           </Box>
         </Container>
+      )}
+
+      {/* Impact carousel – highlights from projects and general impact */}
+      {carouselImages.length > 0 && (
+        <Box sx={{ backgroundColor: 'grey.50', py: 6 }}>
+          <Container maxWidth="lg">
+            <Typography variant="h4" component="h2" textAlign="center" gutterBottom sx={{ fontWeight: 600, mb: 1 }}>
+              Our Impact
+            </Typography>
+            <Typography variant="body1" textAlign="center" sx={{ mb: 4, color: 'text.secondary', maxWidth: 600, mx: 'auto' }}>
+              Glimpses of community engagement and project work across the diocese.
+            </Typography>
+            <ImageCarousel images={carouselImages} maxImages={10} height={{ xs: 240, md: 380 }} />
+          </Container>
+        </Box>
       )}
 
       {/* Call to Action Section */}
@@ -405,7 +423,7 @@ const HomePage: React.FC = () => {
 
       {/* Floating Components */}
       <BackToTopButton />
-      <ReturnHomeButton variant="compact" position="top-left" />
+      <SocialRail />
       <WhatsAppWidget 
         phoneNumber="+263774671893"
         welcomeMessage="Hello! Thank you for your interest in Caritas Mutare. How can we help you today?"

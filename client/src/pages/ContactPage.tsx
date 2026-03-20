@@ -24,8 +24,7 @@ import {
   Public as PublicIcon,
 } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
-import BackToTopButton from '../components/BackToTopButton.tsx';
-import ReturnHomeButton from '../components/ReturnHomeButton.tsx';
+import BackToTopButton from '../components/BackToTopButton';
 
 const ContactPage: React.FC = () => {
   const { t } = useTranslation();
@@ -391,7 +390,6 @@ const ContactPage: React.FC = () => {
 
       {/* Floating Components */}
       <BackToTopButton />
-      <ReturnHomeButton variant="compact" position="top-left" />
     </Box>
   );
 };
