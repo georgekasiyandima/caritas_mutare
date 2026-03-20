@@ -7,7 +7,6 @@ import {
   Card,
   CardContent,
   CardActions,
-  CardMedia,
   Button,
   Chip,
   useTheme,
@@ -194,13 +193,35 @@ const ProgramsPage: React.FC = () => {
                   }}
                 >
                   {project.heroImage && (
-                    <CardMedia
-                      component="img"
-                      height="200"
-                      image={project.heroImage}
-                      alt={project.title_en}
-                      sx={{ objectFit: 'cover' }}
-                    />
+                    <Box sx={{ position: 'relative', height: 220, overflow: 'hidden', backgroundColor: 'grey.200' }}>
+                      <Box
+                        aria-hidden
+                        sx={{
+                          position: 'absolute',
+                          inset: 0,
+                          backgroundImage: `url(${project.heroImage})`,
+                          backgroundSize: 'cover',
+                          backgroundPosition: project.heroImagePosition ?? 'center center',
+                          filter: 'blur(8px)',
+                          transform: 'scale(1.08)',
+                          opacity: 0.5,
+                        }}
+                      />
+                      <Box
+                        component="img"
+                        src={project.heroImage}
+                        alt={project.title_en}
+                        sx={{
+                          position: 'relative',
+                          zIndex: 1,
+                          width: '100%',
+                          height: '100%',
+                          objectFit: 'contain',
+                          objectPosition: project.heroImagePosition ?? 'center center',
+                          display: 'block',
+                        }}
+                      />
+                    </Box>
                   )}
                   <Box
                     sx={{

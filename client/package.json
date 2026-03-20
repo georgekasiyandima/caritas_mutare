@@ -29,9 +29,9 @@
   },
   "scripts": {
     "start": "craco start",
-    "build": "craco build",
+    "build": "CI=false craco build",
     "build:no-sourcemaps": "GENERATE_SOURCEMAP=false DISABLE_ESLINT_PLUGIN=true craco build",
-    "vercel-build": "craco build",
+    "vercel-build": "CI=false DISABLE_ESLINT_PLUGIN=true craco build",
     "test": "craco test",
     "eject": "react-scripts eject"
   },

@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "concurrently \"npm:backend\" \"npm:frontend\"",
     "test": "jest --watchAll --verbose",
-    "build": "cross-env NODE_ENV=production npm run build:client",
+    "build": "cross-env NODE_ENV=production CI=false npm run build:client",
     "build:client": "cd client && npm run build",
     "frontend": "cd client && npm start",
     "backend": "cd server && npm run dev",

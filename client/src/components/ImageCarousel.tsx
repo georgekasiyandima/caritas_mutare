@@ -5,6 +5,8 @@ import { ArrowBack } from '@mui/icons-material';
 export interface CarouselImage {
   src: string;
   alt: string;
+  /** Optional focal point for image alignment (e.g. 'center top'). */
+  objectPosition?: string;
 }
 
 const INTERVAL_MS = 5000;
@@ -85,13 +87,29 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({
           }}
         >
           <Box
+            aria-hidden
+            sx={{
+              position: 'absolute',
+              inset: 0,
+              backgroundImage: `url(${img.src})`,
+              backgroundSize: 'cover',
+              backgroundPosition: img.objectPosition ?? 'center center',
+              filter: 'blur(10px)',
+              transform: 'scale(1.06)',
+              opacity: 0.55,
+            }}
+          />
+          <Box
             component="img"
             src={img.src}
             alt={img.alt}
             sx={{
+              position: 'relative',
+              zIndex: 1,
               width: '100%',
               height: '100%',
-              objectFit: 'cover',
+              objectFit: { xs: 'contain', md: 'cover' },
+              objectPosition: img.objectPosition ?? 'center center',
               display: 'block',
             }}
           />

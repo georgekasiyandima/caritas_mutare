@@ -26,6 +26,7 @@ export interface CaritasProject {
   keyPathways: string[];
   route: string;
   heroImage?: string;
+  heroImagePosition?: string;
   galleryImages?: string[];
   status: 'active' | 'completed' | 'ongoing';
   icon?: string;
@@ -45,7 +46,7 @@ export const caritasProjects: CaritasProject[] = [
     description_sh: `SERARP inoitwa neCaritas Mutare muWard 7 Bumba, ine chinangwa chekuvaka kusimba kwenharaunda pakurwisa kusanaya kwemvura uye kusagadzikana kwehupfumi, vachinyanya kutarisira vakadzi, vasikana, vanhu vane disabilities, uye vechidiki. Chirongwa chinosanganisira micro-irrigation, ruzivo rwekurima nemiti, kudzidzisa varimi nekuchengetedza mvura, kudzidzisa vechidiki basa, uye kumisikidza mabhengi embeu enharaunda.`,
     donors: ['Oak Foundation', 'CAFOD Zimbabwe'],
     partners: ['CAFOD Zimbabwe'],
-    donorLogoUrls: ['/images/partners/oak-foundation.png', '/images/partners/cafod.png'],
+    donorLogoUrls: ['/images/partners/oak-foundation-clean.png', '/images/partners/cafod.png'],
     partnerLogoUrls: ['/images/partners/cafod.png'],
     target: '1,200 individuals',
     location: 'Ward 7 Bumba',
@@ -61,6 +62,7 @@ export const caritasProjects: CaritasProject[] = [
     ],
     route: '/programs/serarp',
     heroImage: '/images/programs/serarp/vocational-training-1.png',
+    heroImagePosition: 'center 36%',
     galleryImages: [
       '/images/programs/serarp/vocational-training-1.png',
       '/images/programs/serarp/serarp-plastering-class.png',
@@ -101,6 +103,7 @@ export const caritasProjects: CaritasProject[] = [
     ],
     route: '/programs/cetlrccap',
     heroImage: '/images/programs/agriculture/nursery-shade-house.png',
+    heroImagePosition: 'center 42%',
     galleryImages: [
       '/images/programs/agriculture/seedling-nursery-women.png',
       '/images/programs/agriculture/nursery-shade-house.png',
@@ -139,6 +142,7 @@ export const caritasProjects: CaritasProject[] = [
     ],
     route: '/programs/didrr',
     heroImage: '/images/programs/didrr/disability-inclusion-workshop.png',
+    heroImagePosition: 'center 34%',
     galleryImages: ['/images/programs/didrr/disability-inclusion-workshop.png', '/images/programs/didrr/disability-inclusion-meal.png'],
     status: 'active',
     icon: 'Accessibility',
@@ -172,6 +176,7 @@ export const caritasProjects: CaritasProject[] = [
     ],
     route: '/programs/ilp',
     heroImage: '/images/programs/ilp/goat-rearing.png',
+    heroImagePosition: 'center 48%',
     galleryImages: ['/images/programs/ilp/goat-rearing.png', '/images/programs/ilp/poultry-house.png'],
     status: 'active',
     icon: 'Work',
@@ -202,6 +207,7 @@ export const caritasProjects: CaritasProject[] = [
     ],
     route: '/programs/soup-kitchen',
     heroImage: '/images/programs/soup-kitchen/food-distribution.png',
+    heroImagePosition: 'center 40%',
     galleryImages: [
       '/images/programs/soup-kitchen/food-distribution.png',
       '/images/programs/soup-kitchen/cooking-pot.png',
@@ -229,6 +235,7 @@ export const caritasProjects: CaritasProject[] = [
     staff: 'Sister Angeline, Finance Officer, M&E Officer, Programs Manager, Caritas Coordinator',
     route: '/programs/education',
     heroImage: '/images/programs/education/st-theresa-preschool-graduation-2025.png',
+    heroImagePosition: 'center 32%',
     galleryImages: [
       '/images/programs/education/st-theresa-preschool-graduation-2025.png',
       '/images/programs/education/st-theresa-preschool-performance-2025.png',
@@ -283,6 +290,7 @@ export const caritasProjects: CaritasProject[] = [
     ],
     route: '/programs/cfnshpp',
     heroImage: '/images/programs/agriculture/livestock-dip-1.png',
+    heroImagePosition: 'center 46%',
     galleryImages: [
       '/images/programs/agriculture/livestock-dip-1.png',
       '/images/programs/agriculture/woman-okra-field.png',
@@ -295,24 +303,23 @@ export const caritasProjects: CaritasProject[] = [
   },
 ];
 
-export const generalImpactImages: { src: string; alt: string }[] = [
-  { src: '/images/general/promoting-dignified-lives-1.png', alt: 'Promoting dignified lives in a safe environment' },
-  { src: '/images/programs/serarp/vocational-training-1.png', alt: 'Vocational training session under SERARP project' },
-  { src: '/images/general/health-champions-1.png', alt: 'Health Champions and community members' },
-  { src: '/images/general/community-gathering-1.png', alt: 'Community engagement and learning' },
-  { src: '/images/general/community-impact-1.png', alt: 'Community impact event' },
-  { src: '/images/general/construction-1.png', alt: 'Community infrastructure construction' },
-  { src: '/images/general/workshop-planning.png', alt: 'Community workshop and planning session' },
-  { src: '/images/general/beneficiary-with-food.png', alt: 'Beneficiary with food support' },
-  { src: '/images/programs/agriculture/woman-okra-field.png', alt: 'Woman in agricultural field' },
-  { src: '/images/programs/infrastructure/water-bridge-construction.png', alt: 'Water and bridge construction project' },
-  { src: '/images/programs/didrr/disability-inclusion-workshop.png', alt: 'Disability-inclusive disaster risk reduction workshop' },
+export const generalImpactImages: { src: string; alt: string; objectPosition?: string }[] = [
+  { src: '/images/general/promoting-dignified-lives-1.png', alt: 'Promoting dignified lives in a safe environment', objectPosition: 'center center' },
+  { src: '/images/programs/serarp/vocational-training-1.png', alt: 'Vocational training session under SERARP project', objectPosition: 'center 36%' },
+  { src: '/images/general/community-gathering-1.png', alt: 'Community engagement and learning', objectPosition: 'center 35%' },
+  { src: '/images/general/community-impact-1.png', alt: 'Community impact event', objectPosition: 'center center' },
+  { src: '/images/general/construction-1.png', alt: 'Community infrastructure construction', objectPosition: 'center 40%' },
+  { src: '/images/general/workshop-planning.png', alt: 'Community workshop and planning session', objectPosition: 'center 38%' },
+  { src: '/images/general/beneficiary-with-food.png', alt: 'Beneficiary with food support', objectPosition: 'center 30%' },
+  { src: '/images/programs/agriculture/woman-okra-field.png', alt: 'Woman in agricultural field', objectPosition: 'center 44%' },
+  { src: '/images/programs/infrastructure/water-bridge-construction.png', alt: 'Water and bridge construction project', objectPosition: 'center 45%' },
+  { src: '/images/programs/didrr/disability-inclusion-workshop.png', alt: 'Disability-inclusive disaster risk reduction workshop', objectPosition: 'center 34%' },
 ];
 
 export const partnerLogosForSite: { name: string; logoUrl: string }[] = [
   { name: 'Caritas Mutare', logoUrl: '/images/partners/caritas-mutare.png' },
   { name: 'CAFOD', logoUrl: '/images/partners/cafod.png' },
-  { name: 'Oak Foundation', logoUrl: '/images/partners/oak-foundation.png' },
+  { name: 'Oak Foundation', logoUrl: '/images/partners/oak-foundation-clean.png' },
   { name: 'CBM Global', logoUrl: '/images/partners/cbm-global.png' },
   { name: 'Government of Ireland', logoUrl: '/images/partners/government-ireland.png' },
   { name: 'Zimbabwe Government', logoUrl: '/images/partners/zimbabwe-government.png' },

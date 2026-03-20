@@ -50,16 +50,21 @@ const PartnerLogoStrip: React.FC<PartnerLogoStripProps> = ({
             <Box
               key={partner.name}
               sx={{
-                px: 1.5,
-                py: 0.75,
-                borderRadius: 2,
-                backgroundColor: 'white',
-                boxShadow: variant === 'dark' ? 2 : 0,
+                px: 1.75,
+                py: 1,
+                borderRadius: 2.5,
+                backgroundColor: variant === 'dark' ? 'rgba(255,255,255,0.98)' : 'white',
+                boxShadow: variant === 'dark' ? '0 8px 24px rgba(0,0,0,0.25)' : '0 4px 16px rgba(15,23,42,0.08)',
                 border: '1px solid',
                 borderColor: 'grey.200',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
+                transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+                '&:hover': {
+                  transform: 'translateY(-2px)',
+                  boxShadow: variant === 'dark' ? '0 10px 26px rgba(0,0,0,0.32)' : '0 8px 20px rgba(15,23,42,0.14)',
+                },
               }}
             >
               <Box
@@ -71,6 +76,7 @@ const PartnerLogoStrip: React.FC<PartnerLogoStripProps> = ({
                   maxWidth: 120,
                   objectFit: 'contain',
                   opacity: 0.95,
+                  display: 'block',
                   '&:hover': { opacity: 1 },
                 }}
               />

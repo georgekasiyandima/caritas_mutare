@@ -55,14 +55,19 @@ const HomePage: React.FC = () => {
 
   // Carousel: mix general impact images with project highlights (hero + first gallery image per project)
   const carouselImages = React.useMemo(() => {
-    const list: { src: string; alt: string }[] = [...generalImpactImages];
+    const list: { src: string; alt: string; objectPosition?: string }[] = [...generalImpactImages];
     getActiveProjects().forEach((p) => {
-      if (p.heroImage) list.push({ src: p.heroImage, alt: p.title_en });
+      if (p.heroImage) list.push({ src: p.heroImage, alt: p.title_en, objectPosition: p.heroImagePosition });
       if (p.galleryImages?.[0] && p.galleryImages[0] !== p.heroImage) {
-        list.push({ src: p.galleryImages[0], alt: `${p.title_en} - gallery` });
+        list.push({ src: p.galleryImages[0], alt: `${p.title_en} - gallery`, objectPosition: p.heroImagePosition });
       }
     });
-    return list;
+    const seen = new Set<string>();
+    return list.filter((img) => {
+      if (seen.has(img.src)) return false;
+      seen.add(img.src);
+      return true;
+    });
   }, []);
 
   const statsData = [
@@ -215,13 +220,35 @@ const HomePage: React.FC = () => {
                   }}
                 >
                   {project.heroImage && (
-                    <CardMedia
-                      component="img"
-                      height="140"
-                      image={project.heroImage}
-                      alt={project.title_en}
-                      sx={{ objectFit: 'cover' }}
-                    />
+                    <Box sx={{ position: 'relative', height: 160, overflow: 'hidden', backgroundColor: 'grey.200' }}>
+                      <Box
+                        aria-hidden
+                        sx={{
+                          position: 'absolute',
+                          inset: 0,
+                          backgroundImage: `url(${project.heroImage})`,
+                          backgroundSize: 'cover',
+                          backgroundPosition: project.heroImagePosition ?? 'center center',
+                          filter: 'blur(8px)',
+                          transform: 'scale(1.08)',
+                          opacity: 0.5,
+                        }}
+                      />
+                      <Box
+                        component="img"
+                        src={project.heroImage}
+                        alt={project.title_en}
+                        sx={{
+                          position: 'relative',
+                          zIndex: 1,
+                          width: '100%',
+                          height: '100%',
+                          objectFit: 'contain',
+                          objectPosition: project.heroImagePosition ?? 'center center',
+                          display: 'block',
+                        }}
+                      />
+                    </Box>
                   )}
                   <CardContent sx={{ flexGrow: 1, textAlign: 'center', py: 2 }}>
                     {!project.heroImage && (
