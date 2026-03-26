@@ -29,7 +29,7 @@
   },
   "scripts": {
     "start": "craco start",
-    "build": "CI=false craco build",
+    "build": "craco build",
     "build:no-sourcemaps": "GENERATE_SOURCEMAP=false DISABLE_ESLINT_PLUGIN=true craco build",
     "vercel-build": "CI=false DISABLE_ESLINT_PLUGIN=true craco build",
     "test": "craco test",
