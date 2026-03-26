@@ -45,6 +45,70 @@ const ProgrammeDetailPage: React.FC = () => {
       ? [project.heroImage]
       : [];
 
+  const serarpGalleryCaptions = [
+    'Mechanics class in progress at Nyanyadzi College.',
+    'Building class during their plastering class.',
+    'Group photo for Citizen Monitoring and Advocacy training participants.',
+    'A moment of refreshing for women in the edutainment event.',
+    'Showing Tsuro gender champions explaining gender roles and responsibilities of men, women, girls and boys through a family tree.',
+  ];
+
+  /** Order matches `galleryImages` for Soup Kitchen (captions 1, 3, 6 supplied as scene descriptions; 2, 4, 5 from project team). */
+  const soupKitchenGalleryCaptions = [
+    'Soup kitchen attendees with their meals at the distribution site.',
+    'Soup kitchen attendees receiving their meals',
+    'Soup kitchen attendee receiving a meal at the serving counter.',
+    'Soup Kitchen volunteers preparing meals for the vulnerable individuals who receive meals.',
+    'One of the children living and working in the street after getting his meal during the SOUP kitchen',
+    'Volunteers preparing fresh salad and vegetables for soup kitchen meals.',
+  ];
+
+  const cfnshppGalleryCaptions = [
+    'Chikona Ward 7 farmers preparing a tree nursery seedbed in the micro irrigation',
+    'Tree nursery established in Manzou',
+    'Community Participation Weir Dam construction for the micro irrigation',
+    'Cattle dipping Munyanyazi Dip tank in Ward 17',
+  ];
+
+  const icspGalleryCaptions = [
+    undefined,
+    "One of the lead farmer's field showcasing of small grain",
+    'Community garden in Mafunga Village Ward 30',
+    'Community garden in Mafunga Village Ward 30',
+  ];
+
+  const ilpGalleryCaptions = [
+    'Goat pens and goats distributed in Chipinge under the Inclusive livelihoods project',
+    'Fowl runs built under the inclusive livelihoods project',
+  ];
+
+  const didrrGalleryCaptions = [
+    'DIDRR Project Mid-Term Review',
+    undefined,
+  ];
+
+  const galleryCaption =
+    project.id === 'serarp'
+      ? serarpGalleryCaptions[galleryIndex]
+      : project.id === 'soup-kitchen'
+        ? soupKitchenGalleryCaptions[galleryIndex]
+        : project.id === 'cfnshpp'
+          ? cfnshppGalleryCaptions[galleryIndex]
+          : project.id === 'cetlrccap'
+            ? icspGalleryCaptions[galleryIndex]
+            : project.id === 'ilp'
+              ? ilpGalleryCaptions[galleryIndex]
+            : project.id === 'didrr'
+              ? didrrGalleryCaptions[galleryIndex]
+              : undefined;
+
+  const galleryImageUsesContain =
+    project.id === 'st-theresa-preschool' ||
+    project.id === 'serarp' ||
+    project.id === 'soup-kitchen' ||
+    project.id === 'cfnshpp' ||
+    project.id === 'didrr';
+
   return (
     <Box sx={{ minHeight: '100vh', backgroundColor: 'background.default' }}>
       {/* Back link */}
@@ -165,20 +229,14 @@ const ProgrammeDetailPage: React.FC = () => {
                   <CardMedia
                     component="img"
                     image={galleryImages[galleryIndex]}
-                    alt={`${project.title_en} gallery`}
+                    alt={galleryCaption ?? `${project.title_en} gallery`}
                     sx={{
                       borderRadius: 1,
                       mb: 1,
                       maxHeight: 420,
                       width: '100%',
-                      objectFit:
-                        project.id === 'st-theresa-preschool' || project.id === 'serarp'
-                          ? 'contain'
-                          : 'cover',
-                      backgroundColor:
-                        project.id === 'st-theresa-preschool' || project.id === 'serarp'
-                          ? 'grey.100'
-                          : 'transparent',
+                      objectFit: galleryImageUsesContain ? 'contain' : 'cover',
+                      backgroundColor: galleryImageUsesContain ? 'grey.100' : 'transparent',
                     }}
                   />
                   {project.id === 'st-theresa-preschool' && (
@@ -188,16 +246,9 @@ const ProgrammeDetailPage: React.FC = () => {
                         : 'St Theresa Caritas Pre-school children performing during the Caritas Mutare Day of the Poor on 15 November 2025.'}
                     </Typography>
                   )}
-                  {project.id === 'serarp' && (
+                  {galleryCaption && (
                     <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-                      {[
-                        'Vocational training session under SERARP project.',
-                        'Mechanics class in progress at Nyanyadzi Training College.',
-                        'Building class during their plastering class.',
-                        'Group photo for Citizen Monitoring and Advocacy Training participants.',
-                        'A moment of refreshing for women in the edutainment event.',
-                        'TSURO gender champions explaining gender roles and responsibilities of men, women, girls and boys through a family tree.',
-                      ][galleryIndex] || ''}
+                      {galleryCaption}
                     </Typography>
                   )}
 
@@ -281,6 +332,26 @@ const ProgrammeDetailPage: React.FC = () => {
                     <Typography variant="subtitle2" color="text.secondary" gutterBottom>
                       Partners
                     </Typography>
+                    {(project.partnerLogoUrls?.length ?? 0) > 0 && (
+                      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1.5, mb: 1 }}>
+                        {project.partnerLogoUrls?.map((url) => (
+                          <Box
+                            key={url}
+                            component="img"
+                            src={url}
+                            alt=""
+                            sx={{
+                              height: 36,
+                              maxWidth: 140,
+                              objectFit: 'contain',
+                              backgroundColor: 'rgba(255,255,255,0.9)',
+                              borderRadius: 1,
+                              p: 0.5,
+                            }}
+                          />
+                        ))}
+                      </Box>
+                    )}
                     <Typography variant="body2">
                       {project.partners.join(', ')}
                     </Typography>
