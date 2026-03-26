@@ -23,16 +23,14 @@
     "react-i18next": "^13.5.0",
     "react-query": "^3.39.3",
     "react-router-dom": "^6.20.1",
-    "react-scripts": "5.0.1",
+    "react-scripts": "^5.0.1",
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "craco start",
-    "build": "craco build",
-    "build:no-sourcemaps": "GENERATE_SOURCEMAP=false DISABLE_ESLINT_PLUGIN=true craco build",
-    "vercel-build": "CI=false DISABLE_ESLINT_PLUGIN=true craco build",
-    "test": "craco test",
+    "start": "react-scripts start",
+    "build": "CI=false react-scripts build",
+    "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -59,4 +57,3 @@
   },
   "proxy": "http://localhost:5000"
 }
-
