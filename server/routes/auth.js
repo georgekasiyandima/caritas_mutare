@@ -6,6 +6,7 @@ const { dbGet, dbRun } = require('../database/database');
 const { authenticateToken } = require('../middleware/auth');
 
 const router = express.Router();
+const jwtSecret = process.env.JWT_SECRET || 'dev-only-change-me';
 
 // Login endpoint
 router.post('/login', [
@@ -39,7 +40,7 @@ router.post('/login', [
     // Generate JWT token
     const token = jwt.sign(
       { userId: user.id, username: user.username, role: user.role },
-      process.env.JWT_SECRET,
+      jwtSecret,
       { expiresIn: process.env.JWT_EXPIRES_IN || '7d' }
     );
 

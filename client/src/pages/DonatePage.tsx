@@ -24,9 +24,7 @@ import {
 } from '@mui/material';
 import {
   Favorite as HeartIcon,
-  AttachMoney as MoneyIcon,
   Security as SecurityIcon,
-  Public as PublicIcon,
   School as SchoolIcon,
   LocalHospital as HealthIcon,
   Agriculture as AgricultureIcon,
@@ -41,8 +39,19 @@ import {
   LocationOn as LocationIcon,
 } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
-import { useMutation } from 'react-query';
 import BackToTopButton from '../components/BackToTopButton';
+import {
+  pageRoot,
+  pageHero,
+  pageOverline,
+  pageH1,
+  pageLead,
+  outlineCard,
+  outlineCardHover,
+  formCardHeader,
+} from '../lib/sitePageLayout';
+
+const sideCardSx = { ...outlineCard, ...outlineCardHover };
 
 const DonatePage: React.FC = () => {
   const { t } = useTranslation();
@@ -159,28 +168,21 @@ const DonatePage: React.FC = () => {
 
   if (submitStatus === 'success') {
     return (
-      <Box sx={{ minHeight: '100vh', backgroundColor: 'background.default' }}>
-        <Container maxWidth="lg" sx={{ py: 8 }}>
-          <Card elevation={4} sx={{ borderRadius: 4, overflow: 'hidden' }}>
-            <Box
-              sx={{
-                background: `linear-gradient(135deg, ${theme.palette.success.main} 0%, ${theme.palette.success.dark} 100%)`,
-                color: 'white',
-                p: 4,
-                textAlign: 'center',
-              }}
-            >
-              <Avatar sx={{ backgroundColor: 'rgba(255,255,255,0.2)', width: 80, height: 80, mx: 'auto', mb: 3 }}>
-                <HeartIcon sx={{ fontSize: 40 }} />
+      <Box sx={pageRoot}>
+        <Container maxWidth="lg" sx={{ py: { xs: 5, md: 7 } }}>
+          <Card elevation={0} sx={{ ...outlineCard, overflow: 'hidden', maxWidth: 640, mx: 'auto' }}>
+            <Box sx={{ ...formCardHeader, bgcolor: 'rgba(46, 125, 50, 0.08)' }}>
+              <Avatar sx={{ bgcolor: 'rgba(46, 125, 50, 0.15)', width: 72, height: 72, mx: 'auto', mb: 2, color: 'success.dark' }}>
+                <HeartIcon sx={{ fontSize: 36 }} />
               </Avatar>
-              <Typography variant="h4" sx={{ fontWeight: 'bold', mb: 2 }}>
-                Thank You for Your Generous Donation!
+              <Typography variant="h4" sx={{ fontFamily: '"Merriweather", Georgia, serif', fontWeight: 700, mb: 1 }}>
+                {t('donate.thankYou')}
               </Typography>
-              <Typography variant="h6" sx={{ opacity: 0.9 }}>
-                Your support makes a real difference in our community
+              <Typography variant="body2" color="text.secondary">
+                Your support makes a real difference in our community.
               </Typography>
             </Box>
-            <CardContent sx={{ p: 6, textAlign: 'center' }}>
+            <CardContent sx={{ p: 4, textAlign: 'center' }}>
               <Typography variant="body1" sx={{ mb: 3, fontSize: '1.1rem' }}>
                 Your donation has been received successfully. You will receive a confirmation email with your donation receipt within the next few minutes.
               </Typography>
@@ -211,65 +213,37 @@ const DonatePage: React.FC = () => {
   }
 
   return (
-    <Box sx={{ minHeight: '100vh', backgroundColor: 'background.default' }}>
-      {/* Hero Section */}
-      <Box
-        sx={{
-          background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%)`,
-          color: 'white',
-          py: 8,
-          pt: 16, // Prevent navbar overlap
-        }}
-      >
+    <Box sx={pageRoot}>
+      <Box sx={pageHero}>
         <Container maxWidth="lg">
-          <Box sx={{ textAlign: 'center', mb: 6 }}>
-            <Typography
-              variant={isMobile ? 'h3' : 'h2'}
-              component="h1"
-              gutterBottom
-              sx={{ fontWeight: 'bold', mb: 3, textShadow: '2px 2px 4px rgba(0,0,0,0.3)' }}
-            >
+          <Box sx={{ textAlign: 'center', maxWidth: 720, mx: 'auto' }}>
+            <Typography variant="overline" sx={{ ...pageOverline, display: 'block', mb: 1 }}>
+              Give with hope
+            </Typography>
+            <Typography variant={isMobile ? 'h3' : 'h2'} component="h1" sx={{ ...pageH1, mb: 2 }}>
               {t('donate.title')}
             </Typography>
-            <Typography
-              variant="h6"
-              sx={{
-                opacity: 0.9,
-                maxWidth: 600,
-                mx: 'auto',
-                textShadow: '1px 1px 2px rgba(0,0,0,0.3)'
-              }}
-            >
+            <Typography variant="body1" sx={{ ...pageLead, mx: 'auto' }}>
               Your generosity transforms lives and builds hope in our community. Every donation, no matter the size, makes a meaningful difference.
             </Typography>
           </Box>
         </Container>
       </Box>
 
-      <Container maxWidth="lg" sx={{ py: 8 }}>
+      <Container maxWidth="lg" sx={{ py: { xs: 5, md: 7 } }}>
         <Grid container spacing={6}>
           {/* Donation Form */}
           <Grid item xs={12} md={8}>
-            <Card elevation={4} sx={{
-              borderRadius: 4,
-              overflow: 'hidden',
-            }}>
-              <Box
-                sx={{
-                  background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%)`,
-                  color: 'white',
-                  p: 3,
-                  textAlign: 'center',
-                }}
-              >
-                <Avatar sx={{ backgroundColor: 'rgba(255,255,255,0.2)', width: 60, height: 60, mx: 'auto', mb: 2 }}>
-                  <HeartIcon sx={{ fontSize: 30 }} />
+            <Card elevation={0} sx={{ ...outlineCard, overflow: 'hidden' }}>
+              <Box sx={formCardHeader}>
+                <Avatar sx={{ bgcolor: 'rgba(13, 92, 99, 0.12)', width: 56, height: 56, mx: 'auto', mb: 2, color: 'info.dark' }}>
+                  <HeartIcon sx={{ fontSize: 28 }} />
                 </Avatar>
-                <Typography variant="h5" sx={{ fontWeight: 'bold', mb: 1 }}>
-                  Make a Donation
+                <Typography variant="h5" sx={{ fontFamily: '"Merriweather", Georgia, serif', fontWeight: 700, mb: 0.5 }}>
+                  Make a donation
                 </Typography>
-                <Typography variant="body2" sx={{ opacity: 0.9 }}>
-                  Secure and tax-deductible donations
+                <Typography variant="body2" color="text.secondary">
+                  Secure giving — receipt provided where applicable.
                 </Typography>
               </Box>
               <CardContent sx={{ p: 4 }}>
@@ -509,9 +483,9 @@ const DonatePage: React.FC = () => {
           <Grid item xs={12} md={4}>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
               {/* Your Impact */}
-              <Card elevation={3} sx={{ borderRadius: 3 }}>
+              <Card elevation={0} sx={sideCardSx}>
                 <CardContent sx={{ p: 3 }}>
-                  <Typography variant="h6" sx={{ fontWeight: 600, mb: 3, textAlign: 'center' }}>
+                  <Typography variant="h6" sx={{ fontFamily: '"Merriweather", Georgia, serif', fontWeight: 700, mb: 3, textAlign: 'center' }}>
                     Your Donation Impact
                   </Typography>
                   <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
@@ -533,12 +507,12 @@ const DonatePage: React.FC = () => {
               </Card>
 
               {/* Security & Trust */}
-              <Card elevation={3} sx={{ borderRadius: 3 }}>
+              <Card elevation={0} sx={sideCardSx}>
                 <CardContent sx={{ p: 3, textAlign: 'center' }}>
-                  <Avatar sx={{ backgroundColor: 'success.main', width: 60, height: 60, mx: 'auto', mb: 2 }}>
-                    <SecurityIcon sx={{ fontSize: 30 }} />
+                  <Avatar sx={{ bgcolor: 'rgba(13, 92, 99, 0.12)', width: 56, height: 56, mx: 'auto', mb: 2, color: 'info.dark' }}>
+                    <SecurityIcon sx={{ fontSize: 28 }} />
                   </Avatar>
-                  <Typography variant="h6" sx={{ fontWeight: 600, mb: 2 }}>
+                  <Typography variant="h6" sx={{ fontFamily: '"Merriweather", Georgia, serif', fontWeight: 700, mb: 2 }}>
                     Secure & Trusted
                   </Typography>
                   <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, mb: 2 }}>
@@ -559,14 +533,14 @@ const DonatePage: React.FC = () => {
               </Card>
 
               {/* Contact Information */}
-              <Card elevation={3} sx={{ borderRadius: 3 }}>
+              <Card elevation={0} sx={sideCardSx}>
                 <CardContent sx={{ p: 3 }}>
-                  <Typography variant="h6" sx={{ fontWeight: 600, mb: 3, textAlign: 'center' }}>
+                  <Typography variant="h6" sx={{ fontFamily: '"Merriweather", Georgia, serif', fontWeight: 700, mb: 3, textAlign: 'center' }}>
                     Questions About Donating?
                   </Typography>
                   <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                      <Avatar sx={{ backgroundColor: 'primary.main', width: 40, height: 40 }}>
+                      <Avatar sx={{ bgcolor: 'rgba(13, 92, 99, 0.12)', width: 40, height: 40, color: 'info.dark' }}>
                         <EmailIcon />
                       </Avatar>
                       <Box>
@@ -579,7 +553,7 @@ const DonatePage: React.FC = () => {
                       </Box>
                     </Box>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                      <Avatar sx={{ backgroundColor: 'success.main', width: 40, height: 40 }}>
+                      <Avatar sx={{ bgcolor: 'rgba(13, 92, 99, 0.12)', width: 40, height: 40, color: 'info.dark' }}>
                         <PhoneIcon />
                       </Avatar>
                       <Box>
@@ -592,7 +566,7 @@ const DonatePage: React.FC = () => {
                       </Box>
                     </Box>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                      <Avatar sx={{ backgroundColor: 'info.main', width: 40, height: 40 }}>
+                      <Avatar sx={{ bgcolor: 'rgba(13, 92, 99, 0.12)', width: 40, height: 40, color: 'info.dark' }}>
                         <LocationIcon />
                       </Avatar>
                       <Box>

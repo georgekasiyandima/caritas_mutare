@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import {
   AppBar,
   Toolbar,
-  Typography,
   Button,
   Box,
   IconButton,
@@ -15,7 +14,6 @@ import {
   ListItemButton,
   useMediaQuery,
   useTheme,
-  Avatar,
 } from '@mui/material';
 import {
   Menu as MenuIcon,
@@ -157,12 +155,12 @@ const Navbar: React.FC = () => {
           >
             <Box
               component="img"
-              src="/images/logo/caritas-zimbabwe-mutare.png"
+              src="/images/logo/caritas-mutare-new-logo.png"
               alt="Caritas Zimbabwe - Diocese of Mutare"
               sx={{
                 display: 'block',
-                height: { xs: 44, sm: 48 },
-                maxWidth: 240,
+                height: { xs: 52, sm: 62 },
+                maxWidth: 360,
                 objectFit: 'contain',
               }}
             />

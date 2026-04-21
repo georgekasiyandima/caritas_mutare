@@ -44,11 +44,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, []);
 
   const verifyToken = async (token: string) => {
+    const controller = new AbortController();
+    const timeoutId = window.setTimeout(() => controller.abort(), 12000);
     try {
       const response = await fetch('/api/auth/verify', {
         headers: {
-          'Authorization': `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
+        signal: controller.signal,
       });
 
       if (response.ok) {
@@ -61,11 +64,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       console.error('Token verification failed:', error);
       localStorage.removeItem('token');
     } finally {
+      window.clearTimeout(timeoutId);
       setIsLoading(false);
     }
   };
 
   const login = async (username: string, password: string): Promise<boolean> => {
+    const controller = new AbortController();
+    const timeoutId = window.setTimeout(() => controller.abort(), 12000);
     try {
       const response = await fetch('/api/auth/login', {
         method: 'POST',
@@ -73,6 +79,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ username, password }),
+        signal: controller.signal,
       });
 
       if (response.ok) {
@@ -85,6 +92,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     } catch (error) {
       console.error('Login failed:', error);
       return false;
+    } finally {
+      window.clearTimeout(timeoutId);
     }
   };
 

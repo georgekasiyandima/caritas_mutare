@@ -19,18 +19,24 @@ import {
   TableRow,
   TableContainer,
 } from '@mui/material';
-import {
-  People as PeopleIcon,
-  TrendingUp as ImpactIcon,
-  Schedule as ScheduleIcon,
-  LocationOn as LocationIcon,
-  Favorite as HeartIcon,
-} from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import BackToTopButton from '../components/BackToTopButton';
 import PartnerLogoStrip from '../components/PartnerLogoStrip';
 import { getActiveProjects, caritasProjects } from '../lib/caritasProjects';
+import {
+  SECTION_BG_ALT,
+  pageRoot,
+  pageHero,
+  pageOverline,
+  pageH1,
+  pageLead,
+  outlineCard,
+  outlineCardHover,
+  closingCtaSectionSx,
+} from '../lib/sitePageLayout';
+
+const projectCardSx = { ...outlineCard, ...outlineCardHover };
 
 const ProgramsPage: React.FC = () => {
   const { t } = useTranslation();
@@ -49,63 +55,18 @@ const ProgramsPage: React.FC = () => {
     duration: p.duration,
   }));
 
-  const programStats = [
-    {
-      icon: <PeopleIcon sx={{ fontSize: 40, color: 'primary.main' }} />,
-      number: `${projects.length}`,
-      label: 'Active projects',
-      description: 'Donor-funded and Caritas-led initiatives',
-    },
-    {
-      icon: <ImpactIcon sx={{ fontSize: 40, color: 'success.main' }} />,
-      number: '7',
-      label: 'Districts',
-      description: 'Across the Diocese of Mutare',
-    },
-    {
-      icon: <ScheduleIcon sx={{ fontSize: 40, color: 'warning.main' }} />,
-      number: '365',
-      label: 'Days of service',
-      description: 'Year-round commitment',
-    },
-    {
-      icon: <LocationIcon sx={{ fontSize: 40, color: 'info.main' }} />,
-      number: 'Manicaland',
-      label: 'Region',
-      description: 'Buhera, Chimanimani, Chipinge, Makoni, Mutare, Mutasa, Nyanga',
-    },
-  ];
-
   return (
-    <Box sx={{ minHeight: '100vh', backgroundColor: 'background.default' }}>
-      {/* Hero */}
-      <Box
-        sx={{
-          background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%)`,
-          color: 'white',
-          py: 8,
-          pt: 16,
-        }}
-      >
+    <Box sx={pageRoot}>
+      <Box sx={pageHero}>
         <Container maxWidth="lg">
-          <Box sx={{ textAlign: 'center', mb: 6 }}>
-            <Typography
-              variant={isMobile ? 'h3' : 'h2'}
-              component="h1"
-              gutterBottom
-              sx={{ fontWeight: 'bold', mb: 3, textShadow: '2px 2px 4px rgba(0,0,0,0.3)' }}
-            >
+          <Box sx={{ textAlign: 'center', maxWidth: 720, mx: 'auto' }}>
+            <Typography variant="overline" sx={{ ...pageOverline, display: 'block', mb: 1 }}>
+              What we implement
+            </Typography>
+            <Typography variant={isMobile ? 'h3' : 'h2'} component="h1" sx={{ ...pageH1, mb: 2 }}>
               {t('programs.title')}
             </Typography>
-            <Typography
-              variant="h6"
-              sx={{
-                opacity: 0.9,
-                maxWidth: 700,
-                mx: 'auto',
-                textShadow: '1px 1px 2px rgba(0,0,0,0.3)',
-              }}
-            >
+            <Typography variant="body1" sx={{ ...pageLead, mx: 'auto' }}>
               {t('programs.description')}
             </Typography>
           </Box>
@@ -113,26 +74,29 @@ const ProgramsPage: React.FC = () => {
       </Box>
 
       {/* Caritas Mutare Projects Overview */}
-      <Container maxWidth="lg" sx={{ py: 6 }}>
+      <Container maxWidth="lg" sx={{ py: { xs: 5, md: 7 } }}>
+        <Typography variant="overline" sx={{ ...pageOverline, display: 'block', textAlign: 'center', mb: 1 }}>
+          Portfolio
+        </Typography>
         <Typography
           variant="h4"
           component="h2"
           textAlign="center"
           gutterBottom
-          sx={{ fontWeight: 'bold', mb: 3 }}
+          sx={{ fontFamily: '"Merriweather", Georgia, serif', fontWeight: 700, mb: 2 }}
         >
-          Caritas Mutare Projects Overview
+          Caritas Mutare projects overview
         </Typography>
         <Typography
           variant="body1"
           textAlign="center"
-          sx={{ mb: 4, color: 'text.secondary', maxWidth: 800, mx: 'auto' }}
+          sx={{ mb: 4, color: 'text.secondary', maxWidth: 800, mx: 'auto', lineHeight: 1.75 }}
         >
           A one-stop snapshot of all Caritas Mutare projects across the Diocese –
           including status, locations, target groups and duration.
         </Typography>
 
-        <TableContainer component={Paper} sx={{ borderRadius: 3, overflow: 'hidden' }}>
+        <TableContainer component={Paper} elevation={0} sx={{ ...outlineCard, overflow: 'hidden' }}>
           <Table size="small">
             <TableHead>
               <TableRow sx={{ backgroundColor: 'grey.100' }}>
@@ -169,27 +133,25 @@ const ProgramsPage: React.FC = () => {
       </Container>
 
       {/* Project cards from canonical data */}
-      <Box sx={{ backgroundColor: 'grey.50', py: 8 }}>
+      <Box sx={{ bgcolor: SECTION_BG_ALT, py: { xs: 5, md: 7 } }}>
         <Container maxWidth="lg">
-          <Typography variant="h4" component="h2" textAlign="center" gutterBottom sx={{ fontWeight: 'bold', mb: 6 }}>
+          <Typography variant="overline" sx={{ ...pageOverline, display: 'block', textAlign: 'center', mb: 1 }}>
+            In communities
+          </Typography>
+          <Typography variant="h4" component="h2" textAlign="center" gutterBottom sx={{ fontFamily: '"Merriweather", Georgia, serif', fontWeight: 700, mb: 5 }}>
             Our projects
           </Typography>
           <Grid container spacing={4}>
             {projects.map((project) => (
               <Grid item xs={12} md={6} key={project.id}>
                 <Card
-                  elevation={4}
+                  elevation={0}
                   sx={{
                     height: '100%',
-                    borderRadius: 3,
                     overflow: 'hidden',
                     display: 'flex',
                     flexDirection: 'column',
-                    transition: 'transform 0.2s, box-shadow 0.2s',
-                    '&:hover': {
-                      transform: 'translateY(-4px)',
-                      boxShadow: 8,
-                    },
+                    ...projectCardSx,
                   }}
                 >
                   {project.heroImage && (
@@ -223,15 +185,8 @@ const ProgramsPage: React.FC = () => {
                       />
                     </Box>
                   )}
-                  <Box
-                    sx={{
-                      background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%)`,
-                      color: 'white',
-                      p: 2,
-                      textAlign: 'center',
-                    }}
-                  >
-                    <Typography variant="h5" sx={{ fontWeight: 'bold', mb: 0.5 }}>
+                  <CardContent sx={{ flexGrow: 1, p: 3, pb: 2, borderBottom: '1px solid', borderColor: 'divider' }}>
+                    <Typography variant="h6" sx={{ fontFamily: '"Merriweather", Georgia, serif', fontWeight: 700, mb: 1, lineHeight: 1.35 }}>
                       {project.acronym ? `${project.acronym}: ` : ''}
                       {project.title_en}
                     </Typography>
@@ -239,13 +194,13 @@ const ProgramsPage: React.FC = () => {
                       label={project.status === 'ongoing' ? 'Ongoing' : 'Active'}
                       size="small"
                       sx={{
-                        backgroundColor: 'rgba(255,255,255,0.2)',
-                        color: 'white',
+                        bgcolor: 'rgba(13, 92, 99, 0.08)',
+                        color: 'info.dark',
                         fontWeight: 600,
                       }}
                     />
-                  </Box>
-                  <CardContent sx={{ flexGrow: 1, p: 3 }}>
+                  </CardContent>
+                  <CardContent sx={{ flexGrow: 1, p: 3, pt: 2 }}>
                     <Typography variant="body1" sx={{ mb: 2, lineHeight: 1.6 }}>
                       {project.summary_en}
                     </Typography>
@@ -297,17 +252,17 @@ const ProgramsPage: React.FC = () => {
                   </CardContent>
                   <CardActions sx={{ p: 3, pt: 0 }}>
                     <Button
-                      variant="contained"
+                      variant="text"
                       fullWidth
                       onClick={() => navigate(project.route)}
                       sx={{
                         textTransform: 'none',
-                        py: 1.5,
-                        borderRadius: 2,
+                        py: 1.25,
                         fontWeight: 600,
+                        color: 'info.main',
                       }}
                     >
-                      Learn more
+                      {t('home.projects.learnMore')}
                     </Button>
                   </CardActions>
                 </Card>
@@ -318,67 +273,54 @@ const ProgramsPage: React.FC = () => {
       </Box>
 
       {/* Partner strip */}
-      <PartnerLogoStrip title="Supported by" variant="light" />
+      <PartnerLogoStrip title={t('home.partnersTitle')} variant="light" />
 
       {/* CTA */}
-      <Container maxWidth="lg" sx={{ py: 8 }}>
-        <Card
-          elevation={4}
-          sx={{
-            borderRadius: 4,
-            overflow: 'hidden',
-            background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%)`,
-            color: 'white',
-          }}
-        >
-          <CardContent sx={{ p: 6, textAlign: 'center' }}>
-            <HeartIcon sx={{ fontSize: 48, mb: 2, opacity: 0.9 }} />
-            <Typography variant="h4" sx={{ fontWeight: 'bold', mb: 2 }}>
-              Join our mission
-            </Typography>
-            <Typography variant="h6" sx={{ opacity: 0.9, mb: 4, maxWidth: 600, mx: 'auto' }}>
-              Together we can make a lasting impact. Get involved and help us serve those in need.
-            </Typography>
-            <Box sx={{ display: 'flex', gap: 2, justifyContent: 'center', flexWrap: 'wrap' }}>
-              <Button
-                variant="contained"
-                size="large"
-                color="secondary"
-                onClick={() => navigate('/volunteer')}
-                sx={{
-                  textTransform: 'none',
-                  px: 4,
-                  py: 1.5,
-                  borderRadius: 3,
-                  fontWeight: 600,
-                  backgroundColor: 'white',
-                  color: 'primary.main',
-                  '&:hover': { backgroundColor: 'rgba(255,255,255,0.9)' },
-                }}
-              >
-                Volunteer with us
-              </Button>
-              <Button
-                variant="outlined"
-                size="large"
-                onClick={() => navigate('/donate')}
-                sx={{
-                  textTransform: 'none',
-                  px: 4,
-                  py: 1.5,
-                  borderRadius: 3,
-                  fontWeight: 600,
-                  color: 'white',
-                  borderColor: 'white',
-                  '&:hover': { borderColor: 'white', backgroundColor: 'rgba(255,255,255,0.1)' },
-                }}
-              >
-                Make a donation
-              </Button>
-            </Box>
-          </CardContent>
-        </Card>
-      </Container>
+      <Box sx={closingCtaSectionSx(theme)}>
+        <Container maxWidth="md" sx={{ textAlign: 'center', position: 'relative', zIndex: 1 }}>
+          <Typography variant="h4" sx={{ fontFamily: '"Merriweather", Georgia, serif', fontWeight: 700, mb: 2 }}>
+            {t('home.closingCta.title')}
+          </Typography>
+          <Typography variant="body1" sx={{ mb: 4, opacity: 0.92, lineHeight: 1.75, maxWidth: 520, mx: 'auto' }}>
+            {t('home.closingCta.body')}
+          </Typography>
+          <Box sx={{ display: 'flex', gap: 2, justifyContent: 'center', flexWrap: 'wrap' }}>
+            <Button
+              variant="contained"
+              size="large"
+              onClick={() => navigate('/volunteer')}
+              sx={{
+                textTransform: 'none',
+                px: 4,
+                py: 1.5,
+                fontWeight: 600,
+                bgcolor: 'common.white',
+                color: 'primary.main',
+                '&:hover': { bgcolor: 'grey.100' },
+              }}
+            >
+              {t('nav.volunteer')}
+            </Button>
+            <Button
+              variant="outlined"
+              size="large"
+              onClick={() => navigate('/donate')}
+              sx={{
+                textTransform: 'none',
+                px: 4,
+                py: 1.5,
+                fontWeight: 600,
+                color: 'common.white',
+                borderColor: 'rgba(255,255,255,0.85)',
+                borderWidth: 2,
+                '&:hover': { borderColor: 'common.white', bgcolor: 'rgba(255,255,255,0.08)', borderWidth: 2 },
+              }}
+            >
+              {t('nav.donate')}
+            </Button>
+          </Box>
+        </Container>
+      </Box>
 
       <BackToTopButton />
     </Box>

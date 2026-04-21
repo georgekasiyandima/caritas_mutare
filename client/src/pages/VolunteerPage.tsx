@@ -28,8 +28,19 @@ import {
   LocationOn as LocationIcon,
 } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
-import { useMutation } from 'react-query';
 import BackToTopButton from '../components/BackToTopButton';
+import {
+  pageRoot,
+  pageHero,
+  pageOverline,
+  pageH1,
+  pageLead,
+  outlineCard,
+  outlineCardHover,
+  formCardHeader,
+} from '../lib/sitePageLayout';
+
+const volCardSx = { ...outlineCard, ...outlineCardHover };
 
 const VolunteerPage: React.FC = () => {
   const { t } = useTranslation();
@@ -127,28 +138,21 @@ const VolunteerPage: React.FC = () => {
 
   if (submitStatus === 'success') {
     return (
-      <Box sx={{ minHeight: '100vh', backgroundColor: 'background.default' }}>
-        <Container maxWidth="lg" sx={{ py: 8 }}>
-          <Card elevation={4} sx={{ borderRadius: 4, overflow: 'hidden' }}>
-            <Box
-              sx={{
-                background: `linear-gradient(135deg, ${theme.palette.success.main} 0%, ${theme.palette.success.dark} 100%)`,
-                color: 'white',
-                p: 4,
-                textAlign: 'center',
-              }}
-            >
-              <Avatar sx={{ backgroundColor: 'rgba(255,255,255,0.2)', width: 80, height: 80, mx: 'auto', mb: 3 }}>
-                <VolunteerIcon sx={{ fontSize: 40 }} />
+      <Box sx={pageRoot}>
+        <Container maxWidth="lg" sx={{ py: { xs: 5, md: 7 } }}>
+          <Card elevation={0} sx={{ ...outlineCard, overflow: 'hidden', maxWidth: 640, mx: 'auto' }}>
+            <Box sx={{ ...formCardHeader, bgcolor: 'rgba(46, 125, 50, 0.08)' }}>
+              <Avatar sx={{ bgcolor: 'rgba(46, 125, 50, 0.15)', width: 72, height: 72, mx: 'auto', mb: 2, color: 'success.dark' }}>
+                <VolunteerIcon sx={{ fontSize: 36 }} />
               </Avatar>
-              <Typography variant="h4" sx={{ fontWeight: 'bold', mb: 2 }}>
-                Thank You for Your Application!
+              <Typography variant="h4" sx={{ fontFamily: '"Merriweather", Georgia, serif', fontWeight: 700, mb: 1 }}>
+                Thank you for your application
               </Typography>
-              <Typography variant="h6" sx={{ opacity: 0.9 }}>
-                We appreciate your interest in volunteering with Caritas Mutare
+              <Typography variant="body2" color="text.secondary">
+                We appreciate your interest in volunteering with Caritas Mutare.
               </Typography>
             </Box>
-            <CardContent sx={{ p: 6, textAlign: 'center' }}>
+            <CardContent sx={{ p: 4, textAlign: 'center' }}>
               <Typography variant="body1" sx={{ mb: 3, fontSize: '1.1rem' }}>
                 Your volunteer application has been received successfully. Our team will review your application and contact you within 2-3 business days to discuss next steps.
             </Typography>
@@ -179,42 +183,24 @@ const VolunteerPage: React.FC = () => {
   }
 
   return (
-    <Box sx={{ minHeight: '100vh', backgroundColor: 'background.default' }}>
-      {/* Hero Section */}
-      <Box
-        sx={{
-          background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%)`,
-          color: 'white',
-          py: 8,
-          pt: 16, // Prevent navbar overlap
-        }}
-      >
+    <Box sx={pageRoot}>
+      <Box sx={pageHero}>
         <Container maxWidth="lg">
-          <Box sx={{ textAlign: 'center', mb: 6 }}>
-            <Typography
-              variant={isMobile ? 'h3' : 'h2'}
-              component="h1"
-              gutterBottom
-              sx={{ fontWeight: 'bold', mb: 3, textShadow: '2px 2px 4px rgba(0,0,0,0.3)' }}
-            >
-        {t('volunteer.title')}
-      </Typography>
-            <Typography
-              variant="h6"
-              sx={{
-                opacity: 0.9,
-                maxWidth: 600,
-                mx: 'auto',
-                textShadow: '1px 1px 2px rgba(0,0,0,0.3)'
-              }}
-            >
-              Join our mission to serve the community with compassion and dedication. Your time and skills can make a real difference in people's lives.
+          <Box sx={{ textAlign: 'center', maxWidth: 720, mx: 'auto' }}>
+            <Typography variant="overline" sx={{ ...pageOverline, display: 'block', mb: 1 }}>
+              Serve with us
+            </Typography>
+            <Typography variant={isMobile ? 'h3' : 'h2'} component="h1" sx={{ ...pageH1, mb: 2 }}>
+              {t('volunteer.title')}
+            </Typography>
+            <Typography variant="body1" sx={{ ...pageLead, mx: 'auto' }}>
+              Join our mission to serve the community with compassion and dedication. Your time and skills can make a real difference in people&apos;s lives.
             </Typography>
           </Box>
         </Container>
       </Box>
 
-      <Container maxWidth="lg" sx={{ py: 8 }}>
+      <Container maxWidth="lg" sx={{ py: { xs: 5, md: 7 } }}>
         <Grid container spacing={6}>
           {/* Volunteer Opportunities */}
           <Grid item xs={12} md={8}>
@@ -222,7 +208,7 @@ const VolunteerPage: React.FC = () => {
               variant="h4"
               component="h2"
               gutterBottom
-              sx={{ fontWeight: 'bold', mb: 4, textAlign: 'center' }}
+              sx={{ fontFamily: '"Merriweather", Georgia, serif', fontWeight: 700, mb: 4, textAlign: 'center' }}
             >
               Volunteer Opportunities
             </Typography>
@@ -230,14 +216,12 @@ const VolunteerPage: React.FC = () => {
               {volunteerOpportunities.map((opportunity, index) => (
                 <Grid item xs={12} sm={6} key={index}>
                   <Card
-                    elevation={3}
+                    elevation={0}
                     sx={{
                       height: '100%',
                       display: 'flex',
                       flexDirection: 'column',
-                      borderRadius: 3,
-                      transition: 'transform 0.2s, box-shadow 0.2s',
-                      '&:hover': { transform: 'translateY(-4px)', boxShadow: 6 }
+                      ...volCardSx,
                     }}
                   >
                     <CardContent sx={{ flexGrow: 1, p: 3 }}>
@@ -281,28 +265,21 @@ const VolunteerPage: React.FC = () => {
 
           {/* Application Form */}
           <Grid item xs={12} md={4}>
-            <Card elevation={4} sx={{
-              borderRadius: 4,
+            <Card elevation={0} sx={{
+              ...outlineCard,
               overflow: 'hidden',
               position: 'sticky',
               top: 24,
             }}>
-              <Box
-                sx={{
-                  background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%)`,
-                  color: 'white',
-                  p: 3,
-                  textAlign: 'center',
-                }}
-              >
-                <Avatar sx={{ backgroundColor: 'rgba(255,255,255,0.2)', width: 60, height: 60, mx: 'auto', mb: 2 }}>
-                  <VolunteerIcon sx={{ fontSize: 30 }} />
+              <Box sx={formCardHeader}>
+                <Avatar sx={{ bgcolor: 'rgba(13, 92, 99, 0.12)', width: 56, height: 56, mx: 'auto', mb: 2, color: 'info.dark' }}>
+                  <VolunteerIcon sx={{ fontSize: 28 }} />
                 </Avatar>
-                <Typography variant="h5" sx={{ fontWeight: 'bold', mb: 1 }}>
-                  Join Our Team
+                <Typography variant="h5" sx={{ fontFamily: '"Merriweather", Georgia, serif', fontWeight: 700, mb: 0.5 }}>
+                  Join our team
                 </Typography>
-                <Typography variant="body2" sx={{ opacity: 0.9 }}>
-                  Fill out the form to start your volunteer journey
+                <Typography variant="body2" color="text.secondary">
+                  Fill out the form to start your volunteer journey.
                 </Typography>
               </Box>
         <CardContent sx={{ p: 4 }}>
@@ -441,20 +418,14 @@ const VolunteerPage: React.FC = () => {
             variant="h4"
             component="h2"
             gutterBottom
-            sx={{ fontWeight: 'bold', mb: 4, textAlign: 'center' }}
+            sx={{ fontFamily: '"Merriweather", Georgia, serif', fontWeight: 700, mb: 4, textAlign: 'center' }}
           >
             Questions About Volunteering?
           </Typography>
           <Grid container spacing={4} justifyContent="center">
             <Grid item xs={12} sm={6} md={4}>
-              <Card elevation={3} sx={{
-                borderRadius: 3,
-                textAlign: 'center',
-                p: 3,
-                transition: 'transform 0.2s, box-shadow 0.2s',
-                '&:hover': { transform: 'translateY(-4px)', boxShadow: 6 }
-              }}>
-                <Avatar sx={{ backgroundColor: 'primary.main', width: 60, height: 60, mx: 'auto', mb: 2 }}>
+              <Card elevation={0} sx={{ ...volCardSx, textAlign: 'center', p: 3 }}>
+                <Avatar sx={{ bgcolor: 'rgba(13, 92, 99, 0.12)', width: 56, height: 56, mx: 'auto', mb: 2, color: 'info.dark' }}>
                   <EmailIcon />
                 </Avatar>
                 <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>
@@ -466,14 +437,8 @@ const VolunteerPage: React.FC = () => {
               </Card>
             </Grid>
             <Grid item xs={12} sm={6} md={4}>
-              <Card elevation={3} sx={{
-                borderRadius: 3,
-                textAlign: 'center',
-                p: 3,
-                transition: 'transform 0.2s, box-shadow 0.2s',
-                '&:hover': { transform: 'translateY(-4px)', boxShadow: 6 }
-              }}>
-                <Avatar sx={{ backgroundColor: 'success.main', width: 60, height: 60, mx: 'auto', mb: 2 }}>
+              <Card elevation={0} sx={{ ...volCardSx, textAlign: 'center', p: 3 }}>
+                <Avatar sx={{ bgcolor: 'rgba(13, 92, 99, 0.12)', width: 56, height: 56, mx: 'auto', mb: 2, color: 'info.dark' }}>
                   <PhoneIcon />
                 </Avatar>
                 <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>
@@ -485,14 +450,8 @@ const VolunteerPage: React.FC = () => {
               </Card>
             </Grid>
             <Grid item xs={12} sm={6} md={4}>
-              <Card elevation={3} sx={{
-                borderRadius: 3,
-                textAlign: 'center',
-                p: 3,
-                transition: 'transform 0.2s, box-shadow 0.2s',
-                '&:hover': { transform: 'translateY(-4px)', boxShadow: 6 }
-              }}>
-                <Avatar sx={{ backgroundColor: 'info.main', width: 60, height: 60, mx: 'auto', mb: 2 }}>
+              <Card elevation={0} sx={{ ...volCardSx, textAlign: 'center', p: 3 }}>
+                <Avatar sx={{ bgcolor: 'rgba(13, 92, 99, 0.12)', width: 56, height: 56, mx: 'auto', mb: 2, color: 'info.dark' }}>
                   <LocationIcon />
                 </Avatar>
                 <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>

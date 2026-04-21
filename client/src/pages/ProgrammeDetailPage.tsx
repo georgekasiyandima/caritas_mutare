@@ -9,6 +9,7 @@ import {
   Grid,
   Chip,
   Button,
+  Stack,
   useTheme,
   useMediaQuery,
 } from '@mui/material';
@@ -16,6 +17,16 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowBack as ArrowBackIcon } from '@mui/icons-material';
 import BackToTopButton from '../components/BackToTopButton';
 import { getProjectBySlug, getProjectByRoute, type CaritasProject } from '../lib/caritasProjects';
+import {
+  SECTION_BG_ALT,
+  pageRoot,
+  pageHeroCompactTop,
+  pageH1,
+  pageLead,
+  outlineCard,
+} from '../lib/sitePageLayout';
+
+const detailCardSx = { ...outlineCard, mb: 3 };
 
 const ProgrammeDetailPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -30,8 +41,10 @@ const ProgrammeDetailPage: React.FC = () => {
 
   if (!project) {
     return (
-      <Box sx={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 2 }}>
-        <Typography variant="h5">Project not found</Typography>
+      <Box sx={{ ...pageRoot, minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 2 }}>
+        <Typography variant="h5" sx={{ fontFamily: '"Merriweather", Georgia, serif', fontWeight: 700 }}>
+          Project not found
+        </Typography>
         <Button variant="contained" onClick={() => navigate('/programs')}>
           Back to projects
         </Button>
@@ -110,78 +123,101 @@ const ProgrammeDetailPage: React.FC = () => {
     project.id === 'didrr';
 
   return (
-    <Box sx={{ minHeight: '100vh', backgroundColor: 'background.default' }}>
-      {/* Back link */}
+    <Box sx={pageRoot}>
       <Container maxWidth="lg" sx={{ pt: 12, pb: 1 }}>
         <Button
           startIcon={<ArrowBackIcon />}
           onClick={() => navigate('/programs')}
-          sx={{ textTransform: 'none' }}
+          sx={{ textTransform: 'none', color: 'info.main', fontWeight: 600 }}
         >
           Back to projects
         </Button>
       </Container>
 
-      {/* Hero */}
-      <Box
-        sx={{
-          background: project.heroImage
-            ? `linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, transparent 50%), url(${project.heroImage}) center/cover`
-            : `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%)`,
-          color: project.heroImage ? 'white' : 'white',
-          textShadow: project.heroImage ? '1px 1px 3px rgba(0,0,0,0.8)' : 'none',
-          py: 6,
-          minHeight: 280,
-          display: 'flex',
-          alignItems: 'flex-end',
-        }}
-      >
-        <Container maxWidth="lg" sx={{ pb: 2 }}>
-          <Chip
-            label={project.status === 'ongoing' ? 'Ongoing' : 'Active'}
-            size="small"
-            sx={{
-              backgroundColor: 'rgba(255,255,255,0.25)',
-              color: 'white',
-              mb: 1,
-            }}
-          />
-          <Typography variant={isMobile ? 'h4' : 'h3'} component="h1" sx={{ fontWeight: 'bold' }}>
-            {project.acronym ? `${project.acronym}: ` : ''}
-            {project.title_en}
-          </Typography>
-          <Typography variant="body1" sx={{ opacity: 0.95, mt: 0.5 }}>
-            {project.location} · {project.duration}
-          </Typography>
-          {(project.donorLogoUrls?.length ?? 0) > 0 && (
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1.5, mt: 2 }}>
-              {project.donorLogoUrls?.map((url) => (
-                <Box
-                  key={url}
-                  component="img"
-                  src={url}
-                  alt=""
+      <Box sx={{ ...pageHeroCompactTop, pt: { xs: 2, md: 3 } }}>
+        <Container maxWidth="lg">
+          <Grid container spacing={{ xs: 3, md: 5 }} alignItems="center">
+            <Grid item xs={12} md={project.heroImage ? 6 : 12}>
+              <Stack spacing={2} sx={{ textAlign: { xs: 'center', md: 'left' }, alignItems: { xs: 'center', md: 'flex-start' } }}>
+                <Chip
+                  label={project.status === 'ongoing' ? 'Ongoing' : 'Active'}
+                  size="small"
                   sx={{
-                    height: 36,
-                    maxWidth: 140,
-                    objectFit: 'contain',
-                    backgroundColor: 'rgba(255,255,255,0.9)',
-                    borderRadius: 1,
-                    p: 0.5,
+                    bgcolor: 'rgba(13, 92, 99, 0.08)',
+                    color: 'info.dark',
+                    fontWeight: 600,
                   }}
                 />
-              ))}
-            </Box>
-          )}
+                <Typography variant={isMobile ? 'h4' : 'h3'} component="h1" sx={{ ...pageH1 }}>
+                  {project.acronym ? `${project.acronym}: ` : ''}
+                  {project.title_en}
+                </Typography>
+                <Typography variant="body1" color="text.secondary" sx={{ ...pageLead, textAlign: { xs: 'center', md: 'left' } }}>
+                  {project.location} · {project.duration}
+                </Typography>
+                {(project.donorLogoUrls?.length ?? 0) > 0 && (
+                  <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1.5, justifyContent: { xs: 'center', md: 'flex-start' } }}>
+                    {project.donorLogoUrls?.map((url) => (
+                      <Box
+                        key={url}
+                        component="img"
+                        src={url}
+                        alt=""
+                        sx={{
+                          height: 36,
+                          maxWidth: 140,
+                          objectFit: 'contain',
+                          bgcolor: 'grey.50',
+                          borderRadius: 1,
+                          p: 0.5,
+                          border: '1px solid',
+                          borderColor: 'divider',
+                        }}
+                      />
+                    ))}
+                  </Box>
+                )}
+              </Stack>
+            </Grid>
+            {project.heroImage && (
+              <Grid item xs={12} md={6}>
+                <Box
+                  sx={{
+                    borderRadius: 3,
+                    overflow: 'hidden',
+                    border: '1px solid',
+                    borderColor: 'divider',
+                    boxShadow: '0 20px 50px rgba(15, 23, 42, 0.12)',
+                    aspectRatio: { xs: '4/3', md: '5/4' },
+                    maxHeight: { md: 400 },
+                  }}
+                >
+                  <Box
+                    component="img"
+                    src={project.heroImage}
+                    alt={project.title_en}
+                    sx={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      objectPosition: project.heroImagePosition ?? 'center center',
+                      display: 'block',
+                    }}
+                  />
+                </Box>
+              </Grid>
+            )}
+          </Grid>
         </Container>
       </Box>
 
-      <Container maxWidth="lg" sx={{ py: 4 }}>
+      <Box sx={{ bgcolor: SECTION_BG_ALT, py: { xs: 4, md: 6 } }}>
+      <Container maxWidth="lg">
         <Grid container spacing={4}>
           <Grid item xs={12} md={8}>
-            <Card sx={{ mb: 3 }}>
+            <Card elevation={0} sx={detailCardSx}>
               <CardContent sx={{ p: 3 }}>
-                <Typography variant="h6" gutterBottom sx={{ fontWeight: 600 }}>
+                <Typography variant="h6" gutterBottom sx={{ fontFamily: '"Merriweather", Georgia, serif', fontWeight: 700 }}>
                   About this programme
                 </Typography>
                 <Typography variant="body1" sx={{ whiteSpace: 'pre-line', lineHeight: 1.7 }}>
@@ -191,9 +227,9 @@ const ProgrammeDetailPage: React.FC = () => {
             </Card>
 
             {project.theoryOfChange_en && (
-              <Card sx={{ mb: 3 }}>
+              <Card elevation={0} sx={detailCardSx}>
                 <CardContent sx={{ p: 3 }}>
-                  <Typography variant="h6" gutterBottom sx={{ fontWeight: 600 }}>
+                  <Typography variant="h6" gutterBottom sx={{ fontFamily: '"Merriweather", Georgia, serif', fontWeight: 700 }}>
                     Theory of change
                   </Typography>
                   <Typography variant="body1" sx={{ lineHeight: 1.7 }}>
@@ -204,9 +240,9 @@ const ProgrammeDetailPage: React.FC = () => {
             )}
 
             {project.keyPathways.length > 0 && (
-              <Card sx={{ mb: 3 }}>
+              <Card elevation={0} sx={detailCardSx}>
                 <CardContent sx={{ p: 3 }}>
-                  <Typography variant="h6" gutterBottom sx={{ fontWeight: 600 }}>
+                  <Typography variant="h6" gutterBottom sx={{ fontFamily: '"Merriweather", Georgia, serif', fontWeight: 700 }}>
                     Key pathways
                   </Typography>
                   <Box component="ul" sx={{ m: 0, pl: 2.5 }}>
@@ -221,9 +257,9 @@ const ProgrammeDetailPage: React.FC = () => {
             )}
 
             {galleryImages.length > 0 && (
-              <Card>
+              <Card elevation={0} sx={{ ...outlineCard }}>
                 <CardContent sx={{ p: 2 }}>
-                  <Typography variant="h6" gutterBottom sx={{ fontWeight: 600 }}>
+                  <Typography variant="h6" gutterBottom sx={{ fontFamily: '"Merriweather", Georgia, serif', fontWeight: 700 }}>
                     Gallery
                   </Typography>
                   <CardMedia
@@ -287,7 +323,7 @@ const ProgrammeDetailPage: React.FC = () => {
           </Grid>
 
           <Grid item xs={12} md={4}>
-            <Card sx={{ position: 'sticky', top: 100 }}>
+            <Card elevation={0} sx={{ ...outlineCard, position: 'sticky', top: 100 }}>
               <CardContent sx={{ p: 3 }}>
                 <Typography variant="subtitle2" color="text.secondary" gutterBottom>
                   Target
@@ -370,6 +406,7 @@ const ProgrammeDetailPage: React.FC = () => {
           </Grid>
         </Grid>
       </Container>
+      </Box>
 
       <BackToTopButton />
     </Box>

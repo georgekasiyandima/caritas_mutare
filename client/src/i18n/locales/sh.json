@@ -17,6 +17,66 @@
     "learnMore": "Dzidza Zvimwe",
     "donateNow": "Ipa Zvino"
   },
+  "home": {
+    "partnersTitle": "Vashandi vakakosha",
+    "pathways": {
+      "projects": "Ona zvirongwa",
+      "soupKitchen": "Soup kitchen",
+      "contact": "Taura nesu"
+    },
+    "heroImageCaption": "Hupenyu hwenharaunda nebasa rezvirongwa muDiocese yeMutare",
+    "stats": {
+      "overline": "Chidimbu",
+      "headline": "Hukuru hunobva mubasa, kwete mashoko chete",
+      "familiesServed": "Mhuri dzakabatsirwa",
+      "communitiesReached": "Nharaunda dzakasvika",
+      "livesImpacted": "Hupenyu hwakakanganiswa",
+      "yearsOfService": "Makore esevhisi"
+    },
+    "thematic": {
+      "overline": "Tinoshandira kupi",
+      "title": "Zvinangwa zvebasa",
+      "intro": "Zvirongwa zvedu zvinotevera dzidziso yeCatholic yenharaunda: kukudzwa, kubatana, uye kuchengetedza avo vari pamakumbo — kusanganisira vanhu vane kukanganiswa.",
+      "cta": "Verenga chinangwa nemhunhu hwedu",
+      "items": {
+        "food": {
+          "title": "Kudya kwakachengeteka nehupenyu",
+          "blurb": "Kurima kwakasimba, kugona kumira, uye mari yemhuri."
+        },
+        "humanitarian": {
+          "title": "Rubatsiro rwehunhu",
+          "blurb": "Rubatsiro rwekukurumidza, kuunganidzwa, uye kugadzirira nharaunda."
+        },
+        "disability": {
+          "title": "Kuunganidzwa kwevanhu vane kukanganiswa",
+          "blurb": "Vanhu vane kukanganiswa mukupindura, kudzoreredzwa, uye muhupenyu."
+        },
+        "community": {
+          "title": "Nharaunda nezvikwata",
+          "blurb": "Zvivakwa, kubatana nediocese nezvikwata zvepedyo."
+        }
+      }
+    },
+    "projects": {
+      "headline": "Zvirongwa zvinotsigirwa nevanopa uye zvinotungamirirwa naCaritas",
+      "learnMore": "Dzidza zvimwe",
+      "viewAll": "Ona zvirongwa zvose"
+    },
+    "news": {
+      "intro": "Zvitsva kubva mumunda nedicese.",
+      "minRead": "Maminetsi {{count}} kuverenga",
+      "viewAll": "Ona nhau dzose"
+    },
+    "impact": {
+      "title": "Mhedziso yedu",
+      "intro": "Maziso embozha ekuunganidza nharaunda nebasa rezvirongwa muDiocese — chinangwa chimwe chete chinoita kuti mubatane naCaritas."
+    },
+    "closingCta": {
+      "title": "Batana nechinangwa chedu",
+      "body": "Famba nesu mukubatana — kuburikidza nemunamato, kuzvipira, kana kupa — kuti nharaunda dzose muMutare dzigone kurarama nezvikudzo netariro."
+    },
+    "whatsappWelcome": "Makadii! Tinokutendai nekufarira Caritas Mutare. Tingakubatsirei sei nhasi?"
+  },
   "about": {
     "title": "Nezve Caritas Mutare",
     "mission": "Chinangwa Chedu",

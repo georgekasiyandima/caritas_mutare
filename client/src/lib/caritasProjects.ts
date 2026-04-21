@@ -322,14 +322,14 @@ export const generalImpactImages: { src: string; alt: string; objectPosition?: s
 ];
 
 export const partnerLogosForSite: { name: string; logoUrl: string }[] = [
-  { name: 'Caritas Mutare', logoUrl: '/images/partners/caritas-mutare.png' },
+  { name: 'Caritas Mutare', logoUrl: '/images/logo/caritas-mutare-new-logo.png' },
   { name: 'CAFOD', logoUrl: '/images/partners/cafod.png' },
   { name: 'Oak Foundation', logoUrl: '/images/partners/oak-foundation-clean.png' },
   { name: 'CBM Global', logoUrl: '/images/partners/cbm-global.png' },
-  { name: 'Government of Ireland', logoUrl: '/images/partners/government-ireland.png' },
+  { name: 'Trocaire', logoUrl: '/images/partners/trocaire.png' },
+  { name: 'CRS', logoUrl: '/images/partners/crs.png' },
+  { name: 'CCJP Mutare Diocese', logoUrl: '/images/partners/ccjp-mutare.png' },
   { name: 'Zimbabwe Government', logoUrl: '/images/partners/zimbabwe-government.png' },
-  { name: 'FOOPZ', logoUrl: '/images/partners/foopz.png' },
-  { name: 'Republic of Zimbabwe', logoUrl: '/images/partners/zimbabwe-coat-of-arms.png' },
 ];
 
 export function getProjectBySlug(slug: string): CaritasProject | undefined {

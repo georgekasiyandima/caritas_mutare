@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const { dbGet } = require('../database/database');
+const jwtSecret = process.env.JWT_SECRET || 'dev-only-change-me';
 
 const authenticateToken = async (req, res, next) => {
   const authHeader = req.headers['authorization'];
@@ -10,7 +11,7 @@ const authenticateToken = async (req, res, next) => {
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, jwtSecret);
     
     // Verify user still exists
     const user = await dbGet('SELECT id, username, email, role FROM users WHERE id = ?', [decoded.userId]);

@@ -9,15 +9,28 @@ import {
   Avatar,
   Divider,
   Chip,
+  Stack,
 } from '@mui/material';
 import {
   Person as PersonIcon,
   Church as ChurchIcon,
   Handshake as PartnershipIcon,
 } from '@mui/icons-material';
-import { useTranslation } from 'react-i18next';
 import BackToTopButton from '../components/BackToTopButton';
 import { partnerLogosForSite } from '../lib/caritasProjects';
+import {
+  SECTION_BG_ALT,
+  pageRoot,
+  pageHero,
+  pageOverline,
+  pageH1,
+  pageLead,
+  outlineCard,
+  outlineCardHover,
+  sectionVerticalPadding,
+} from '../lib/sitePageLayout';
+
+const leadCardSx = { ...outlineCard, ...outlineCardHover };
 
 interface LeadershipMember {
   id: number;
@@ -32,8 +45,6 @@ interface LeadershipMember {
 }
 
 const LeadershipPage: React.FC = () => {
-  const { t } = useTranslation();
-
   const leadership: LeadershipMember[] = [
     {
       id: 0,
@@ -47,22 +58,20 @@ const LeadershipPage: React.FC = () => {
     },
     {
       id: 1,
-      name: "Fr. Ernest Gumbeze",
+      name: "Development Coordinator",
       position: "Development Coordinator",
       role: "Development Coordinator",
       description:
-        "Leads Caritas Mutare’s mission and strategy, coordinating all projects and operations across the Diocese. Fr. Gumbeze provides overall development leadership and represents Caritas within the diocesan structures.",
-      email: "egumbeze@caritasmutare.org",
-      phone: "+263 77 467 1893",
+        "Leads Caritas Mutare’s mission and strategy, coordinating all projects and operations across the Diocese, and represents Caritas within diocesan structures.",
       category: "director",
     },
     {
       id: 2,
-      name: "Sister Angeline",
+      name: "Own Projects Coordination",
       position: "Coordinator – Own projects",
       role: "Strategic direction for Caritas-owned projects",
       description:
-        "Oversees Caritas Mutare’s own projects, providing strategic direction and day-to-day oversight. Ensures that initiatives such as Mai Maria Village, the Soup Kitchen and education projects remain sustainable and aligned with Caritas values.",
+        "Caritas Mutare also has its own projects with initiatives such as Mai Maria Village, the Soup Kitchen and education support. This coordination stream provides strategic direction and day-to-day oversight.",
       category: "management",
     },
     {
@@ -156,26 +165,70 @@ const LeadershipPage: React.FC = () => {
   const managementAndDirectors = leadership.filter((m) => m.category === 'director' || m.category === 'management');
 
   return (
-    <Box sx={{ minHeight: '100vh', backgroundColor: 'background.default' }}>
-      <Container maxWidth="lg" sx={{ py: 6 }}>
-        {/* Page Header */}
-        <Box sx={{ textAlign: 'center', mb: 6 }}>
-          <Typography variant="h3" component="h1" gutterBottom sx={{ fontWeight: 'bold', color: 'primary.main' }}>
-            Leadership & Partners
-          </Typography>
-          <Typography variant="h6" sx={{ color: 'text.secondary', maxWidth: 700, mx: 'auto' }}>
-            Caritas Mutare is guided by the Bishop of the Diocese and a dedicated management team that oversees projects,
-            finances and learning in close collaboration with partners.
-          </Typography>
-        </Box>
+    <Box sx={pageRoot}>
+      <Box sx={pageHero}>
+        <Container maxWidth="lg">
+          <Stack spacing={2.5} alignItems="center" textAlign="center">
+            <Chip
+              label="Governance & partners"
+              size="small"
+              sx={{
+                bgcolor: 'rgba(13, 92, 99, 0.08)',
+                color: 'info.dark',
+                fontWeight: 600,
+                borderRadius: 1,
+              }}
+            />
+            <Typography variant="overline" sx={{ ...pageOverline, display: 'block' }}>
+              Who leads Caritas
+            </Typography>
+            <Typography variant="h2" component="h1" sx={{ ...pageH1, fontSize: { xs: '1.75rem', sm: '2rem', md: '2.25rem' } }}>
+              Leadership & Partners
+            </Typography>
+            <Typography variant="body1" sx={{ ...pageLead, maxWidth: 720 }}>
+              Caritas Mutare is guided by the Bishop of the Diocese and a dedicated management team that oversees projects,
+              finances and learning in close collaboration with partners.
+            </Typography>
+          </Stack>
+        </Container>
+      </Box>
 
+      <Box sx={{ ...sectionVerticalPadding, bgcolor: SECTION_BG_ALT }}>
+      <Container maxWidth="lg">
+        <Box sx={{ mb: 6 }}>
+          <Typography variant="h4" component="h2" gutterBottom sx={{ fontFamily: '"Merriweather", Georgia, serif', fontWeight: 700, mb: 2, textAlign: 'center' }}>
+            Board of Directors
+          </Typography>
+          <Typography variant="body1" color="text.secondary" sx={{ mb: 3, textAlign: 'center', maxWidth: 820, mx: 'auto' }}>
+            Caritas is led by a Board of Directors composed of 7 members.
+          </Typography>
+          <Grid container spacing={2} justifyContent="center">
+            {[
+              'Chairperson and Vice',
+              'Secretary and Vice',
+              'Treasurer',
+              'Committee members',
+            ].map((role) => (
+              <Grid item xs={12} sm={6} md={3} key={role}>
+                <Card elevation={0} sx={{ ...leadCardSx, textAlign: 'center', p: 2, height: '100%' }}>
+                  <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>{role}</Typography>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        </Box>
+      </Container>
+      </Box>
+
+      <Box sx={{ ...sectionVerticalPadding, bgcolor: 'background.paper' }}>
+      <Container maxWidth="lg">
         {/* Leadership Section */}
         <Box sx={{ mb: 6 }}>
           <Typography
             variant="h4"
             component="h2"
             gutterBottom
-            sx={{ fontWeight: 'bold', mb: 4, textAlign: 'center' }}
+            sx={{ fontFamily: '"Merriweather", Georgia, serif', fontWeight: 700, mb: 4, textAlign: 'center' }}
           >
             Our leadership structure
           </Typography>
@@ -192,13 +245,13 @@ const LeadershipPage: React.FC = () => {
               <Grid container justifyContent="center">
                 <Grid item xs={12} md={8}>
                   <Card
+                    elevation={0}
                     sx={{
+                      ...leadCardSx,
                       display: 'flex',
                       flexDirection: { xs: 'column', md: 'row' },
                       alignItems: 'center',
                       p: 3,
-                      borderRadius: 3,
-                      boxShadow: 3,
                     }}
                   >
                     <Box sx={{ textAlign: 'center', mr: { md: 3 }, mb: { xs: 2, md: 0 } }}>
@@ -249,15 +302,12 @@ const LeadershipPage: React.FC = () => {
               {managementAndDirectors.map((member) => (
                 <Grid item xs={12} md={4} key={member.id}>
                   <Card
+                    elevation={0}
                     sx={{
                       height: '100%',
                       display: 'flex',
                       flexDirection: 'column',
-                      transition: 'transform 0.2s, box-shadow 0.2s',
-                      '&:hover': {
-                        transform: 'translateY(-4px)',
-                        boxShadow: 4,
-                      },
+                      ...leadCardSx,
                     }}
                   >
                     <CardContent sx={{ flexGrow: 1, textAlign: 'center', p: 3 }}>
@@ -298,12 +348,15 @@ const LeadershipPage: React.FC = () => {
             </Grid>
           </Box>
         </Box>
+      </Container>
+      </Box>
 
-      <Divider sx={{ my: 6 }} />
+      <Divider />
 
       {/* Partners Section */}
-      <Box>
-        <Typography variant="h4" component="h2" gutterBottom sx={{ fontWeight: 'bold', mb: 4, textAlign: 'center' }}>
+      <Box sx={{ ...sectionVerticalPadding, bgcolor: SECTION_BG_ALT }}>
+      <Container maxWidth="lg">
+        <Typography variant="h4" component="h2" gutterBottom sx={{ fontFamily: '"Merriweather", Georgia, serif', fontWeight: 700, mb: 4, textAlign: 'center' }}>
           Our Partners
         </Typography>
         
@@ -315,6 +368,7 @@ const LeadershipPage: React.FC = () => {
           {partners.map((partner) => (
             <Grid item xs={12} sm={6} md={3} key={partner.id}>
               <Card
+                elevation={0}
                 sx={{
                   height: '100%',
                   display: 'flex',
@@ -322,11 +376,7 @@ const LeadershipPage: React.FC = () => {
                   textAlign: 'center',
                   p: 3,
                   minHeight: '280px',
-                  transition: 'transform 0.2s',
-                  '&:hover': {
-                    transform: 'translateY(-2px)',
-                    boxShadow: 3,
-                  },
+                  ...leadCardSx,
                 }}
               >
                 <CardContent sx={{ 
@@ -402,20 +452,23 @@ const LeadershipPage: React.FC = () => {
             </Grid>
           ))}
         </Grid>
+      </Container>
       </Box>
 
       {/* Mission Statement */}
-      <Box sx={{ mt: 6, p: 4, backgroundColor: 'primary.50', borderRadius: 2, textAlign: 'center' }}>
-        <Typography variant="h5" gutterBottom sx={{ fontWeight: 'bold', color: 'primary.main' }}>
-          Our Mission
-        </Typography>
-        <Typography variant="body1" sx={{ maxWidth: 800, mx: 'auto', fontStyle: 'italic' }}>
-          "To serve the poor and promote integral human development through community-based programs that address the root causes of poverty and injustice, guided by Catholic social teaching and working in solidarity with our partners."
-        </Typography>
+      <Box sx={{ ...sectionVerticalPadding, bgcolor: 'background.paper' }}>
+        <Container maxWidth="lg">
+          <Box sx={{ p: 4, borderRadius: 2, textAlign: 'center', border: '1px solid', borderColor: 'divider', bgcolor: SECTION_BG_ALT }}>
+            <Typography variant="h5" gutterBottom sx={{ fontFamily: '"Merriweather", Georgia, serif', fontWeight: 700 }}>
+              Our Mission
+            </Typography>
+            <Typography variant="body1" sx={{ maxWidth: 800, mx: 'auto', fontStyle: 'italic', lineHeight: 1.75, color: 'text.secondary' }}>
+              &ldquo;To serve the poor and promote integral human development through community-based programs that address the root causes of poverty and injustice, guided by Catholic social teaching and working in solidarity with our partners.&rdquo;
+            </Typography>
+          </Box>
+        </Container>
       </Box>
-    </Container>
 
-      {/* Floating Components */}
       <BackToTopButton />
     </Box>
   );

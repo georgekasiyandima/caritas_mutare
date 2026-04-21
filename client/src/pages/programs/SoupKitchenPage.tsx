@@ -7,9 +7,9 @@ import {
   Card,
   CardContent,
   Button,
-  Paper,
   Avatar,
   Chip,
+  Stack,
   useTheme,
   useMediaQuery,
   Divider,
@@ -27,11 +27,22 @@ import {
   VolunteerActivism as VolunteerIcon,
   Favorite as HeartIcon,
   FamilyRestroom as FamilyIcon,
+  Facebook as FacebookIcon,
+  LinkedIn as LinkedInIcon,
 } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import CountUpAnimation from '../../components/CountUpAnimation';
 import BackToTopButton from '../../components/BackToTopButton';
+import {
+  pageRoot,
+  pageHero,
+  pageOverline,
+  pageH1,
+  pageLead,
+  SECTION_BG_ALT,
+  closingCtaSectionSx,
+} from '../../lib/sitePageLayout';
 
 const SoupKitchenPage: React.FC = () => {
   const { t } = useTranslation();
@@ -42,6 +53,36 @@ const SoupKitchenPage: React.FC = () => {
 
   // Real image gallery data
   const imageGallery = [
+    {
+      src: '/images/programs/soup-kitchen/gallery/new/soup-kitchen-new-1.png',
+      alt: 'Soup kitchen beneficiaries receiving food packs',
+      category: 'Community Meals',
+      placeholder: false
+    },
+    {
+      src: '/images/programs/soup-kitchen/gallery/new/soup-kitchen-new-2.png',
+      alt: 'Volunteers cooking and serving at the soup kitchen',
+      category: 'Volunteer Service',
+      placeholder: false
+    },
+    {
+      src: '/images/programs/soup-kitchen/gallery/new/soup-kitchen-new-3.png',
+      alt: 'Soup kitchen team preparing hot meals',
+      category: 'Kitchen Operations',
+      placeholder: false
+    },
+    {
+      src: '/images/programs/soup-kitchen/gallery/new/soup-kitchen-new-4.png',
+      alt: 'Community members queued for soup kitchen support',
+      category: 'Beneficiary Support',
+      placeholder: false
+    },
+    {
+      src: '/images/programs/soup-kitchen/gallery/new/soup-kitchen-new-5.png',
+      alt: 'Food distribution at soup kitchen service point',
+      category: 'Food Distribution',
+      placeholder: false
+    },
     {
       src: '/images/programs/soup-kitchen/gallery/beneficiaries/beneficiaries_community_meal_2025.jpg',
       alt: 'Community members sharing a meal together',
@@ -175,124 +216,75 @@ const SoupKitchenPage: React.FC = () => {
   ];
 
   return (
-    <Box sx={{ minHeight: '100vh', backgroundColor: 'background.default' }}>
-      {/* Hero Section */}
-      <Box
-        sx={{
-          background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%)`,
-          color: 'white',
-          py: 10,
-          pt: 18, // Increased top padding to prevent navbar overlap
-          position: 'relative',
-          overflow: 'hidden',
-          display: 'flex',
-          alignItems: 'center',
-          minHeight: '70vh',
-        }}
-      >
-        <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 2 }}>
+    <Box sx={pageRoot}>
+      <Box sx={pageHero}>
+        <Container maxWidth="lg">
           <Grid container spacing={6} alignItems="center">
             <Grid item xs={12} md={6}>
-              <Box sx={{ textAlign: { xs: 'center', md: 'left' } }}>
-                <Typography 
-                  variant="h2" 
-                  component="h1" 
-                  gutterBottom 
-                  sx={{ 
-                    fontWeight: 'bold',
-                    textAlign: 'center',
-                    mb: 2,
-                    textShadow: '2px 2px 4px rgba(0,0,0,0.3)'
+              <Stack spacing={2.5} sx={{ textAlign: { xs: 'center', md: 'left' }, alignItems: { xs: 'center', md: 'flex-start' } }}>
+                <Chip
+                  label={t('programs.soupkitchen.title')}
+                  size="small"
+                  sx={{
+                    bgcolor: 'rgba(13, 92, 99, 0.08)',
+                    color: 'info.dark',
+                    fontWeight: 600,
+                    borderRadius: 1,
                   }}
-                >
+                />
+                <Typography variant="overline" sx={{ ...pageOverline, display: 'block' }}>
+                  Own programme
+                </Typography>
+                <Typography variant={isMobile ? 'h3' : 'h2'} component="h1" sx={{ ...pageH1 }}>
                   Soup Kitchen Program
                 </Typography>
-                <Typography 
-                  variant="h5" 
-                  sx={{ 
-                    mb: 3, 
-                    opacity: 0.95,
-                    textAlign: 'center',
-                    fontWeight: 500,
-                    textShadow: '1px 1px 2px rgba(0,0,0,0.3)'
-                  }}
-                >
-                  Feeding Hope, Nourishing Community
+                <Typography variant="h5" sx={{ fontFamily: '"Merriweather", Georgia, serif', fontWeight: 600, color: 'text.secondary' }}>
+                  Feeding hope, nourishing community
                 </Typography>
-                <Typography 
-                  variant="body1" 
-                  sx={{ 
-                    mb: 4, 
-                    fontSize: '1.1rem', 
-                    lineHeight: 1.6,
-                    textAlign: 'center',
-                    maxWidth: '600px',
-                    mx: 'auto',
-                    textShadow: '1px 1px 2px rgba(0,0,0,0.3)'
-                  }}
-                >
-                  Every last Friday of the month, our Soup Kitchen brings the community together 
-                  to share nutritious meals with those who need it most. From homeless individuals 
-                  to senior citizens, refugees to young families - we serve with love and dignity.
+                <Typography variant="body1" sx={{ ...pageLead, textAlign: { xs: 'center', md: 'left' } }}>
+                  Every last Friday of the month, our Soup Kitchen brings the community together
+                  to share nutritious meals with those who need it most. From homeless individuals
+                  to senior citizens, refugees to young families — we serve with love and dignity.
                 </Typography>
-                <Box sx={{ 
-                  display: 'flex', 
-                  gap: 3, 
-                  flexWrap: 'wrap',
-                  justifyContent: 'center',
-                  mt: 4
-                }}>
-                  <Button
-                    variant="contained"
-                    size="large"
-                    sx={{
-                      backgroundColor: 'white',
-                      color: 'primary.main',
-                      textTransform: 'none',
-                      px: 6,
-                      py: 1.5,
-                      fontSize: '1.1rem',
-                      fontWeight: 600,
-                      borderRadius: 3,
-                      boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
-                      '&:hover': {
-                        backgroundColor: 'rgba(255,255,255,0.9)',
-                        transform: 'translateY(-2px)',
-                        boxShadow: '0 6px 16px rgba(0,0,0,0.4)',
-                      },
-                      transition: 'all 0.3s ease',
-                    }}
-                    onClick={() => navigate('/volunteer')}
-                  >
-                    Volunteer with Us
+                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ pt: 1, width: { xs: '100%', sm: 'auto' } }}>
+                  <Button variant="contained" color="primary" size="large" sx={{ px: 3, py: 1.25, fontWeight: 600 }} onClick={() => navigate('/volunteer')}>
+                    {t('nav.volunteer')}
                   </Button>
                   <Button
                     variant="outlined"
+                    color="primary"
                     size="large"
-                    sx={{
-                      borderColor: 'white',
-                      color: 'white',
-                      borderWidth: 2,
-                      textTransform: 'none',
-                      px: 6,
-                      py: 1.5,
-                      fontSize: '1.1rem',
-                      fontWeight: 600,
-                      borderRadius: 3,
-                      '&:hover': {
-                        borderColor: 'white',
-                        backgroundColor: 'rgba(255,255,255,0.1)',
-                        transform: 'translateY(-2px)',
-                        borderWidth: 2,
-                      },
-                      transition: 'all 0.3s ease',
-                    }}
+                    sx={{ px: 3, py: 1.25, borderWidth: 2, '&:hover': { borderWidth: 2 } }}
                     onClick={() => navigate('/donate')}
                   >
-                    Support This Program
+                    {t('nav.donate')}
                   </Button>
-                </Box>
-              </Box>
+                </Stack>
+                <Stack direction="row" spacing={1.5} flexWrap="wrap" useFlexGap sx={{ justifyContent: { xs: 'center', md: 'flex-start' } }}>
+                  <Button
+                    component="a"
+                    href="https://www.facebook.com/share/1DoS9a5mzU/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    size="small"
+                    sx={{ color: 'info.main', fontWeight: 600 }}
+                    startIcon={<FacebookIcon />}
+                  >
+                    Facebook
+                  </Button>
+                  <Button
+                    component="a"
+                    href="https://www.linkedin.com/in/caritas-zimbabwe-diocese-of-mutare-460272300?utm_source=share_via&utm_content=profile&utm_medium=member_android"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    size="small"
+                    sx={{ color: 'info.main', fontWeight: 600 }}
+                    startIcon={<LinkedInIcon />}
+                  >
+                    LinkedIn
+                  </Button>
+                </Stack>
+              </Stack>
             </Grid>
             <Grid item xs={12} md={6}>
               <Box sx={{ 
@@ -304,22 +296,24 @@ const SoupKitchenPage: React.FC = () => {
                 <Box
                   sx={{
                     height: 350,
-                    borderRadius: 4,
+                    borderRadius: 3,
                     overflow: 'hidden',
-                    boxShadow: '0 8px 32px rgba(0,0,0,0.3)',
+                    border: '1px solid',
+                    borderColor: 'divider',
+                    boxShadow: '0 20px 50px rgba(15, 23, 42, 0.12)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     position: 'relative',
-                    backgroundColor: '#f5f5f5', // Fallback background
+                    backgroundColor: 'grey.100',
                     '&:hover': {
-                      transform: 'scale(1.02)',
+                      transform: 'scale(1.01)',
                       transition: 'transform 0.3s ease',
                     }
                   }}
                 >
                   <img
-                    src="/images/programs/soup-kitchen/gallery/beneficiaries/beneficiaries_community_meal01_25.jpg"
+                    src="/images/programs/soup-kitchen/gallery/new/soup-kitchen-new-1.png"
                     alt="Community members enjoying a meal together at the soup kitchen"
                     style={{
                       width: '100%',
@@ -345,14 +339,20 @@ const SoupKitchenPage: React.FC = () => {
                 </Box>
                 
                 {/* Next Event Info */}
-                <Paper
-                  elevation={8}
+                <Box
                   sx={{
+                    borderRadius: 2,
+                    border: '1px solid',
+                    borderColor: 'divider',
+                    bgcolor: 'background.paper',
+                    boxShadow: 'none',
                     p: 3,
-                    backgroundColor: 'rgba(255,255,255,0.95)',
-                    color: 'text.primary',
-                    borderRadius: 3,
                     textAlign: 'center',
+                    transition: 'box-shadow 0.2s, transform 0.2s',
+                    '&:hover': {
+                      boxShadow: '0 8px 24px rgba(15,23,42,0.08)',
+                      transform: 'translateY(-2px)',
+                    },
                   }}
                 >
                   <RestaurantIcon sx={{ fontSize: 60, color: 'primary.main', mb: 2 }} />
@@ -374,7 +374,7 @@ const SoupKitchenPage: React.FC = () => {
                     <ScheduleIcon sx={{ fontSize: 16, mr: 1, verticalAlign: 'middle' }} />
                     12:00 PM - 2:00 PM
                   </Typography>
-                </Paper>
+                </Box>
               </Box>
             </Grid>
           </Grid>
@@ -423,7 +423,7 @@ const SoupKitchenPage: React.FC = () => {
       </Container>
 
       {/* Who We Serve Section */}
-      <Box sx={{ backgroundColor: 'grey.50', py: 6 }}>
+      <Box sx={{ bgcolor: SECTION_BG_ALT, py: { xs: 5, md: 7 } }}>
         <Container maxWidth="lg">
           <Typography variant="h4" component="h2" textAlign="center" gutterBottom sx={{ fontWeight: 'bold', mb: 6 }}>
             Who We Serve
@@ -632,97 +632,44 @@ const SoupKitchenPage: React.FC = () => {
         </DialogContent>
       </Dialog>
 
-      {/* Call to Action Section */}
-      <Box
-        sx={{
-          background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%)`,
-          color: 'white',
-          py: 10,
-          position: 'relative',
-        }}
-      >
-        <Container maxWidth="lg" sx={{ textAlign: 'center', position: 'relative', zIndex: 1 }}>
-          <Typography 
-            variant="h4" 
-            gutterBottom 
-            sx={{ 
-              fontWeight: 'bold', 
-              mb: 3, 
-              textShadow: '2px 2px 4px rgba(0,0,0,0.5)',
-              fontSize: { xs: '1.8rem', md: '2.2rem' }
-            }}
-          >
-            Be Part of This Mission
+      <Box sx={closingCtaSectionSx(theme)}>
+        <Container maxWidth="md" sx={{ textAlign: 'center', position: 'relative', zIndex: 1 }}>
+          <Typography variant="h4" sx={{ fontFamily: '"Merriweather", Georgia, serif', fontWeight: 700, mb: 2, color: 'common.white' }}>
+            {t('home.closingCta.title')}
           </Typography>
-          <Typography 
-            variant="body1" 
-            sx={{ 
-              mb: 6, 
-              fontSize: '1.2rem', 
-              maxWidth: 700, 
-              mx: 'auto', 
-              textShadow: '1px 1px 3px rgba(0,0,0,0.5)',
-              lineHeight: 1.6
-            }}
-          >
-            Whether you can volunteer your time, donate resources, or simply spread the word, 
+          <Typography variant="body1" sx={{ mb: 4, opacity: 0.92, lineHeight: 1.75, maxWidth: 560, mx: 'auto', color: 'common.white' }}>
+            Whether you can volunteer your time, donate resources, or simply spread the word,
             every contribution helps us serve more meals and touch more lives in our community.
           </Typography>
-          <Box sx={{ 
-            display: 'flex', 
-            gap: 3, 
-            justifyContent: 'center', 
-            flexWrap: 'wrap',
-            alignItems: 'center'
-          }}>
+          <Box sx={{ display: 'flex', gap: 2, justifyContent: 'center', flexWrap: 'wrap' }}>
             <Button
               variant="contained"
               size="large"
-              sx={{
-                backgroundColor: 'white',
-                color: 'primary.main',
-                textTransform: 'none',
-                px: 6,
-                py: 2,
-                fontSize: '1.1rem',
-                fontWeight: 600,
-                borderRadius: 3,
-                boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
-                '&:hover': {
-                  backgroundColor: 'rgba(255,255,255,0.9)',
-                  transform: 'translateY(-2px)',
-                  boxShadow: '0 6px 16px rgba(0,0,0,0.4)',
-                },
-                transition: 'all 0.3s ease',
-              }}
               onClick={() => navigate('/volunteer')}
+              sx={{
+                bgcolor: 'common.white',
+                color: 'primary.main',
+                px: 4,
+                fontWeight: 600,
+                '&:hover': { bgcolor: 'grey.100' },
+              }}
             >
-              Volunteer Now
+              {t('nav.volunteer')}
             </Button>
             <Button
               variant="outlined"
               size="large"
-              sx={{
-                borderColor: 'white',
-                color: 'white',
-                borderWidth: 2,
-                textTransform: 'none',
-                px: 6,
-                py: 2,
-                fontSize: '1.1rem',
-                fontWeight: 600,
-                borderRadius: 3,
-                '&:hover': {
-                  backgroundColor: 'rgba(255,255,255,0.1)',
-                  borderColor: 'white',
-                  transform: 'translateY(-2px)',
-                  borderWidth: 2,
-                },
-                transition: 'all 0.3s ease',
-              }}
               onClick={() => navigate('/donate')}
+              sx={{
+                color: 'common.white',
+                borderColor: 'rgba(255,255,255,0.85)',
+                borderWidth: 2,
+                px: 4,
+                fontWeight: 600,
+                '&:hover': { borderColor: 'common.white', bgcolor: 'rgba(255,255,255,0.08)', borderWidth: 2 },
+              }}
             >
-              Donate Today
+              {t('nav.donate')}
             </Button>
           </Box>
         </Container>

@@ -1,0 +1,6 @@
+{
+  "watch": ["index.js", "routes", "middleware", "database", "migrations", "seeds", "scripts"],
+  "ext": "js,json",
+  "ignore": ["node_modules", "uploads", "database.sqlite", "*.sqlite", "server/**"],
+  "legacyWatch": true
+}

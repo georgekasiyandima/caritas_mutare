@@ -31,8 +31,13 @@ const theme = createTheme({
       light: '#ffffff',
       dark: '#f5f5f5',
     },
+    info: {
+      main: '#0d5c63', // grounded accent for links and highlights
+      light: '#3d8a92',
+      dark: '#084047',
+    },
     background: {
-      default: '#ffffff',
+      default: '#faf9f7',
       paper: '#ffffff',
     },
   },
@@ -41,14 +46,19 @@ const theme = createTheme({
     h1: {
       fontSize: '2.5rem',
       fontWeight: 700,
+      fontFamily: '"Merriweather", "Georgia", serif',
+      letterSpacing: '-0.02em',
     },
     h2: {
       fontSize: '2rem',
       fontWeight: 600,
+      fontFamily: '"Merriweather", "Georgia", serif',
+      letterSpacing: '-0.01em',
     },
     h3: {
       fontSize: '1.75rem',
       fontWeight: 600,
+      fontFamily: '"Merriweather", "Georgia", serif',
     },
     h4: {
       fontSize: '1.5rem',

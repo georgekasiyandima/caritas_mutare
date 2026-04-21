@@ -10,14 +10,26 @@ import {
   CardActions,
   Button,
   CircularProgress,
+  useTheme,
+  useMediaQuery,
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from 'react-query';
+import {
+  SECTION_BG_ALT,
+  pageRoot,
+  pageHero,
+  pageOverline,
+  pageH1,
+  pageLead,
+} from '../lib/sitePageLayout';
 
 const NewsPage: React.FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const { data: newsData, isLoading, error } = useQuery('news', async () => {
     const response = await fetch('/api/news?limit=6&page=1');
@@ -26,32 +38,46 @@ const NewsPage: React.FC = () => {
 
   if (isLoading) {
     return (
-      <Container maxWidth="lg" sx={{ py: 6, textAlign: 'center' }}>
-        <CircularProgress />
-      </Container>
+      <Box sx={pageRoot}>
+        <Container maxWidth="lg" sx={{ py: 10, textAlign: 'center' }}>
+          <CircularProgress />
+        </Container>
+      </Box>
     );
   }
 
   if (error) {
     return (
-      <Container maxWidth="lg" sx={{ py: 6 }}>
-        <Typography variant="h6" color="error" textAlign="center">
-          Error loading news articles
-        </Typography>
-      </Container>
+      <Box sx={pageRoot}>
+        <Container maxWidth="lg" sx={{ py: 6 }}>
+          <Typography variant="h6" color="error" textAlign="center">
+            Error loading news articles
+          </Typography>
+        </Container>
+      </Box>
     );
   }
 
   return (
-    <Container maxWidth="lg" sx={{ py: { xs: 4, md: 6 } }}>
-      <Typography
-        variant="h4"
-        component="h1"
-        sx={{ fontWeight: 600, textAlign: 'center', mb: 4, color: 'text.primary' }}
-      >
-        {t('news.title')}
-      </Typography>
+    <Box sx={pageRoot}>
+      <Box sx={pageHero}>
+        <Container maxWidth="lg">
+          <Box sx={{ textAlign: 'center', maxWidth: 720, mx: 'auto' }}>
+            <Typography variant="overline" sx={{ ...pageOverline, display: 'block', mb: 1 }}>
+              Updates
+            </Typography>
+            <Typography variant={isMobile ? 'h3' : 'h2'} component="h1" sx={{ ...pageH1, mb: 2 }}>
+              {t('news.title')}
+            </Typography>
+            <Typography variant="body1" sx={{ ...pageLead, mx: 'auto' }}>
+              Stories from the field, the diocese, and our programmes.
+            </Typography>
+          </Box>
+        </Container>
+      </Box>
 
+      <Box sx={{ bgcolor: SECTION_BG_ALT, py: { xs: 5, md: 7 } }}>
+        <Container maxWidth="lg">
       {newsData?.news && newsData.news.length > 0 ? (
         <Grid container spacing={3}>
           {newsData.news.map((article: any) => (
@@ -63,14 +89,16 @@ const NewsPage: React.FC = () => {
                   display: 'flex',
                   flexDirection: 'column',
                   cursor: 'pointer',
+                  bgcolor: 'background.paper',
                   borderRadius: 2,
                   border: '1px solid',
                   borderColor: 'divider',
                   overflow: 'hidden',
-                  transition: 'box-shadow 0.2s, border-color 0.2s',
+                  transition: 'box-shadow 0.2s, transform 0.2s, border-color 0.2s',
                   '&:hover': {
-                    boxShadow: 2,
-                    borderColor: 'action.hover',
+                    boxShadow: '0 8px 24px rgba(15,23,42,0.08)',
+                    transform: 'translateY(-2px)',
+                    borderColor: 'info.light',
                   },
                 }}
                 onClick={() => navigate(`/news/${article.id}`)}
@@ -106,7 +134,7 @@ const NewsPage: React.FC = () => {
                   </Box>
                 </CardContent>
                 <CardActions sx={{ px: 2.5, pb: 2, pt: 0 }}>
-                  <Button size="small" sx={{ textTransform: 'none', fontWeight: 600 }} onClick={(e) => { e.stopPropagation(); navigate(`/news/${article.id}`); }}>
+                  <Button size="small" sx={{ textTransform: 'none', fontWeight: 600, color: 'info.main' }} onClick={(e) => { e.stopPropagation(); navigate(`/news/${article.id}`); }}>
                     {t('news.readMore')}
                   </Button>
                 </CardActions>
@@ -121,7 +149,9 @@ const NewsPage: React.FC = () => {
           </Typography>
         </Box>
       )}
-    </Container>
+        </Container>
+      </Box>
+    </Box>
   );
 };
 

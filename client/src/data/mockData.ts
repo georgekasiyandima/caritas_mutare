@@ -209,13 +209,13 @@ export const mockContactInfo: ContactInfo = {
     donations: "donations@caritasmutare.org"
   },
   social_media: {
-    facebook: "https://facebook.com/caritasmutare", // Replace with actual social media
-    twitter: "https://twitter.com/caritasmutare",
-    instagram: "https://instagram.com/caritasmutare"
+    facebook: "https://www.facebook.com/share/1DoS9a5mzU/",
+    twitter: "https://www.linkedin.com/in/caritas-zimbabwe-diocese-of-mutare-460272300?utm_source=share_via&utm_content=profile&utm_medium=member_android",
+    instagram: "https://www.linkedin.com/in/caritas-zimbabwe-diocese-of-mutare-460272300?utm_source=share_via&utm_content=profile&utm_medium=member_android"
   },
   office_hours: {
-    weekdays: "8:00 AM - 5:00 PM",
-    saturday: "8:00 AM - 1:00 PM",
+    weekdays: "Monday - Thursday: 8:00 AM - 4:45 PM",
+    saturday: "Friday: 8:00 AM - 1:00 PM",
     sunday: "Closed"
   }
 };

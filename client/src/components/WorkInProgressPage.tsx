@@ -6,8 +6,8 @@ import {
   Paper,
   Avatar,
   Button,
-  useTheme,
   Chip,
+  Stack,
 } from '@mui/material';
 import {
   Construction as ConstructionIcon,
@@ -16,6 +16,16 @@ import {
   ArrowBack as ArrowBackIcon,
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
+import {
+  pageRoot,
+  pageHero,
+  pageOverline,
+  pageH1,
+  pageLead,
+  outlineCard,
+  outlineCardHover,
+  SECTION_BG_ALT,
+} from '../lib/sitePageLayout';
 
 interface WorkInProgressPageProps {
   title?: string;
@@ -26,195 +36,109 @@ interface WorkInProgressPageProps {
 }
 
 const WorkInProgressPage: React.FC<WorkInProgressPageProps> = ({
-  title = "Coming Soon",
+  title = 'Coming Soon',
   description = "We're working hard to bring you something amazing!",
-  expectedLaunch = "Early 2025",
+  expectedLaunch = 'Early 2025',
   features = [
-    "Interactive content",
-    "Real-time updates",
-    "Mobile optimization",
-    "Enhanced user experience"
+    'Interactive content',
+    'Real-time updates',
+    'Mobile optimization',
+    'Enhanced user experience',
   ],
-  showBackButton = true
+  showBackButton = true,
 }) => {
   const navigate = useNavigate();
-  const theme = useTheme();
+  const cardSx = { ...outlineCard, ...outlineCardHover };
 
   return (
-    <Box sx={{ 
-      minHeight: '100vh', 
-      display: 'flex', 
-      alignItems: 'center',
-      backgroundColor: 'background.default',
-      py: 8
-    }}>
-      <Container maxWidth="md">
-        <Paper
-          elevation={8}
-          sx={{
-            p: 6,
-            textAlign: 'center',
-            borderRadius: 4,
-            background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%)`,
-            color: 'white',
-            position: 'relative',
-            overflow: 'hidden',
-          }}
-        >
-          {/* Decorative Elements */}
-          <Box
-            sx={{
-              position: 'absolute',
-              top: -50,
-              right: -50,
-              width: 100,
-              height: 100,
-              borderRadius: '50%',
-              backgroundColor: 'rgba(255,255,255,0.1)',
-            }}
-          />
-          <Box
-            sx={{
-              position: 'absolute',
-              bottom: -30,
-              left: -30,
-              width: 60,
-              height: 60,
-              borderRadius: '50%',
-              backgroundColor: 'rgba(255,255,255,0.1)',
-            }}
-          />
-
-          {/* Main Content */}
-          <Avatar
-            sx={{
-              width: 120,
-              height: 120,
-              mx: 'auto',
-              mb: 4,
-              backgroundColor: 'rgba(255,255,255,0.2)',
-              border: '4px solid rgba(255,255,255,0.3)',
-            }}
-          >
-            <ConstructionIcon sx={{ fontSize: 60 }} />
-          </Avatar>
-
-          <Typography variant="h3" component="h1" gutterBottom sx={{ fontWeight: 'bold', mb: 2 }}>
-            {title}
-          </Typography>
-
-          <Typography variant="h6" sx={{ mb: 4, opacity: 0.9, maxWidth: 600, mx: 'auto' }}>
-            {description}
-          </Typography>
-
-          {/* Expected Launch */}
-          <Box sx={{ mb: 4 }}>
+    <Box sx={pageRoot}>
+      <Box sx={pageHero}>
+        <Container maxWidth="md">
+          <Stack spacing={2} alignItems="center" textAlign="center">
+            <Typography variant="overline" sx={{ ...pageOverline, display: 'block' }}>
+              In progress
+            </Typography>
+            <Typography variant="h2" component="h1" sx={{ ...pageH1, fontSize: { xs: '1.75rem', sm: '2rem' } }}>
+              {title}
+            </Typography>
+            <Typography variant="body1" sx={{ ...pageLead, maxWidth: 560 }}>
+              {description}
+            </Typography>
             <Chip
               icon={<ScheduleIcon />}
-              label={`Expected Launch: ${expectedLaunch}`}
+              label={`Expected: ${expectedLaunch}`}
+              size="small"
               sx={{
-                backgroundColor: 'rgba(255,255,255,0.2)',
-                color: 'white',
-                fontSize: '1rem',
-                py: 2,
-                px: 3,
-                '& .MuiChip-icon': {
-                  fontSize: '1.2rem',
-                },
+                bgcolor: 'rgba(13, 92, 99, 0.08)',
+                color: 'info.dark',
+                fontWeight: 600,
+                '& .MuiChip-icon': { color: 'info.dark' },
               }}
             />
-          </Box>
+          </Stack>
+        </Container>
+      </Box>
 
-          {/* Features Preview */}
-          {features.length > 0 && (
-            <Box sx={{ mb: 4 }}>
-              <Typography variant="h6" sx={{ mb: 3, fontWeight: 600 }}>
-                What to Expect:
-              </Typography>
-              <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 2 }}>
-                {features.map((feature, index) => (
-                  <Chip
-                    key={index}
-                    icon={<NotificationIcon />}
-                    label={feature}
-                    variant="outlined"
-                    sx={{
-                      borderColor: 'rgba(255,255,255,0.5)',
-                      color: 'white',
-                      backgroundColor: 'rgba(255,255,255,0.1)',
-                      '& .MuiChip-icon': {
-                        color: 'white',
-                      },
-                    }}
-                  />
-                ))}
+      <Box sx={{ bgcolor: SECTION_BG_ALT, py: { xs: 5, md: 7 } }}>
+        <Container maxWidth="md">
+          <Paper elevation={0} sx={{ ...cardSx, p: { xs: 3, md: 4 } }}>
+            <Avatar
+              sx={{
+                width: 72,
+                height: 72,
+                mx: 'auto',
+                mb: 3,
+                bgcolor: 'rgba(13, 92, 99, 0.1)',
+                color: 'info.dark',
+              }}
+            >
+              <ConstructionIcon sx={{ fontSize: 36 }} />
+            </Avatar>
+
+            {features.length > 0 && (
+              <Box sx={{ mb: 3 }}>
+                <Typography variant="subtitle1" sx={{ fontWeight: 700, mb: 2, textAlign: 'center' }}>
+                  Planned highlights
+                </Typography>
+                <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 1 }}>
+                  {features.map((feature, index) => (
+                    <Chip
+                      key={index}
+                      icon={<NotificationIcon sx={{ fontSize: '1rem !important', color: 'info.dark !important' }} />}
+                      label={feature}
+                      variant="outlined"
+                      sx={{ borderColor: 'divider', bgcolor: 'background.paper' }}
+                    />
+                  ))}
+                </Box>
               </Box>
+            )}
+
+            <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'center', mb: 3 }}>
+              Want to be notified when this page launches?
+            </Typography>
+            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1.5 }}>
+              <Button variant="contained" color="primary" size="large" sx={{ px: 4, fontWeight: 600 }} onClick={() => navigate('/contact')}>
+                Contact us
+              </Button>
+              {showBackButton && (
+                <Button variant="text" color="info" startIcon={<ArrowBackIcon />} onClick={() => navigate(-1)} sx={{ fontWeight: 600 }}>
+                  Go back
+                </Button>
+              )}
             </Box>
-          )}
+          </Paper>
 
-          {/* Call to Action */}
-          <Box sx={{ mb: 3 }}>
-            <Typography variant="body1" sx={{ mb: 3, opacity: 0.9 }}>
-              Want to be notified when this launches?
+          <Box sx={{ textAlign: 'center', mt: 4 }}>
+            <Typography variant="body2" color="text.secondary">
+              Questions? Email{' '}
+              <Typography component="span" variant="body2" sx={{ color: 'info.dark', fontWeight: 600 }}>
+                egumbeze@caritasmutare.org
+              </Typography>
             </Typography>
-            <Button
-              variant="contained"
-              size="large"
-              sx={{
-                backgroundColor: 'white',
-                color: 'primary.main',
-                textTransform: 'none',
-                px: 4,
-                py: 1.5,
-                borderRadius: 3,
-                fontWeight: 'bold',
-                '&:hover': {
-                  backgroundColor: 'rgba(255,255,255,0.9)',
-                  transform: 'translateY(-2px)',
-                },
-                transition: 'all 0.3s ease',
-              }}
-              onClick={() => navigate('/contact')}
-            >
-              Get Notified
-            </Button>
           </Box>
-
-          {/* Back Button */}
-          {showBackButton && (
-            <Button
-              variant="text"
-              startIcon={<ArrowBackIcon />}
-              onClick={() => navigate(-1)}
-              sx={{
-                color: 'white',
-                textTransform: 'none',
-                opacity: 0.8,
-                '&:hover': {
-                  backgroundColor: 'rgba(255,255,255,0.1)',
-                  opacity: 1,
-                },
-              }}
-            >
-              Go Back
-            </Button>
-          )}
-        </Paper>
-
-        {/* Additional Info */}
-        <Box sx={{ textAlign: 'center', mt: 4 }}>
-          <Typography variant="body2" color="text.secondary">
-            Questions? Contact us at{' '}
-            <Typography
-              component="span"
-              variant="body2"
-              sx={{ color: 'primary.main', fontWeight: 'bold' }}
-            >
-              egumbeze@caritasmutare.org
-            </Typography>
-          </Typography>
-        </Box>
-      </Container>
+        </Container>
+      </Box>
     </Box>
   );
 };

@@ -9,45 +9,60 @@ import {
   List,
   ListItem,
   ListItemText,
+  Stack,
+  Chip,
 } from '@mui/material';
+import {
+  SECTION_BG_ALT,
+  pageRoot,
+  pageHero,
+  pageOverline,
+  pageH1,
+  pageLead,
+  outlineCard,
+  outlineCardHover,
+  sectionVerticalPadding,
+} from '../lib/sitePageLayout';
+
+const cardSx = { ...outlineCard, ...outlineCardHover } as const;
 
 const AboutPage: React.FC = () => {
   return (
-    <Box sx={{ backgroundColor: 'background.default', minHeight: '100vh' }}>
-      <Box
-        sx={(theme) => ({
-          background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%)`,
-          color: 'white',
-          py: { xs: 6, md: 8 },
-          textAlign: 'center',
-        })}
-      >
+    <Box sx={pageRoot}>
+      <Box sx={pageHero}>
         <Container maxWidth="lg">
-          <Typography
-            variant="h3"
-            component="h1"
-            gutterBottom
-            sx={{ fontWeight: 'bold', mb: 2 }}
-          >
-            About Caritas Mutare
-          </Typography>
-          <Typography
-            variant="h6"
-            sx={{ maxWidth: 720, mx: 'auto', opacity: 0.9 }}
-          >
-            Rooted in Catholic social teaching, Caritas Mutare accompanies vulnerable communities towards dignity,
-            resilience and sustainable livelihoods across the Diocese of Mutare.
-          </Typography>
+          <Stack spacing={2.5} alignItems="center" textAlign="center">
+            <Chip
+              label="Who we are"
+              size="small"
+              sx={{
+                bgcolor: 'rgba(13, 92, 99, 0.08)',
+                color: 'info.dark',
+                fontWeight: 600,
+                borderRadius: 1,
+              }}
+            />
+            <Typography variant="overline" sx={{ ...pageOverline, display: 'block' }}>
+              Our story
+            </Typography>
+            <Typography variant="h2" component="h1" sx={{ ...pageH1, fontSize: { xs: '1.75rem', sm: '2rem', md: '2.25rem' } }}>
+              About Caritas Mutare
+            </Typography>
+            <Typography variant="body1" sx={{ ...pageLead, maxWidth: 720, textAlign: 'center' }}>
+              Rooted in Catholic social teaching, Caritas Mutare accompanies vulnerable communities towards dignity,
+              resilience and sustainable livelihoods across the Diocese of Mutare.
+            </Typography>
+          </Stack>
         </Container>
       </Box>
 
-      <Container maxWidth="lg" sx={{ py: { xs: 4, md: 6 } }}>
-
+      <Box sx={{ ...sectionVerticalPadding, bgcolor: SECTION_BG_ALT }}>
+        <Container maxWidth="lg">
       <Grid container spacing={4}>
         <Grid item xs={12} md={6}>
-          <Card elevation={0} sx={{ borderRadius: 3, border: '1px solid', borderColor: 'divider' }}>
+          <Card elevation={0} sx={cardSx}>
             <CardContent>
-              <Typography variant="h5" component="h2" gutterBottom color="primary">
+              <Typography variant="h5" component="h2" gutterBottom sx={{ fontFamily: '"Merriweather", Georgia, serif', fontWeight: 700 }}>
                 Vision
               </Typography>
               <Typography variant="body1" sx={{ lineHeight: 1.7 }}>
@@ -58,29 +73,29 @@ const AboutPage: React.FC = () => {
 
           <Box sx={{ height: { xs: 16, md: 24 } }} />
 
-          <Card elevation={0} sx={{ borderRadius: 3, border: '1px solid', borderColor: 'divider' }}>
+          <Card elevation={0} sx={cardSx}>
             <CardContent>
-              <Typography variant="h5" component="h2" gutterBottom color="primary">
+              <Typography variant="h5" component="h2" gutterBottom sx={{ fontFamily: '"Merriweather", Georgia, serif', fontWeight: 700 }}>
                 Mission
               </Typography>
               <Typography variant="body1" sx={{ lineHeight: 1.7 }}>
                 Guided by the Social Teachings of the Roman Catholic Church, Caritas Zimbabwe Diocese of Mutare thrives
                 “to promote food security, social protection, environmental management, water and sanitation for the
-                vulnerable men, women, boys and girls in a sustainable manner within the Diocese of Mutare”.
+                vulnerable men, women, boys and girls, inclusive of persons with disabilities, in a sustainable manner within the Diocese of Mutare”.
               </Typography>
             </CardContent>
           </Card>
         </Grid>
 
         <Grid item xs={12} md={6}>
-          <Card elevation={0} sx={{ borderRadius: 3, border: '1px solid', borderColor: 'divider', mb: 3 }}>
+          <Card elevation={0} sx={{ ...cardSx, mb: 3 }}>
             <CardContent>
-              <Typography variant="h5" component="h2" gutterBottom color="primary">
+              <Typography variant="h5" component="h2" gutterBottom sx={{ fontFamily: '"Merriweather", Georgia, serif', fontWeight: 700 }}>
                 Values
               </Typography>
               <Typography variant="body1" sx={{ mb: 2 }}>
                 Catholic Church’s social teachings are the basic foundation of our organization. At the heart of the
-                Catholic social tradition are the following values which guide us:
+                Catholic Church social teachings are the following values which guide us:
               </Typography>
               <List dense>
                 {[
@@ -102,9 +117,9 @@ const AboutPage: React.FC = () => {
             </CardContent>
           </Card>
 
-          <Card elevation={0} sx={{ borderRadius: 3, border: '1px solid', borderColor: 'divider' }}>
+          <Card elevation={0} sx={cardSx}>
             <CardContent>
-              <Typography variant="h5" component="h2" gutterBottom color="primary">
+              <Typography variant="h5" component="h2" gutterBottom sx={{ fontFamily: '"Merriweather", Georgia, serif', fontWeight: 700 }}>
                 Thematic Areas
               </Typography>
               <List dense>
@@ -115,6 +130,7 @@ const AboutPage: React.FC = () => {
                   'Climate resilience and natural resource management',
                   'Institutional and community capacity development',
                   'Youth and women empowerment and development',
+                  'Including persons with disabilities in humanitarian response and livelihoods',
                 ].map((area) => (
                   <ListItem key={area} sx={{ py: 0.3 }}>
                     <ListItemText primary={area} />
@@ -125,13 +141,16 @@ const AboutPage: React.FC = () => {
           </Card>
         </Grid>
       </Grid>
+        </Container>
+      </Box>
 
-      <Box sx={{ mt: 6 }}>
+      <Box sx={{ ...sectionVerticalPadding, bgcolor: 'background.paper' }}>
+        <Container maxWidth="lg">
         <Grid container spacing={4}>
           <Grid item xs={12} md={6}>
-            <Card elevation={0} sx={{ borderRadius: 3, border: '1px solid', borderColor: 'divider', mb: 3 }}>
+            <Card elevation={0} sx={{ ...cardSx, mb: 3 }}>
               <CardContent>
-                <Typography variant="h5" component="h2" gutterBottom color="primary">
+                <Typography variant="h5" component="h2" gutterBottom sx={{ fontFamily: '"Merriweather", Georgia, serif', fontWeight: 700 }}>
                   Collaboration and coordination with key stakeholders
                 </Typography>
                 <Typography variant="body1" sx={{ mb: 2, lineHeight: 1.7 }}>
@@ -162,19 +181,19 @@ const AboutPage: React.FC = () => {
               </CardContent>
             </Card>
 
-            <Card elevation={0} sx={{ borderRadius: 3, border: '1px solid', borderColor: 'divider' }}>
+            <Card elevation={0} sx={cardSx}>
               <CardContent>
-                <Typography variant="h6" component="h3" gutterBottom color="primary">
+                <Typography variant="h6" component="h3" gutterBottom sx={{ fontFamily: '"Merriweather", Georgia, serif', fontWeight: 700 }}>
                   Technical partners and sister organizations
                 </Typography>
                 <List dense>
                   {[
                     'Caritas Zimbabwe National Office',
                     'Youth Alive Zimbabwe (YAZIM)',
-                    'Fambidzanayi Permaculture',
-                    'Women and Land in Zimbabwe',
-                    'Zimbabwe Women Lawyers Association (ZWLA)',
-                    'Federation of Organizations of Disabled People in Zimbabwe (FODPZ)',
+                    'The Catholic Commission for Justice and Peace in Zimbabwe',
+                    'Mutare Diocese Safeguarding Office',
+                    'Mutare Diocese Health Commission',
+                    'Mutare Diocese Education Commission',
                   ].map((partner) => (
                     <ListItem key={partner} sx={{ py: 0.3 }}>
                       <ListItemText primary={partner} />
@@ -186,15 +205,15 @@ const AboutPage: React.FC = () => {
           </Grid>
 
           <Grid item xs={12} md={6}>
-            <Card elevation={0} sx={{ borderRadius: 3, border: '1px solid', borderColor: 'divider', mb: 3 }}>
+            <Card elevation={0} sx={{ ...cardSx, mb: 3 }}>
               <CardContent>
-                <Typography variant="h5" component="h2" gutterBottom color="primary">
+                <Typography variant="h5" component="h2" gutterBottom sx={{ fontFamily: '"Merriweather", Georgia, serif', fontWeight: 700 }}>
                   Caritas Mutare management and staffing
                 </Typography>
                 <Typography variant="body1" sx={{ mb: 2, lineHeight: 1.7 }}>
-                  Caritas Mutare, led by Fr. Ernest Gumbeze as Development Coordinator, has a structured team to drive
-                  its mission. Sister Angeline oversees the organization’s own projects, providing strategic direction
-                  and guidance. The Programs Manager oversees all organizational projects, ensuring effective
+                  Caritas Mutare, led by the Development Coordinator, has a structured team to drive
+                  its mission. Caritas Mutare also has its own projects with initiatives such as Mai Maria Village,
+                  the Soup Kitchen and education support. The Programs Manager oversees all organizational projects, ensuring effective
                   implementation and coordination.
                 </Typography>
                 <Typography variant="body1" sx={{ mb: 2, lineHeight: 1.7 }}>
@@ -209,9 +228,9 @@ const AboutPage: React.FC = () => {
               </CardContent>
             </Card>
 
-            <Card elevation={0} sx={{ borderRadius: 3, border: '1px solid', borderColor: 'divider' }}>
+            <Card elevation={0} sx={cardSx}>
               <CardContent>
-                <Typography variant="h6" component="h3" gutterBottom color="primary">
+                <Typography variant="h6" component="h3" gutterBottom sx={{ fontFamily: '"Merriweather", Georgia, serif', fontWeight: 700 }}>
                   Monitoring and Evaluation (M&amp;E)
                 </Typography>
                 <Typography variant="body1" sx={{ lineHeight: 1.7 }}>
@@ -225,8 +244,8 @@ const AboutPage: React.FC = () => {
             </Card>
           </Grid>
         </Grid>
+        </Container>
       </Box>
-    </Container>
     </Box>
   );
 };

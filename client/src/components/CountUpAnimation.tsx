@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Typography } from '@mui/material';
 
 interface CountUpAnimationProps {
@@ -23,72 +23,88 @@ const CountUpAnimation: React.FC<CountUpAnimationProps> = ({
   onComplete,
 }) => {
   const [count, setCount] = useState(0);
-  const [isVisible, setIsVisible] = useState(false);
   const countRef = useRef<HTMLDivElement>(null);
+  const hasStartedRef = useRef(false);
+  const rafRef = useRef<number | null>(null);
+
+  const endValue = parseInt(String(end).replace(/[^\d]/g, ''), 10);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && !isVisible) {
-          setIsVisible(true);
-          startCountUp();
-        }
-      },
-      { threshold: 0.1 }
-    );
+    hasStartedRef.current = false;
+    setCount(0);
+    if (rafRef.current != null) {
+      cancelAnimationFrame(rafRef.current);
+      rafRef.current = null;
+    }
+  }, [end, duration]);
 
-    if (countRef.current) {
-      observer.observe(countRef.current);
+  const startCountUp = useCallback(() => {
+    if (!Number.isFinite(endValue) || endValue < 0) {
+      setCount(0);
+      onComplete?.();
+      return;
     }
 
-    return () => {
-      if (countRef.current) {
-        observer.unobserve(countRef.current);
-      }
-    };
-  }, [isVisible]);
-
-  const startCountUp = () => {
     const startTime = Date.now();
     const startValue = 0;
-    const endValue = parseInt(String(end).replace(/[^\d]/g, ''));
 
     const animate = () => {
       const elapsed = Date.now() - startTime;
       const progress = Math.min(elapsed / duration, 1);
-      
-      // Easing function for smooth animation
       const easeOutQuart = 1 - Math.pow(1 - progress, 4);
       const currentValue = Math.floor(startValue + (endValue - startValue) * easeOutQuart);
-      
+
       setCount(currentValue);
 
       if (progress < 1) {
-        requestAnimationFrame(animate);
+        rafRef.current = requestAnimationFrame(animate);
       } else {
+        rafRef.current = null;
         setCount(endValue);
-        if (onComplete) {
-          onComplete();
-        }
+        onComplete?.();
       }
     };
 
-    requestAnimationFrame(animate);
-  };
+    rafRef.current = requestAnimationFrame(animate);
+  }, [duration, endValue, onComplete]);
+
+  useEffect(() => {
+    const el = countRef.current;
+    if (!el) return undefined;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting || hasStartedRef.current) return;
+        hasStartedRef.current = true;
+        startCountUp();
+      },
+      { threshold: 0.1 }
+    );
+
+    observer.observe(el);
+
+    return () => {
+      observer.disconnect();
+      if (rafRef.current != null) {
+        cancelAnimationFrame(rafRef.current);
+        rafRef.current = null;
+      }
+    };
+  }, [startCountUp]);
 
   const formatNumber = (num: number): string => {
     const originalEnd = end.toString();
     const hasPlus = originalEnd.includes('+');
     const hasComma = originalEnd.includes(',');
-    
+
     if (hasPlus) {
       return num.toLocaleString() + '+';
     }
-    
+
     if (hasComma) {
       return num.toLocaleString();
     }
-    
+
     return num.toString();
   };
 
@@ -103,7 +119,9 @@ const CountUpAnimation: React.FC<CountUpAnimationProps> = ({
           letterSpacing: '0.02em',
         }}
       >
-        {prefix}{formatNumber(count)}{suffix}
+        {prefix}
+        {Number.isFinite(endValue) ? formatNumber(count) : String(end)}
+        {suffix}
       </Typography>
     </div>
   );

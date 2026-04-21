@@ -11,11 +11,71 @@
   "admin": "Admin"
   },
   "hero": {
-    "title": "Caritas Mutare",
-    "subtitle": "Catholic Community Development Organization",
-    "description": "Serving the Diocese of Mutare, Zimbabwe with compassion, hope, and community development initiatives.",
+    "title": "Caritas Zimbabwe Roman Catholic Diocese of Mutare",
+    "subtitle": "Development arm of the Catholic Church and humanitarian response.",
+    "description": "Serving communities across the Diocese of Mutare with compassion, dignity and practical support.",
     "learnMore": "Learn More",
     "donateNow": "Donate Now"
+  },
+  "home": {
+    "partnersTitle": "Strategic partners",
+    "pathways": {
+      "projects": "View projects",
+      "soupKitchen": "Soup kitchen",
+      "contact": "Contact"
+    },
+    "heroImageCaption": "Community life and programme work across the Diocese of Mutare",
+    "stats": {
+      "overline": "At a glance",
+      "headline": "Scale rooted in service, not slogans",
+      "familiesServed": "Families served",
+      "communitiesReached": "Communities reached",
+      "livesImpacted": "Lives impacted",
+      "yearsOfService": "Years of service"
+    },
+    "thematic": {
+      "overline": "Where we work",
+      "title": "Thematic focus",
+      "intro": "Our programmes follow Catholic social teaching: dignity, solidarity, and care for those on the margins — including persons with disabilities.",
+      "cta": "Read our mission & values",
+      "items": {
+        "food": {
+          "title": "Food security & livelihoods",
+          "blurb": "Sustainable agriculture, resilience, and income for households."
+        },
+        "humanitarian": {
+          "title": "Humanitarian response",
+          "blurb": "Emergency support, inclusion, and community preparedness."
+        },
+        "disability": {
+          "title": "Disability inclusion",
+          "blurb": "Persons with disabilities in response, recovery, and livelihoods."
+        },
+        "community": {
+          "title": "Community & institutions",
+          "blurb": "Infrastructure, coordination with diocese and local structures."
+        }
+      }
+    },
+    "projects": {
+      "headline": "Donor-funded and Caritas-led initiatives",
+      "learnMore": "Learn more",
+      "viewAll": "View all projects"
+    },
+    "news": {
+      "intro": "Updates from the field and the diocese.",
+      "minRead": "{{count}} min read",
+      "viewAll": "View all news"
+    },
+    "impact": {
+      "title": "Our impact",
+      "intro": "Glimpses of community engagement and project work across the diocese — the same mission you support when you partner with Caritas."
+    },
+    "closingCta": {
+      "title": "Join our mission",
+      "body": "Walk with us in solidarity — through prayer, volunteering, or giving — so that communities across Mutare can live with dignity and hope."
+    },
+    "whatsappWelcome": "Hello! Thank you for your interest in Caritas Mutare. How can we help you today?"
   },
   "about": {
   "title": "About Caritas Mutare",
@@ -107,11 +167,11 @@
     }
   },
   "footer": {
-  "description": "Caritas Mutare is committed to serving the community through Catholic social teaching and community development projects.",
+  "description": "Caritas Zimbabwe Roman Catholic Diocese of Mutare is the development arm of the Catholic Church and humanitarian response.",
     "quickLinks": "Quick Links",
     "contactInfo": "Contact Information",
     "followUs": "Follow Us",
-    "copyright": "© Caritas Mutare. All rights reserved.",
+    "copyright": "© Caritas Zimbabwe Roman Catholic Diocese of Mutare. All rights reserved.",
     "poweredBy": "Powered by faith, hope, and love"
   },
   "common": {

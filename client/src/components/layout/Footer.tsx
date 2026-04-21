@@ -10,15 +10,15 @@ import {
 } from '@mui/material';
 import {
   Facebook as FacebookIcon,
-  Instagram as InstagramIcon,
+  LinkedIn as LinkedInIcon,
   Email as EmailIcon,
   Phone as PhoneIcon,
   LocationOn as LocationIcon,
+  Schedule as ScheduleIcon,
 } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 import PartnerLogoStrip from '../PartnerLogoStrip';
-import { mockContactInfo } from '../../data/mockData';
 
 const Footer: React.FC = () => {
   const { t } = useTranslation();
@@ -58,7 +58,7 @@ const Footer: React.FC = () => {
                 color="inherit"
                 size="small"
                 component="a"
-                href={mockContactInfo.social_media.facebook}
+                href="https://www.facebook.com/share/1DoS9a5mzU/"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -68,43 +68,17 @@ const Footer: React.FC = () => {
                 color="inherit"
                 size="small"
                 component="a"
-                href={mockContactInfo.social_media.twitter}
+                href="https://www.linkedin.com/in/caritas-zimbabwe-diocese-of-mutare-460272300?utm_source=share_via&utm_content=profile&utm_medium=member_android"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <Box
-                  sx={{
-                    width: 18,
-                    height: 18,
-                    borderRadius: '4px',
-                    border: '1.5px solid currentColor',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: 11,
-                    fontWeight: 700,
-                    fontFamily:
-                      'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
-                  }}
-                >
-                  X
-                </Box>
+                <LinkedInIcon />
               </IconButton>
               <IconButton
                 color="inherit"
                 size="small"
                 component="a"
-                href={mockContactInfo.social_media.instagram}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <InstagramIcon />
-              </IconButton>
-              <IconButton
-                color="inherit"
-                size="small"
-                component="a"
-                href={`mailto:${mockContactInfo.email.general}`}
+                href="mailto:admin@caritasmutare.org"
               >
                 <EmailIcon />
               </IconButton>
@@ -165,7 +139,8 @@ const Footer: React.FC = () => {
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                 <LocationIcon fontSize="small" />
                 <Typography variant="body2">
-                  Cnr Jason Moyo and Herbert Chitepo, Mutare, Zimbabwe
+                  Mai Maria Village, Stand No. 19449, Dangamvura Township,
+                  Triangle of Raheen, Mutare District
                 </Typography>
               </Box>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
@@ -177,7 +152,13 @@ const Footer: React.FC = () => {
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                 <EmailIcon fontSize="small" />
                 <Typography variant="body2">
-                  egumbeze@caritasmutare.org
+                  admin@caritasmutare.org
+                </Typography>
+              </Box>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <ScheduleIcon fontSize="small" />
+                <Typography variant="body2">
+                  Mon-Thu: 8:00am-16:45pm | Fri: 8:00am-13:00pm
                 </Typography>
               </Box>
             </Box>

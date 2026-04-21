@@ -25,6 +25,18 @@ import {
 } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
 import BackToTopButton from '../components/BackToTopButton';
+import {
+  pageRoot,
+  pageHero,
+  pageOverline,
+  pageH1,
+  pageLead,
+  outlineCard,
+  outlineCardHover,
+  formCardHeader,
+} from '../lib/sitePageLayout';
+
+const contactCardSx = { ...outlineCard, ...outlineCardHover };
 
 const ContactPage: React.FC = () => {
   const { t } = useTranslation();
@@ -65,56 +77,34 @@ const ContactPage: React.FC = () => {
   };
 
   return (
-    <Box sx={{ minHeight: '100vh', backgroundColor: 'background.default' }}>
-      {/* Hero Section */}
-      <Box
-        sx={{
-          background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%)`,
-          color: 'white',
-          py: 8,
-          pt: 16, // Prevent navbar overlap
-        }}
-      >
+    <Box sx={pageRoot}>
+      <Box sx={pageHero}>
         <Container maxWidth="lg">
-          <Box sx={{ textAlign: 'center', mb: 6 }}>
-            <Typography 
-              variant={isMobile ? 'h3' : 'h2'} 
-              component="h1" 
-              gutterBottom 
-              sx={{ fontWeight: 'bold', mb: 3, textShadow: '2px 2px 4px rgba(0,0,0,0.3)' }}
-            >
-        {t('contact.title')}
-      </Typography>
-            <Typography 
-              variant="h6" 
-              sx={{ 
-                opacity: 0.9, 
-                maxWidth: 600, 
-                mx: 'auto',
-                textShadow: '1px 1px 2px rgba(0,0,0,0.3)'
-              }}
-            >
-        {t('contact.description')}
-      </Typography>
+          <Box sx={{ textAlign: 'center', maxWidth: 720, mx: 'auto' }}>
+            <Typography variant="overline" sx={{ ...pageOverline, display: 'block', mb: 1 }}>
+              Get in touch
+            </Typography>
+            <Typography variant={isMobile ? 'h3' : 'h2'} component="h1" sx={{ ...pageH1, mb: 2 }}>
+              {t('contact.title')}
+            </Typography>
+            <Typography variant="body1" sx={{ ...pageLead, mx: 'auto' }}>
+              {t('contact.description')}
+            </Typography>
           </Box>
         </Container>
       </Box>
 
-      <Container maxWidth="lg" sx={{ py: 8 }}>
+      <Container maxWidth="lg" sx={{ py: { xs: 5, md: 7 } }}>
 
       <Grid container spacing={6}>
         {/* Contact Information */}
         <Grid item xs={12} md={4}>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
             {/* Address Card */}
-            <Card elevation={3} sx={{ 
-              borderRadius: 3,
-              transition: 'transform 0.2s, box-shadow 0.2s',
-              '&:hover': { transform: 'translateY(-4px)', boxShadow: 6 }
-            }}>
+            <Card elevation={0} sx={contactCardSx}>
               <CardContent sx={{ p: 3 }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
-                  <Avatar sx={{ backgroundColor: 'primary.main' }}>
+                  <Avatar sx={{ bgcolor: 'rgba(13, 92, 99, 0.12)', color: 'info.dark' }}>
                     <LocationIcon />
                   </Avatar>
                   <Typography variant="h6" sx={{ fontWeight: 600 }}>
@@ -122,11 +112,12 @@ const ContactPage: React.FC = () => {
                   </Typography>
                 </Box>
                 <Typography variant="body1" color="text.secondary" sx={{ lineHeight: 1.6 }}>
-                  Cnr Jason Moyo and Herbert Chitepo<br />
-                  Mutare, Zimbabwe
+                  Mai Maria Village Dangamvura<br />
+                  Stand No. 19449 Dangamvura Township<br />
+                  Triangle of Raheen, Mutare District
                 </Typography>
                 <Chip 
-                  label="City Center" 
+                  label="Mai Maria Village" 
                   size="small" 
                   color="primary" 
                   sx={{ mt: 2 }}
@@ -135,14 +126,10 @@ const ContactPage: React.FC = () => {
             </Card>
 
             {/* Phone Card */}
-            <Card elevation={3} sx={{ 
-              borderRadius: 3,
-              transition: 'transform 0.2s, box-shadow 0.2s',
-              '&:hover': { transform: 'translateY(-4px)', boxShadow: 6 }
-            }}>
+            <Card elevation={0} sx={contactCardSx}>
               <CardContent sx={{ p: 3 }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
-                  <Avatar sx={{ backgroundColor: 'success.main' }}>
+                  <Avatar sx={{ bgcolor: 'rgba(13, 92, 99, 0.12)', color: 'info.dark' }}>
                     <PhoneIcon />
                   </Avatar>
                   <Typography variant="h6" sx={{ fontWeight: 600 }}>
@@ -164,14 +151,10 @@ const ContactPage: React.FC = () => {
             </Card>
 
             {/* Email Card */}
-            <Card elevation={3} sx={{ 
-              borderRadius: 3,
-              transition: 'transform 0.2s, box-shadow 0.2s',
-              '&:hover': { transform: 'translateY(-4px)', boxShadow: 6 }
-            }}>
+            <Card elevation={0} sx={contactCardSx}>
               <CardContent sx={{ p: 3 }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
-                  <Avatar sx={{ backgroundColor: 'info.main' }}>
+                  <Avatar sx={{ bgcolor: 'rgba(13, 92, 99, 0.12)', color: 'info.dark' }}>
                     <EmailIcon />
                   </Avatar>
                   <Typography variant="h6" sx={{ fontWeight: 600 }}>
@@ -179,7 +162,7 @@ const ContactPage: React.FC = () => {
                   </Typography>
                 </Box>
                 <Typography variant="body1" color="text.secondary" sx={{ mb: 2 }}>
-                  egumbeze@caritasmutare.org
+                  admin@caritasmutare.org
                 </Typography>
                 <Chip 
                   label="Response within 24 hours" 
@@ -190,14 +173,10 @@ const ContactPage: React.FC = () => {
             </Card>
 
             {/* Office Hours Card */}
-            <Card elevation={3} sx={{ 
-              borderRadius: 3,
-              transition: 'transform 0.2s, box-shadow 0.2s',
-              '&:hover': { transform: 'translateY(-4px)', boxShadow: 6 }
-            }}>
+            <Card elevation={0} sx={contactCardSx}>
               <CardContent sx={{ p: 3 }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
-                  <Avatar sx={{ backgroundColor: 'warning.main' }}>
+                  <Avatar sx={{ bgcolor: 'rgba(13, 92, 99, 0.12)', color: 'info.dark' }}>
                     <ScheduleIcon />
                   </Avatar>
                   <Typography variant="h6" sx={{ fontWeight: 600 }}>
@@ -206,27 +185,20 @@ const ContactPage: React.FC = () => {
                 </Box>
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
                   <Typography variant="body1" color="text.secondary">
-                    <strong>Monday - Friday:</strong> 8:00 AM - 5:00 PM
+                    <strong>Monday - Thursday:</strong> 8:00 AM - 4:45 PM
                   </Typography>
                   <Typography variant="body1" color="text.secondary">
-                    <strong>Saturday:</strong> 9:00 AM - 1:00 PM
-                  </Typography>
-                  <Typography variant="body1" color="text.secondary">
-                    <strong>Sunday:</strong> Closed
+                    <strong>Friday:</strong> 8:00 AM - 1:00 PM
                   </Typography>
                 </Box>
               </CardContent>
             </Card>
 
             {/* Map Card */}
-            <Card elevation={3} sx={{ 
-              borderRadius: 3,
-              transition: 'transform 0.2s, box-shadow 0.2s',
-              '&:hover': { transform: 'translateY(-4px)', boxShadow: 6 }
-            }}>
+            <Card elevation={0} sx={contactCardSx}>
               <CardContent sx={{ p: 3 }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3 }}>
-                  <Avatar sx={{ backgroundColor: 'secondary.main' }}>
+                  <Avatar sx={{ bgcolor: 'rgba(13, 92, 99, 0.12)', color: 'info.dark' }}>
                     <MapIcon />
                   </Avatar>
                   <Typography variant="h6" sx={{ fontWeight: 600 }}>
@@ -257,7 +229,7 @@ const ContactPage: React.FC = () => {
                 <Box sx={{ mt: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
                   <PublicIcon sx={{ fontSize: 16, color: 'text.secondary' }} />
                 <Typography variant="body2" color="text.secondary">
-                    Located in the heart of Mutare city center
+                    Mai Maria Village, Dangamvura, Mutare District
                 </Typography>
                 </Box>
               </CardContent>
@@ -267,23 +239,13 @@ const ContactPage: React.FC = () => {
 
         {/* Contact Form */}
         <Grid item xs={12} md={8}>
-          <Card elevation={4} sx={{ 
-            borderRadius: 4,
-            overflow: 'hidden',
-          }}>
-            <Box
-              sx={{
-                background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%)`,
-                color: 'white',
-                p: 3,
-                textAlign: 'center',
-              }}
-            >
-              <Typography variant="h5" sx={{ fontWeight: 'bold', mb: 1 }}>
-                Send us a Message
+          <Card elevation={0} sx={{ ...outlineCard, overflow: 'hidden' }}>
+            <Box sx={formCardHeader}>
+              <Typography variant="h5" sx={{ fontFamily: '"Merriweather", Georgia, serif', fontWeight: 700, mb: 1 }}>
+                Send us a message
               </Typography>
-              <Typography variant="body1" sx={{ opacity: 0.9 }}>
-                We'd love to hear from you. Send us a message and we'll respond as soon as possible.
+              <Typography variant="body2" color="text.secondary">
+                We will respond as soon as we can — usually within one working day.
               </Typography>
             </Box>
             <CardContent sx={{ p: 4 }}>
