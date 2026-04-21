@@ -1,5 +1,11 @@
 const jwt = require('jsonwebtoken');
 const { dbGet } = require('../database/database');
+
+const isProduction = process.env.NODE_ENV === 'production';
+if (isProduction && !process.env.JWT_SECRET) {
+  // Fail fast on boot in production — signing with a known default would be worse than crashing.
+  throw new Error('JWT_SECRET environment variable is required in production');
+}
 const jwtSecret = process.env.JWT_SECRET || 'dev-only-change-me';
 
 const authenticateToken = async (req, res, next) => {

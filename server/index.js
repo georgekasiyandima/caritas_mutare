@@ -33,6 +33,10 @@ async function main() {
 
   const app = express();
 
+  // Trust the first reverse-proxy hop (nginx / Render / Vercel). Required so
+  // express-rate-limit and our audit log can read the real client IP in prod.
+  app.set('trust proxy', 1);
+
   app.use(helmet());
   app.use(compression());
 
@@ -42,6 +46,15 @@ async function main() {
     message: 'Too many requests from this IP, please try again later.',
   });
   app.use('/api/', limiter);
+
+  const loginLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 10,
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: 'Too many login attempts from this IP, please try again in 15 minutes.',
+  });
+  app.use('/api/auth/login', loginLimiter);
 
   app.use(
     cors({
@@ -90,6 +103,7 @@ async function main() {
     console.log(`🚀 Server running on port ${PORT}`);
     console.log(`📊 Environment: ${process.env.NODE_ENV || 'development'}`);
     console.log(`🔗 API Base URL: http://localhost:${PORT}/api`);
+    console.log(`🛡️  Admin API:   http://localhost:${PORT}/api/system/overview`);
   });
 }
 

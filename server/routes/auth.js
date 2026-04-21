@@ -4,8 +4,14 @@ const jwt = require('jsonwebtoken');
 const { body, validationResult } = require('express-validator');
 const { dbGet, dbRun } = require('../database/database');
 const { authenticateToken } = require('../middleware/auth');
+const { writeAudit } = require('../middleware/audit');
 
 const router = express.Router();
+
+const isProduction = process.env.NODE_ENV === 'production';
+if (isProduction && !process.env.JWT_SECRET) {
+  throw new Error('JWT_SECRET environment variable is required in production');
+}
 const jwtSecret = process.env.JWT_SECRET || 'dev-only-change-me';
 
 // Login endpoint
@@ -27,28 +33,46 @@ router.post('/login', [
       [username, username]
     );
 
+    const loginMetadata = (success, reason = null) => ({ success, reason, username });
+
     if (!user) {
+      await writeAudit(req, {
+        action: 'login_failed',
+        entity: 'auth',
+        actor: null,
+        metadata: loginMetadata(false, 'unknown_user'),
+      });
       return res.status(401).json({ message: 'Invalid credentials' });
     }
 
-    // Verify password
     const isValidPassword = await bcrypt.compare(password, user.password_hash);
     if (!isValidPassword) {
+      await writeAudit(req, {
+        action: 'login_failed',
+        entity: 'auth',
+        actor: { id: user.id, username: user.username },
+        metadata: loginMetadata(false, 'bad_password'),
+      });
       return res.status(401).json({ message: 'Invalid credentials' });
     }
 
-    // Generate JWT token
     const token = jwt.sign(
       { userId: user.id, username: user.username, role: user.role },
       jwtSecret,
       { expiresIn: process.env.JWT_EXPIRES_IN || '7d' }
     );
 
-    // Update last login
     await dbRun(
       'UPDATE users SET updated_at = CURRENT_TIMESTAMP WHERE id = ?',
       [user.id]
     );
+
+    await writeAudit(req, {
+      action: 'login',
+      entity: 'auth',
+      actor: { id: user.id, username: user.username },
+      metadata: loginMetadata(true),
+    });
 
     res.json({
       message: 'Login successful',
@@ -65,6 +89,12 @@ router.post('/login', [
     console.error('Login error:', error);
     res.status(500).json({ message: 'Server error during login' });
   }
+});
+
+// Logout — stateless (client discards the token); we only record it for the audit trail.
+router.post('/logout', authenticateToken, async (req, res) => {
+  await writeAudit(req, { action: 'logout', entity: 'auth' });
+  res.json({ message: 'Logged out' });
 });
 
 // Register endpoint (admin only)

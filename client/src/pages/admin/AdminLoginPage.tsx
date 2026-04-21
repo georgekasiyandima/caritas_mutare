@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Container,
   Typography,
@@ -13,7 +13,7 @@ import {
   Chip,
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import {
   pageRoot,
@@ -25,11 +25,16 @@ import {
   formCardHeader,
 } from '../../lib/sitePageLayout';
 
+interface LocationState {
+  from?: string;
+}
+
 const AdminLoginPage: React.FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { login } = useAuth();
-  
+  const location = useLocation();
+  const { login, isAuthenticated } = useAuth();
+
   const [formData, setFormData] = useState({
     username: '',
     password: '',
@@ -37,13 +42,24 @@ const AdminLoginPage: React.FC = () => {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
+  const state = (location.state as LocationState | null) || null;
+  const redirectTo = state?.from && state.from.startsWith('/admin') && state.from !== '/admin/login'
+    ? state.from
+    : '/admin';
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate(redirectTo, { replace: true });
+    }
+  }, [isAuthenticated, navigate, redirectTo]);
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
-    setError(''); // Clear error when user starts typing
+    setError('');
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -52,13 +68,13 @@ const AdminLoginPage: React.FC = () => {
     setError('');
 
     try {
-      const success = await login(formData.username, formData.password);
-      if (success) {
-        navigate('/admin');
+      const result = await login(formData.username, formData.password);
+      if (result.ok) {
+        navigate(redirectTo, { replace: true });
       } else {
-        setError(t('admin.login.invalidCredentials'));
+        setError(result.message || t('admin.login.invalidCredentials'));
       }
-    } catch (err) {
+    } catch (_err) {
       setError('An error occurred during login');
     } finally {
       setIsLoading(false);
