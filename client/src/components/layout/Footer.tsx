@@ -22,6 +22,49 @@ import {
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 import PartnerLogoStrip from '../PartnerLogoStrip';
+import { orgContact } from '../../lib/organisation';
+
+/**
+ * Social channels shown in the footer. Keep in sync with the floating
+ * SocialRail on the homepage so the visual language matches across the site.
+ * Each entry has a brand colour used for the hover state.
+ */
+const FOOTER_SOCIALS: Array<{
+  key: string;
+  label: string;
+  href: string;
+  icon: React.ReactNode;
+  brand: string;
+}> = [
+  {
+    key: 'facebook',
+    label: 'Facebook',
+    href: orgContact.social.facebook,
+    icon: <FacebookIcon fontSize="small" />,
+    brand: '#1877F2',
+  },
+  {
+    key: 'linkedin',
+    label: 'LinkedIn',
+    href: orgContact.social.linkedin,
+    icon: <LinkedInIcon fontSize="small" />,
+    brand: '#0A66C2',
+  },
+  {
+    key: 'youtube',
+    label: 'YouTube',
+    href: 'https://www.youtube.com/',
+    icon: <YouTubeIcon fontSize="small" />,
+    brand: '#FF0000',
+  },
+  {
+    key: 'email',
+    label: 'Email',
+    href: `mailto:${orgContact.email.primary}`,
+    icon: <EmailIcon fontSize="small" />,
+    brand: '#7D0000',
+  },
+];
 
 const Footer: React.FC = () => {
   const { t } = useTranslation();
@@ -38,12 +81,6 @@ const Footer: React.FC = () => {
     { key: 'volunteer', path: '/volunteer' },
     { key: 'contact', path: '/contact' },
   ];
-
-  const socialIconSx = {
-    color: 'rgba(255,255,255,0.75)',
-    transition: 'color .2s, background-color .2s',
-    '&:hover': { color: 'common.white', bgcolor: 'rgba(255,255,255,0.08)' },
-  };
 
   return (
     <Box
@@ -86,49 +123,33 @@ const Footer: React.FC = () => {
             >
               {t('footer.description')}
             </Typography>
-            <Stack direction="row" spacing={0.5}>
-              <IconButton
-                size="small"
-                component="a"
-                href="https://www.facebook.com/share/1DoS9a5mzU/"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Facebook"
-                sx={socialIconSx}
-              >
-                <FacebookIcon fontSize="small" />
-              </IconButton>
-              <IconButton
-                size="small"
-                component="a"
-                href="https://www.linkedin.com/in/caritas-zimbabwe-diocese-of-mutare-460272300"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="LinkedIn"
-                sx={socialIconSx}
-              >
-                <LinkedInIcon fontSize="small" />
-              </IconButton>
-              <IconButton
-                size="small"
-                component="a"
-                href="https://www.youtube.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="YouTube"
-                sx={socialIconSx}
-              >
-                <YouTubeIcon fontSize="small" />
-              </IconButton>
-              <IconButton
-                size="small"
-                component="a"
-                href="mailto:admin@caritasmutare.org"
-                aria-label="Email"
-                sx={socialIconSx}
-              >
-                <EmailIcon fontSize="small" />
-              </IconButton>
+            <Stack direction="row" spacing={1}>
+              {FOOTER_SOCIALS.map((s) => (
+                <IconButton
+                  key={s.key}
+                  size="small"
+                  component="a"
+                  href={s.href}
+                  target={s.href.startsWith('mailto:') ? undefined : '_blank'}
+                  rel={s.href.startsWith('mailto:') ? undefined : 'noopener noreferrer'}
+                  aria-label={s.label}
+                  sx={{
+                    width: 36,
+                    height: 36,
+                    color: 'common.white',
+                    bgcolor: 'rgba(255,255,255,0.08)',
+                    border: '1px solid rgba(255,255,255,0.12)',
+                    transition: 'background-color .2s, border-color .2s, transform .2s',
+                    '&:hover': {
+                      bgcolor: s.brand,
+                      borderColor: s.brand,
+                      transform: 'translateY(-2px)',
+                    },
+                  }}
+                >
+                  {s.icon}
+                </IconButton>
+              ))}
             </Stack>
           </Grid>
 

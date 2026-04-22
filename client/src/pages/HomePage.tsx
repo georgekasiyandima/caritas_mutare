@@ -22,7 +22,6 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import CountUpAnimation from '../components/CountUpAnimation';
 import BackToTopButton from '../components/BackToTopButton';
-import WhatsAppWidget from '../components/WhatsAppWidget';
 import PartnerLogoStrip from '../components/PartnerLogoStrip';
 import ImageCarousel from '../components/ImageCarousel';
 import SocialRail from '../components/SocialRail';
@@ -723,11 +722,6 @@ const HomePage: React.FC = () => {
 
       <BackToTopButton />
       <SocialRail />
-      <WhatsAppWidget
-        phoneNumber="+263774671893"
-        welcomeMessage={t('home.whatsappWelcome')}
-        position="bottom-left"
-      />
     </Box>
   );
 };

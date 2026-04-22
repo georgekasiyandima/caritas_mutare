@@ -331,8 +331,8 @@ export const generalImpactImages: { src: string; alt: string; objectPosition?: s
  */
 export const partnerLogosForSite: { name: string; logoUrl: string }[] = [
   { name: 'Caritas Mutare', logoUrl: '/images/logo/caritas-mutare-new-logo.png' },
-  { name: 'CRS', logoUrl: '/images/partners/crs-wordmark.svg' },
-  { name: 'Trocaire', logoUrl: '/images/partners/trocaire-wordmark.svg' },
+  { name: 'CRS', logoUrl: '/images/partners/crs.png' },
+  { name: 'Trócaire', logoUrl: '/images/partners/trocaire.png' },
   { name: 'CCJP Mutare Diocese', logoUrl: '/images/partners/ccjp-mutare.png' },
   { name: 'Zimbabwe Government', logoUrl: '/images/partners/zimbabwe-government.png' },
 ];

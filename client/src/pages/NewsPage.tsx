@@ -12,7 +12,6 @@ import { useQuery } from 'react-query';
 import HeroBanner from '../components/HeroBanner';
 import StoryCard from '../components/StoryCard';
 import SEO from '../components/SEO';
-import { generalImpactImages } from '../lib/caritasProjects';
 import {
   SECTION_BG_ALT,
   pageRoot,
@@ -37,7 +36,13 @@ const NewsPage: React.FC = () => {
     return response.json();
   });
 
-  const heroImageSource = generalImpactImages[1] ?? generalImpactImages[0];
+  // Dedicated hero for the News page. Hard-coded so it stays visually distinct
+  // from the Programs page hero.
+  const heroImageSource = {
+    src: '/images/general/beneficiary-with-food.png',
+    alt: 'A Caritas Mutare beneficiary receiving food support',
+    objectPosition: 'center 35%',
+  };
 
   return (
     <Box sx={pageRoot}>
@@ -47,22 +52,20 @@ const NewsPage: React.FC = () => {
           'news.seo.description',
           'Updates, reflections and reports from Caritas Mutare programmes across the Diocese of Mutare.'
         )}
-        image={heroImageSource?.src}
+        image={heroImageSource.src}
         canonicalPath="/news"
       />
 
-      {heroImageSource && (
-        <HeroBanner
-          image={heroImageSource.src}
-          imageAlt={heroImageSource.alt}
-          imagePosition={heroImageSource.objectPosition}
-          size="standard"
-          overlay={0.55}
-          eyebrow={t('news.hero.eyebrow', 'Stories & updates')}
-          title={t('news.title')}
-          subtitle={t('news.hero.subtitle', 'Stories from the field, the diocese, and our programmes.')}
-        />
-      )}
+      <HeroBanner
+        image={heroImageSource.src}
+        imageAlt={heroImageSource.alt}
+        imagePosition={heroImageSource.objectPosition}
+        size="standard"
+        overlay={0.55}
+        eyebrow={t('news.hero.eyebrow', 'Stories & updates')}
+        title={t('news.title')}
+        subtitle={t('news.hero.subtitle', 'Stories from the field, the diocese, and our programmes.')}
+      />
 
       <Box sx={{ bgcolor: SECTION_BG_ALT, py: { xs: 5, md: 7 }, minHeight: 400 }}>
         <Container maxWidth="lg">

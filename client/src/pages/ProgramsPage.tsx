@@ -23,7 +23,7 @@ import PartnerLogoStrip from '../components/PartnerLogoStrip';
 import HeroBanner from '../components/HeroBanner';
 import StoryCard from '../components/StoryCard';
 import SEO from '../components/SEO';
-import { getActiveProjects, caritasProjects, generalImpactImages } from '../lib/caritasProjects';
+import { getActiveProjects, caritasProjects } from '../lib/caritasProjects';
 import {
   SECTION_BG_ALT,
   pageRoot,
@@ -39,16 +39,17 @@ const ProgramsPage: React.FC = () => {
 
   const projects = getActiveProjects();
 
-  const heroImage = useMemo(() => {
-    const withImage = projects.find((p) => p.heroImage);
-    if (withImage?.heroImage) {
-      return { src: withImage.heroImage, alt: withImage.title_en, position: withImage.heroImagePosition };
-    }
-    const fallback = generalImpactImages[0];
-    return fallback
-      ? { src: fallback.src, alt: fallback.alt, position: fallback.objectPosition }
-      : null;
-  }, [projects]);
+  // Dedicated hero for the Programs page. Hard-coded (rather than derived from
+  // projects) so it stays visually distinct from the News page hero and from
+  // any individual programme hero image on the detail pages.
+  const heroImage = useMemo(
+    () => ({
+      src: '/images/general/community-gathering-1.png',
+      alt: 'Community members gathered during a Caritas Mutare programme session',
+      position: 'center 45%',
+    }),
+    []
+  );
 
   const overviewRows = caritasProjects.map((p) => ({
     id: p.id,
