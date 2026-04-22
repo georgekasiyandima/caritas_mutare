@@ -31,7 +31,7 @@ const SEO: React.FC<SEOProps> = ({
   type = 'website',
   publishedAt,
 }) => {
-  const fullTitle = title ? `${title} · ${SITE_NAME}` : `${SITE_NAME} — Caritas Zimbabwe Diocese of Mutare`;
+  const fullTitle = title ? `${title} · ${SITE_NAME}` : `${SITE_NAME} — Caritas Zimbabwe Roman Catholic Diocese of Mutare`;
   const canonical = absoluteUrl(canonicalPath);
   const ogImage = absoluteUrl(image);
 

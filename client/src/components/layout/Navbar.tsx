@@ -243,7 +243,7 @@ const Navbar: React.FC = () => {
             component="img"
             src={logoSrc}
             alt="Caritas Mutare"
-            sx={{ height: 44, objectFit: 'contain' }}
+            sx={{ height: 60, objectFit: 'contain' }}
           />
         </Box>
         <IconButton onClick={() => setMobileMenuOpen(false)} aria-label="Close menu">
@@ -361,7 +361,7 @@ const Navbar: React.FC = () => {
           boxShadow: transparent ? 'none' : '0 2px 10px rgba(15,23,42,0.04)',
         }}
       >
-        <Toolbar disableGutters sx={{ minHeight: { xs: 64, sm: 72 }, px: { xs: 2, md: 3 } }}>
+        <Toolbar disableGutters sx={{ minHeight: { xs: 72, sm: 88, md: 96 }, px: { xs: 2, md: 3 } }}>
           {!isLandingPage && (
             <Tooltip title={t('nav.backHome', 'Back to home')} arrow>
               <IconButton
@@ -410,11 +410,11 @@ const Navbar: React.FC = () => {
             <Box
               component="img"
               src={logoSrc}
-              alt="Caritas Zimbabwe - Diocese of Mutare"
+              alt="Caritas Zimbabwe Roman Catholic Diocese of Mutare"
               sx={{
                 display: 'block',
-                height: { xs: 48, sm: 56 },
-                maxWidth: 320,
+                height: { xs: 56, sm: 72, md: 80 },
+                maxWidth: { xs: 240, sm: 340, md: 400 },
                 objectFit: 'contain',
               }}
             />

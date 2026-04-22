@@ -9,7 +9,7 @@
  */
 
 export const orgContact = {
-  name: 'Caritas Zimbabwe · Diocese of Mutare',
+  name: 'Caritas Zimbabwe Roman Catholic Diocese of Mutare',
   shortName: 'Caritas Mutare',
   email: {
     primary: 'admin@caritasmutare.org',

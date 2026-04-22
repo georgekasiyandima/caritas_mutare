@@ -207,15 +207,16 @@ const LeadershipPage: React.FC = () => {
             color="text.secondary"
             sx={{ mb: 4, textAlign: 'center', maxWidth: 820, mx: 'auto', lineHeight: 1.75 }}
           >
-            Caritas Mutare is governed by a 7-member Board of Directors that provides strategic oversight and
-            ensures accountability to the Diocese, donors and communities we serve.
+            Caritas Mutare is led by a Board of Directors composed of 7 members — Chairperson and Vice-Chairperson,
+            Secretary and Vice-Secretary, Treasurer, and two Committee Members — providing strategic oversight and
+            ensuring accountability to the Diocese, donors and communities we serve.
           </Typography>
           <Grid container spacing={2} justifyContent="center">
             {[
-              { role: 'Chairperson', note: 'and Vice-Chair' },
+              { role: 'Chairperson', note: 'and Vice-Chairperson' },
               { role: 'Secretary', note: 'and Vice-Secretary' },
               { role: 'Treasurer', note: 'Finance oversight' },
-              { role: 'Committee Members', note: 'Subject-matter counsel' },
+              { role: 'Committee Members', note: 'Two members · subject-matter counsel' },
             ].map((item) => (
               <Grid item xs={12} sm={6} md={3} key={item.role}>
                 <Card

@@ -151,7 +151,7 @@ const Footer: React.FC = () => {
                   fontSize: '0.7rem',
                 }}
               >
-                Diocese of Mutare
+                Roman Catholic Diocese of Mutare
               </Typography>
             </Stack>
             <Typography
@@ -329,7 +329,7 @@ const Footer: React.FC = () => {
         >
           <Stack spacing={0.5}>
             <Typography variant="caption" sx={{ color: 'rgba(255,255,255,0.55)', fontSize: '0.8rem' }}>
-              © {new Date().getFullYear()} Caritas Zimbabwe · Diocese of Mutare. {t('footer.copyrightSuffix', 'All rights reserved.')}
+              © {new Date().getFullYear()} Caritas Zimbabwe Roman Catholic Diocese of Mutare. {t('footer.copyrightSuffix', 'All rights reserved.')}
             </Typography>
             <Typography
               variant="caption"

@@ -127,11 +127,11 @@ const HomePage: React.FC = () => {
           image={heroImage.src}
           imageAlt={heroImage.alt}
           imagePosition={heroImage.objectPosition}
-          eyebrow={t('home.hero.eyebrow', 'Caritas Zimbabwe · Diocese of Mutare')}
+          eyebrow={t('home.hero.eyebrow', 'Caritas Zimbabwe Roman Catholic Diocese of Mutare')}
           title={t('home.hero.title', 'Restoring dignity. One family, one community at a time.')}
           subtitle={t(
             'home.hero.subtitle',
-            'For over 50 years, we have walked alongside families in eastern Zimbabwe — delivering food, livelihoods, inclusion and emergency response rooted in Catholic social teaching.'
+            'Development arm of the Catholic Church and humanitarian response. For over 50 years, we have walked alongside families in eastern Zimbabwe — delivering food, livelihoods, inclusion and emergency response rooted in Catholic social teaching.'
           )}
           primaryCta={{
             label: t('home.hero.ctaPrimary', 'Support our work'),

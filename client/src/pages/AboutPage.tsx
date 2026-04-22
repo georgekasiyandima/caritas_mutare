@@ -149,11 +149,11 @@ const AboutPage: React.FC = () => {
                 fontSize: { xs: '1.25rem', md: '1.55rem' },
               }}
             >
-              Guided by the Social Teachings of the Roman Catholic Church, Caritas Zimbabwe Diocese of Mutare
+              Guided by the Social Teachings of the Roman Catholic Church, Caritas Zimbabwe Roman Catholic Diocese of Mutare
               works <Box component="span" sx={{ color: 'primary.main', fontWeight: 700, fontStyle: 'normal' }}>
                 to promote food security, social protection, environmental management, water and sanitation
-              </Box> for the vulnerable — men, women, boys, girls and persons with disabilities — in a sustainable
-              manner within the Diocese of Mutare.
+              </Box> for the vulnerable — men, women, boys and girls, inclusive of persons with disabilities — in a
+              sustainable manner within the Diocese of Mutare.
             </Typography>
           </Box>
         </Container>

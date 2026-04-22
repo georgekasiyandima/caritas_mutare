@@ -31,8 +31,8 @@ const DEFAULT_SETTINGS = [
   { key: 'site_title_sh', value_en: 'Caritas Mutare', value_sh: 'Caritas Mutare', type: 'text' },
   {
     key: 'site_description_en',
-    value_en: 'Catholic community development organization serving the Diocese of Mutare',
-    value_sh: 'Sangano revaCatholic rinobatsira nharaunda muDiocese yeMutare',
+    value_en: 'Development arm of the Catholic Church and humanitarian response — serving the Diocese of Mutare.',
+    value_sh: 'Ruoko rwekusimudzira rweChechi yeCatholic uye mhinduro yerubatsiro rwekukurumidza — tichibatsira Diocese yeMutare.',
     type: 'text',
   },
   { key: 'contact_email', value_en: 'info@caritasmutare.org', value_sh: 'info@caritasmutare.org', type: 'text' },

@@ -59,14 +59,6 @@ content. This is the single biggest thing blocking go-live.
 
 Please could you help us pull together:
 
-### Programme information
-For each active programme, a short paragraph describing:
-- What it does
-- Where it operates (districts / wards)
-- Current funding partner(s)
-- Beneficiary numbers so far
-- Start date and current status (planning / active / completed)
-
 ### Family & beneficiary stories
 6 to 10 short testimonials (around 80–150 words each) — real stories of
 individuals or households the programmes have helped. If you can include:
@@ -251,7 +243,109 @@ the announcement. A quiet, complete site is better than a loud, empty one.
 
 ---
 
-## 8. A note on working style
+## 8. What changed in this second preview (from your feedback)
+
+Thank you for the first round of feedback. Everything on the list below is now
+in place on the preview link — please have a fresh look and confirm I've
+captured it correctly.
+
+**Homepage**
+- Caritas name on the hero now reads **"Caritas Zimbabwe Roman Catholic Diocese of Mutare"**.
+- Removed "Catholic community development organization". Added the tagline
+  **"Development arm of the Catholic Church and humanitarian response."**
+- Supported-by strip now shows **Caritas Mutare, CRS, Trócaire, CCJP Mutare
+  Diocese, Zimbabwe Government** — Irish Aid is no longer on the public strip.
+- Impact figures now read **Lives impacted 500,000+ · Families served 50,000+ ·
+  Communities reached 100+ · Years of service 50+**.
+
+**About page**
+- Mission sentence now reads *"…for the vulnerable — men, women, boys and girls,
+  inclusive of persons with disabilities — in a sustainable manner within the
+  Diocese of Mutare."*
+- Values card uses **"Catholic social teachings"** (not "tradition").
+- Thematic areas now include **"Including persons with disabilities in
+  humanitarian response and livelihoods"** as a distinct line.
+- Sister-organisation list updated: removed ZWLA, Fambidzanai, Women and Land
+  in Zimbabwe, FODPZ. Added **Catholic Commission for Justice and Peace in
+  Zimbabwe, Mutare Diocese Safeguarding Office, Mutare Diocese Health
+  Commission, Mutare Diocese Education Commission**.
+
+**Leadership page**
+- The Development Coordinator card no longer shows a personal name (it will
+  remain generic until we have an up-to-date team sheet from you).
+- The "Own projects" card uses the generic wording you asked for:
+  *"Caritas Mutare also has its own projects with initiatives such as Mai
+  Maria Village, the Soup Kitchen and education support…"*
+- Added an explicit **Board of Directors** block explaining that Caritas Mutare
+  is governed by **7 members — Chairperson and Vice-Chairperson, Secretary and
+  Vice-Secretary, Treasurer, and two Committee Members.**
+
+**Visuals**
+- The Caritas logo is larger in the top navigation (heights bumped from ~48px
+  up to 72–80px on desktop) so it reads as the primary brand mark rather than
+  an afterthought.
+- Four of the new soup-kitchen photos you shared are now:
+  - Used as the **soup-kitchen programme hero image**,
+  - At the front of the **soup-kitchen gallery**,
+  - Interleaved into the **homepage "Our impact" carousel**.
+
+**Contact / Footer**
+- Address on the Contact page and footer now reads
+  **Mai Maria Village · Stand No. 19449, Dangamvura Township · Triangle of
+  Raheen, Mutare District · Zimbabwe**.
+- Primary contact email is **admin@caritasmutare.org**.
+- Opening hours shown as **Mon – Thu 08:00 – 16:45** and **Fri 08:00 – 13:00**.
+
+If any of the above reads wrong to you, send me the exact wording you prefer
+and I'll swap it in.
+
+---
+
+## 9. Logo — getting a clean, professional SVG
+
+You mentioned the free online tools aren't producing a usable SVG. That's
+normal — auto-tracers guess at curves and almost always ruin the geometry on a
+logo with text, rays or a chalice. Here's the recommended route, in order of
+effort:
+
+**Option A (best — one-off, ~USD 50–100):**  
+Brief a freelance designer on **Fiverr** or **99designs** with:
+1. The highest-resolution PNG of the current Caritas Mutare logo you can find
+   (a scan of a printed letterhead works).
+2. A sentence of instruction: *"Please redraw this as a clean vector (SVG)
+   logo. Deliver SVG, PNG with transparent background at 2048px, and a
+   monochrome (white) version for dark backgrounds. Keep the typography and
+   the chalice faithful to the original."*
+3. Brand colours (we've inferred forest-green `#1b6e4a` and warm-gold `#c49a2a`
+   from the current PNG — confirm with your team).
+
+Expected turnaround: 3–5 days. They'll send vector files; I drop them into the
+site and the difference is dramatic.
+
+**Option B (free, if there is an original file somewhere):**  
+Ask your predecessor or the Diocese communications office whether the logo was
+ever designed in **Adobe Illustrator, CorelDRAW or Inkscape**. That source
+file (`.ai`, `.cdr`, `.svg`) is the gold standard — we never need to redraw it.
+
+**Option C (stop-gap, free, I can do it):**  
+I can clean up the existing PNG (remove the white background, sharpen edges,
+export at higher resolution) so the site looks better in the meantime. It
+won't be a true vector, but it will stop looking pixellated on large screens.
+Say the word and I'll do this in a day.
+
+What I'd avoid:
+- Free "PNG → SVG" converters (Vectorizer, Adobe Express auto-trace, etc.) for
+  final use. Fine for sketches; terrible for a published brand mark.
+- AI logo generators (Looka, Tailor Brands, Canva). They'll produce something
+  *new* that drifts from Caritas Mutare's actual identity — not what we want.
+
+My suggestion: **start Option A in parallel with everything else**. Three to
+five days from brief to delivery means we can have a proper SVG on the site
+before the public launch, without it blocking anything.
+
+---
+
+## 10. A note on working style
 
 I'm based in Cape Town; you're in Mutare. To keep us on the same page:
 
@@ -271,4 +365,4 @@ Looking forward to the next step.
 
 Warm regards,
 **George**
-Ubuntu Tech & Code
+Ubuntu Tech & Code - Full Stack Software Engineer.
