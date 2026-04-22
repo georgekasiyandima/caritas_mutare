@@ -126,8 +126,6 @@ const LeadershipPage: React.FC = () => {
     .map((p, index) => ({
       id: index + 1,
       name: p.name,
-      description: '',
-      type: 'Key partner',
       logo: p.logoUrl,
     }));
 
@@ -196,22 +194,50 @@ const LeadershipPage: React.FC = () => {
       <Box sx={{ ...sectionVerticalPadding, bgcolor: SECTION_BG_ALT }}>
       <Container maxWidth="lg">
         <Box sx={{ mb: 6 }}>
-          <Typography variant="h4" component="h2" gutterBottom sx={{ fontFamily: '"Merriweather", Georgia, serif', fontWeight: 700, mb: 2, textAlign: 'center' }}>
+          <Typography
+            variant="h4"
+            component="h2"
+            gutterBottom
+            sx={{ fontFamily: '"Merriweather", Georgia, serif', fontWeight: 700, mb: 2, textAlign: 'center' }}
+          >
             Board of Directors
           </Typography>
-          <Typography variant="body1" color="text.secondary" sx={{ mb: 3, textAlign: 'center', maxWidth: 820, mx: 'auto' }}>
-            Caritas is led by a Board of Directors composed of 7 members.
+          <Typography
+            variant="body1"
+            color="text.secondary"
+            sx={{ mb: 4, textAlign: 'center', maxWidth: 820, mx: 'auto', lineHeight: 1.75 }}
+          >
+            Caritas Mutare is governed by a 7-member Board of Directors that provides strategic oversight and
+            ensures accountability to the Diocese, donors and communities we serve.
           </Typography>
           <Grid container spacing={2} justifyContent="center">
             {[
-              'Chairperson and Vice',
-              'Secretary and Vice',
-              'Treasurer',
-              'Committee members',
-            ].map((role) => (
-              <Grid item xs={12} sm={6} md={3} key={role}>
-                <Card elevation={0} sx={{ ...leadCardSx, textAlign: 'center', p: 2, height: '100%' }}>
-                  <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>{role}</Typography>
+              { role: 'Chairperson', note: 'and Vice-Chair' },
+              { role: 'Secretary', note: 'and Vice-Secretary' },
+              { role: 'Treasurer', note: 'Finance oversight' },
+              { role: 'Committee Members', note: 'Subject-matter counsel' },
+            ].map((item) => (
+              <Grid item xs={12} sm={6} md={3} key={item.role}>
+                <Card
+                  elevation={0}
+                  sx={{
+                    ...leadCardSx,
+                    textAlign: 'center',
+                    py: 2.5,
+                    px: 2,
+                    height: '100%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    gap: 0.5,
+                  }}
+                >
+                  <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
+                    {item.role}
+                  </Typography>
+                  <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+                    {item.note}
+                  </Typography>
                 </Card>
               </Grid>
             ))}
@@ -364,109 +390,52 @@ const LeadershipPage: React.FC = () => {
           Caritas Mutare works in collaboration with various local and international partners to maximize our impact and reach more communities in need.
         </Typography>
         
-        <Grid container spacing={3}>
+        <Grid container spacing={3} justifyContent="center">
           {partners.map((partner) => (
-            <Grid item xs={12} sm={6} md={3} key={partner.id}>
+            <Grid item xs={6} sm={4} md={3} key={partner.id}>
               <Card
                 elevation={0}
                 sx={{
-                  height: '100%',
+                  height: 140,
                   display: 'flex',
                   flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
                   textAlign: 'center',
-                  p: 3,
-                  minHeight: '280px',
+                  p: 2.5,
+                  gap: 1.5,
                   ...leadCardSx,
                 }}
               >
-                <CardContent sx={{ 
-                  flexGrow: 1, 
-                  display: 'flex', 
-                  flexDirection: 'column',
-                  justifyContent: 'space-between',
-                  p: 0
-                }}>
-                  {/* Logo Section - Fixed Height */}
-                  <Box sx={{ 
-                    display: 'flex', 
-                    justifyContent: 'center', 
-                    alignItems: 'center',
-                    mb: 2,
-                    minHeight: '80px'
-                  }}>
-                    <img 
-                      src={partner.logo} 
-                      alt={`${partner.name} logo`}
-                      style={{
-                        height: '60px',
-                        width: '120px',
-                        objectFit: 'contain'
-                      }}
-                    />
-                  </Box>
-                  
-                  {/* Content Section */}
-                  <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                    <Box>
-                      <Typography 
-                        variant="h6" 
-                        component="h3" 
-                        sx={{ 
-                          fontWeight: 'bold',
-                          fontSize: '1rem',
-                          lineHeight: 1.3,
-                          mb: 1,
-                          minHeight: '2.6rem',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center'
-                        }}
-                      >
-                        {partner.name}
-                      </Typography>
-                      
-                      <Chip
-                        label={partner.type}
-                        size="small"
-                        color="success"
-                        sx={{ mb: 2, fontSize: '0.75rem' }}
-                      />
-                    </Box>
-                    
-                    <Typography 
-                      variant="body2" 
-                      color="text.secondary"
-                      sx={{
-                        fontSize: '0.875rem',
-                        lineHeight: 1.4,
-                        minHeight: '3.5rem',
-                        display: 'flex',
-                        alignItems: 'center'
-                      }}
-                    >
-                      {partner.description}
-                    </Typography>
-                  </Box>
-                </CardContent>
+                <Box
+                  component="img"
+                  src={partner.logo}
+                  alt={`${partner.name} logo`}
+                  sx={{
+                    height: 48,
+                    maxWidth: '100%',
+                    objectFit: 'contain',
+                    opacity: 0.95,
+                  }}
+                  loading="lazy"
+                />
+                <Typography
+                  variant="caption"
+                  sx={{
+                    fontWeight: 600,
+                    color: 'text.secondary',
+                    fontSize: '0.78rem',
+                    lineHeight: 1.2,
+                    letterSpacing: 0.2,
+                  }}
+                >
+                  {partner.name}
+                </Typography>
               </Card>
             </Grid>
           ))}
         </Grid>
       </Container>
-      </Box>
-
-      {/* Mission Statement */}
-      <Box sx={{ ...sectionVerticalPadding, bgcolor: 'background.paper' }}>
-        <Container maxWidth="lg">
-          <Box sx={{ p: 4, borderRadius: 2, textAlign: 'center', border: '1px solid', borderColor: 'divider', bgcolor: SECTION_BG_ALT }}>
-            <Typography variant="h5" gutterBottom sx={{ fontFamily: '"Merriweather", Georgia, serif', fontWeight: 700 }}>
-              Our Mission
-            </Typography>
-            <Typography variant="body1" sx={{ maxWidth: 800, mx: 'auto', fontStyle: 'italic', lineHeight: 1.75, color: 'text.secondary' }}>
-              &ldquo;To serve the poor and promote integral human development through community-based programs that address the root causes of poverty and injustice, guided by Catholic social teaching and working in solidarity with our partners.&rdquo;
-            </Typography>
-          </Box>
-        </Container>
       </Box>
 
       <BackToTopButton />

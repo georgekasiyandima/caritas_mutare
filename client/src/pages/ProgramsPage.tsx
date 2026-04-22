@@ -1,16 +1,10 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
   Container,
   Typography,
   Box,
   Grid,
-  Card,
-  CardContent,
-  CardActions,
   Button,
-  Chip,
-  useTheme,
-  useMediaQuery,
   Paper,
   Table,
   TableBody,
@@ -18,33 +12,43 @@ import {
   TableHead,
   TableRow,
   TableContainer,
+  Chip,
+  useTheme,
 } from '@mui/material';
+import { ArrowForward as ArrowForwardIcon } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import BackToTopButton from '../components/BackToTopButton';
 import PartnerLogoStrip from '../components/PartnerLogoStrip';
-import { getActiveProjects, caritasProjects } from '../lib/caritasProjects';
+import HeroBanner from '../components/HeroBanner';
+import StoryCard from '../components/StoryCard';
+import SEO from '../components/SEO';
+import { getActiveProjects, caritasProjects, generalImpactImages } from '../lib/caritasProjects';
 import {
   SECTION_BG_ALT,
   pageRoot,
-  pageHero,
   pageOverline,
-  pageH1,
-  pageLead,
   outlineCard,
-  outlineCardHover,
   closingCtaSectionSx,
 } from '../lib/sitePageLayout';
-
-const projectCardSx = { ...outlineCard, ...outlineCardHover };
 
 const ProgramsPage: React.FC = () => {
   const { t } = useTranslation();
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const navigate = useNavigate();
 
   const projects = getActiveProjects();
+
+  const heroImage = useMemo(() => {
+    const withImage = projects.find((p) => p.heroImage);
+    if (withImage?.heroImage) {
+      return { src: withImage.heroImage, alt: withImage.title_en, position: withImage.heroImagePosition };
+    }
+    const fallback = generalImpactImages[0];
+    return fallback
+      ? { src: fallback.src, alt: fallback.alt, position: fallback.objectPosition }
+      : null;
+  }, [projects]);
 
   const overviewRows = caritasProjects.map((p) => ({
     id: p.id,
@@ -57,54 +61,67 @@ const ProgramsPage: React.FC = () => {
 
   return (
     <Box sx={pageRoot}>
-      <Box sx={pageHero}>
-        <Container maxWidth="lg">
-          <Box sx={{ textAlign: 'center', maxWidth: 720, mx: 'auto' }}>
-            <Typography variant="overline" sx={{ ...pageOverline, display: 'block', mb: 1 }}>
-              What we implement
-            </Typography>
-            <Typography variant={isMobile ? 'h3' : 'h2'} component="h1" sx={{ ...pageH1, mb: 2 }}>
-              {t('programs.title')}
-            </Typography>
-            <Typography variant="body1" sx={{ ...pageLead, mx: 'auto' }}>
-              {t('programs.description')}
-            </Typography>
-          </Box>
-        </Container>
-      </Box>
+      <SEO
+        title={t('programs.seo.title', 'Our projects across the Diocese of Mutare')}
+        description={t(
+          'programs.seo.description',
+          'Donor-funded and Caritas-led initiatives delivering food security, livelihoods, inclusion and emergency response across eastern Zimbabwe.'
+        )}
+        image={heroImage?.src}
+        canonicalPath="/programs"
+      />
 
-      {/* Caritas Mutare Projects Overview */}
+      {heroImage && (
+        <HeroBanner
+          image={heroImage.src}
+          imageAlt={heroImage.alt}
+          imagePosition={heroImage.position}
+          size="standard"
+          overlay={0.55}
+          eyebrow={t('programs.hero.eyebrow', 'What we implement')}
+          title={t('programs.title')}
+          subtitle={t('programs.description')}
+          primaryCta={{
+            label: t('programs.hero.ctaPrimary', 'Support our work'),
+            onClick: () => navigate('/donate'),
+          }}
+          secondaryCta={{
+            label: t('programs.hero.ctaSecondary', 'Talk to us'),
+            onClick: () => navigate('/contact'),
+          }}
+        />
+      )}
+
+      {/* Portfolio table */}
       <Container maxWidth="lg" sx={{ py: { xs: 5, md: 7 } }}>
-        <Typography variant="overline" sx={{ ...pageOverline, display: 'block', textAlign: 'center', mb: 1 }}>
-          Portfolio
-        </Typography>
-        <Typography
-          variant="h4"
-          component="h2"
-          textAlign="center"
-          gutterBottom
-          sx={{ fontFamily: '"Merriweather", Georgia, serif', fontWeight: 700, mb: 2 }}
-        >
-          Caritas Mutare projects overview
-        </Typography>
-        <Typography
-          variant="body1"
-          textAlign="center"
-          sx={{ mb: 4, color: 'text.secondary', maxWidth: 800, mx: 'auto', lineHeight: 1.75 }}
-        >
-          A one-stop snapshot of all Caritas Mutare projects across the Diocese –
-          including status, locations, target groups and duration.
-        </Typography>
+        <Box sx={{ textAlign: 'center', mb: 4, maxWidth: 800, mx: 'auto' }}>
+          <Typography variant="overline" sx={{ ...pageOverline, display: 'block', mb: 1 }}>
+            {t('programs.portfolio.overline', 'Portfolio')}
+          </Typography>
+          <Typography
+            variant="h4"
+            component="h2"
+            sx={{ fontFamily: '"Merriweather", Georgia, serif', fontWeight: 700, mb: 2 }}
+          >
+            {t('programs.portfolio.title', 'Caritas Mutare projects overview')}
+          </Typography>
+          <Typography variant="body1" color="text.secondary" sx={{ lineHeight: 1.75 }}>
+            {t(
+              'programs.portfolio.intro',
+              'A one-stop snapshot of all Caritas Mutare projects across the Diocese — status, locations, target groups and duration.'
+            )}
+          </Typography>
+        </Box>
 
         <TableContainer component={Paper} elevation={0} sx={{ ...outlineCard, overflow: 'hidden' }}>
           <Table size="small">
             <TableHead>
               <TableRow sx={{ backgroundColor: 'grey.100' }}>
-                <TableCell sx={{ fontWeight: 600 }}>Project</TableCell>
-                <TableCell sx={{ fontWeight: 600 }}>Status</TableCell>
-                <TableCell sx={{ fontWeight: 600 }}>Location</TableCell>
-                <TableCell sx={{ fontWeight: 600 }}>Target</TableCell>
-                <TableCell sx={{ fontWeight: 600 }}>Duration</TableCell>
+                <TableCell sx={{ fontWeight: 700 }}>{t('programs.portfolio.cols.project', 'Project')}</TableCell>
+                <TableCell sx={{ fontWeight: 700 }}>{t('programs.portfolio.cols.status', 'Status')}</TableCell>
+                <TableCell sx={{ fontWeight: 700 }}>{t('programs.portfolio.cols.location', 'Location')}</TableCell>
+                <TableCell sx={{ fontWeight: 700 }}>{t('programs.portfolio.cols.target', 'Target')}</TableCell>
+                <TableCell sx={{ fontWeight: 700 }}>{t('programs.portfolio.cols.duration', 'Duration')}</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -115,13 +132,32 @@ const ProgramsPage: React.FC = () => {
                   sx={{ cursor: 'pointer' }}
                   onClick={() => {
                     const match = caritasProjects.find((p) => p.id === row.id);
-                    if (match) {
-                      navigate(match.route);
-                    }
+                    if (match) navigate(match.route);
                   }}
                 >
-                  <TableCell>{row.name}</TableCell>
-                  <TableCell sx={{ textTransform: 'capitalize' }}>{row.status}</TableCell>
+                  <TableCell sx={{ fontWeight: 600 }}>{row.name}</TableCell>
+                  <TableCell>
+                    <Chip
+                      label={row.status}
+                      size="small"
+                      sx={{
+                        bgcolor:
+                          row.status === 'active'
+                            ? 'rgba(46,125,50,0.12)'
+                            : row.status === 'ongoing'
+                              ? 'rgba(13,92,99,0.12)'
+                              : 'rgba(120,120,120,0.12)',
+                        color:
+                          row.status === 'active'
+                            ? 'success.dark'
+                            : row.status === 'ongoing'
+                              ? 'info.dark'
+                              : 'text.secondary',
+                        fontWeight: 600,
+                        textTransform: 'capitalize',
+                      }}
+                    />
+                  </TableCell>
                   <TableCell>{row.location}</TableCell>
                   <TableCell>{row.target}</TableCell>
                   <TableCell>{row.duration}</TableCell>
@@ -132,191 +168,103 @@ const ProgramsPage: React.FC = () => {
         </TableContainer>
       </Container>
 
-      {/* Project cards from canonical data */}
+      {/* Project cards */}
       <Box sx={{ bgcolor: SECTION_BG_ALT, py: { xs: 5, md: 7 } }}>
         <Container maxWidth="lg">
-          <Typography variant="overline" sx={{ ...pageOverline, display: 'block', textAlign: 'center', mb: 1 }}>
-            In communities
-          </Typography>
-          <Typography variant="h4" component="h2" textAlign="center" gutterBottom sx={{ fontFamily: '"Merriweather", Georgia, serif', fontWeight: 700, mb: 5 }}>
-            Our projects
-          </Typography>
-          <Grid container spacing={4}>
+          <Box sx={{ textAlign: 'center', mb: 5, maxWidth: 720, mx: 'auto' }}>
+            <Typography variant="overline" sx={{ ...pageOverline, display: 'block', mb: 1 }}>
+              {t('programs.inCommunities', 'In communities')}
+            </Typography>
+            <Typography
+              variant="h4"
+              component="h2"
+              sx={{ fontFamily: '"Merriweather", Georgia, serif', fontWeight: 700 }}
+            >
+              {t('programs.cardsTitle', 'Our projects')}
+            </Typography>
+          </Box>
+
+          <Grid container spacing={3}>
             {projects.map((project) => (
-              <Grid item xs={12} md={6} key={project.id}>
-                <Card
-                  elevation={0}
-                  sx={{
-                    height: '100%',
-                    overflow: 'hidden',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    ...projectCardSx,
-                  }}
-                >
-                  {project.heroImage && (
-                    <Box sx={{ position: 'relative', height: 220, overflow: 'hidden', backgroundColor: 'grey.200' }}>
-                      <Box
-                        aria-hidden
-                        sx={{
-                          position: 'absolute',
-                          inset: 0,
-                          backgroundImage: `url(${project.heroImage})`,
-                          backgroundSize: 'cover',
-                          backgroundPosition: project.heroImagePosition ?? 'center center',
-                          filter: 'blur(8px)',
-                          transform: 'scale(1.08)',
-                          opacity: 0.5,
-                        }}
-                      />
-                      <Box
-                        component="img"
-                        src={project.heroImage}
-                        alt={project.title_en}
-                        sx={{
-                          position: 'relative',
-                          zIndex: 1,
-                          width: '100%',
-                          height: '100%',
-                          objectFit: 'contain',
-                          objectPosition: project.heroImagePosition ?? 'center center',
-                          display: 'block',
-                        }}
-                      />
-                    </Box>
-                  )}
-                  <CardContent sx={{ flexGrow: 1, p: 3, pb: 2, borderBottom: '1px solid', borderColor: 'divider' }}>
-                    <Typography variant="h6" sx={{ fontFamily: '"Merriweather", Georgia, serif', fontWeight: 700, mb: 1, lineHeight: 1.35 }}>
-                      {project.acronym ? `${project.acronym}: ` : ''}
-                      {project.title_en}
-                    </Typography>
-                    <Chip
-                      label={project.status === 'ongoing' ? 'Ongoing' : 'Active'}
-                      size="small"
-                      sx={{
-                        bgcolor: 'rgba(13, 92, 99, 0.08)',
-                        color: 'info.dark',
-                        fontWeight: 600,
-                      }}
-                    />
-                  </CardContent>
-                  <CardContent sx={{ flexGrow: 1, p: 3, pt: 2 }}>
-                    <Typography variant="body1" sx={{ mb: 2, lineHeight: 1.6 }}>
-                      {project.summary_en}
-                    </Typography>
-                    <Paper variant="outlined" sx={{ p: 1.5, mb: 2, borderRadius: 2 }}>
-                      <Typography variant="body2" color="text.secondary">
-                        <strong>Target:</strong> {project.target}
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        <strong>Location:</strong> {project.location}
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        <strong>Duration:</strong> {project.duration}
-                      </Typography>
-                    </Paper>
-                    {(project.donorLogoUrls?.length ?? 0) > 0 && (
-                      <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 1 }}>
-                        <Typography variant="caption" color="text.secondary" sx={{ mr: 0.5 }}>
-                          Funded by:
-                        </Typography>
-                        {project.donorLogoUrls?.map((url) => (
-                          <Box
-                            key={url}
-                            component="img"
-                            src={url}
-                            alt=""
-                            sx={{ height: 28, objectFit: 'contain' }}
-                          />
-                        ))}
-                      </Box>
-                    )}
-                    {project.keyPathways.length > 0 && (
-                      <Box sx={{ mt: 2 }}>
-                        <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 1 }}>
-                          Key pathways
-                        </Typography>
-                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                          {project.keyPathways.slice(0, 3).map((path, i) => (
-                            <Chip
-                              key={i}
-                              label={path.split('→')[0].trim()}
-                              size="small"
-                              variant="outlined"
-                              sx={{ fontSize: '0.7rem' }}
-                            />
-                          ))}
-                        </Box>
-                      </Box>
-                    )}
-                  </CardContent>
-                  <CardActions sx={{ p: 3, pt: 0 }}>
-                    <Button
-                      variant="text"
-                      fullWidth
-                      onClick={() => navigate(project.route)}
-                      sx={{
-                        textTransform: 'none',
-                        py: 1.25,
-                        fontWeight: 600,
-                        color: 'info.main',
-                      }}
-                    >
-                      {t('home.projects.learnMore')}
-                    </Button>
-                  </CardActions>
-                </Card>
+              <Grid item xs={12} sm={6} md={4} key={project.id}>
+                <StoryCard
+                  image={project.heroImage}
+                  imageAlt={project.title_en}
+                  imagePosition={project.heroImagePosition}
+                  imageFit="cover"
+                  aspect="4/3"
+                  category={project.acronym ?? t('home.projects.category', 'Programme')}
+                  title={project.title_en}
+                  description={project.summary_en}
+                  meta={`${project.target} · ${project.location}`}
+                  logos={project.donorLogoUrls}
+                  cta={t('home.projects.learnMore')}
+                  onClick={() => navigate(project.route)}
+                />
               </Grid>
             ))}
           </Grid>
         </Container>
       </Box>
 
-      {/* Partner strip */}
       <PartnerLogoStrip title={t('home.partnersTitle')} variant="light" />
 
-      {/* CTA */}
+      {/* Closing CTA */}
       <Box sx={closingCtaSectionSx(theme)}>
         <Container maxWidth="md" sx={{ textAlign: 'center', position: 'relative', zIndex: 1 }}>
-          <Typography variant="h4" sx={{ fontFamily: '"Merriweather", Georgia, serif', fontWeight: 700, mb: 2 }}>
+          <Typography
+            variant="overline"
+            sx={{ color: 'rgba(255,255,255,0.75)', fontWeight: 700, letterSpacing: 2, mb: 2, display: 'block' }}
+          >
+            {t('home.closingCta.overline', 'Walk with us')}
+          </Typography>
+          <Typography
+            variant="h3"
+            component="h2"
+            sx={{
+              fontFamily: '"Merriweather", Georgia, serif',
+              fontWeight: 700,
+              mb: 2.5,
+              fontSize: { xs: '1.85rem', md: '2.35rem' },
+              lineHeight: 1.2,
+            }}
+          >
             {t('home.closingCta.title')}
           </Typography>
-          <Typography variant="body1" sx={{ mb: 4, opacity: 0.92, lineHeight: 1.75, maxWidth: 520, mx: 'auto' }}>
+          <Typography variant="body1" sx={{ mb: 4, opacity: 0.92, lineHeight: 1.75, maxWidth: 560, mx: 'auto' }}>
             {t('home.closingCta.body')}
           </Typography>
           <Box sx={{ display: 'flex', gap: 2, justifyContent: 'center', flexWrap: 'wrap' }}>
             <Button
               variant="contained"
               size="large"
-              onClick={() => navigate('/volunteer')}
+              endIcon={<ArrowForwardIcon />}
+              onClick={() => navigate('/donate')}
               sx={{
-                textTransform: 'none',
-                px: 4,
-                py: 1.5,
-                fontWeight: 600,
                 bgcolor: 'common.white',
                 color: 'primary.main',
+                px: 4,
+                py: 1.4,
+                fontWeight: 700,
+                borderRadius: 999,
                 '&:hover': { bgcolor: 'grey.100' },
               }}
             >
-              {t('nav.volunteer')}
+              {t('nav.donate')}
             </Button>
             <Button
-              variant="outlined"
+              variant="text"
               size="large"
-              onClick={() => navigate('/donate')}
+              onClick={() => navigate('/volunteer')}
               sx={{
-                textTransform: 'none',
-                px: 4,
-                py: 1.5,
-                fontWeight: 600,
                 color: 'common.white',
-                borderColor: 'rgba(255,255,255,0.85)',
-                borderWidth: 2,
-                '&:hover': { borderColor: 'common.white', bgcolor: 'rgba(255,255,255,0.08)', borderWidth: 2 },
+                px: 3,
+                py: 1.4,
+                fontWeight: 700,
+                '&:hover': { bgcolor: 'rgba(255,255,255,0.08)' },
               }}
             >
-              {t('nav.donate')}
+              {t('nav.volunteer')}
             </Button>
           </Box>
         </Container>

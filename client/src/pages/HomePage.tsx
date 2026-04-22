@@ -5,24 +5,18 @@ import {
   Typography,
   Button,
   Grid,
-  Card,
-  CardContent,
-  CardMedia,
-  CardActions,
   Paper,
   Stack,
-  Chip,
   Divider,
   useTheme,
-  useMediaQuery,
 } from '@mui/material';
 import {
-  Category as CategoryIcon,
   ArrowForward as ArrowForwardIcon,
-  WaterDropOutlined,
+  RestaurantOutlined,
   VolunteerActivismOutlined,
   Diversity3Outlined,
   GroupsOutlined,
+  FormatQuote as FormatQuoteIcon,
 } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -32,6 +26,11 @@ import WhatsAppWidget from '../components/WhatsAppWidget';
 import PartnerLogoStrip from '../components/PartnerLogoStrip';
 import ImageCarousel from '../components/ImageCarousel';
 import SocialRail from '../components/SocialRail';
+import HeroBanner from '../components/HeroBanner';
+import StoryCard from '../components/StoryCard';
+import TransparencyBlock from '../components/TransparencyBlock';
+import CommunityVoiceBlock from '../components/CommunityVoiceBlock';
+import SEO from '../components/SEO';
 import { useQuery } from 'react-query';
 import { getActiveProjects, generalImpactImages } from '../lib/caritasProjects';
 import { SECTION_BG_ALT } from '../lib/sitePageLayout';
@@ -43,7 +42,6 @@ const HomePage: React.FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const organizationStats = {
     families_served: '50000+',
@@ -63,11 +61,12 @@ const HomePage: React.FC = () => {
     }
   );
 
-  const featuredProjects = getActiveProjects().slice(0, 6);
+  const activeProjects = getActiveProjects();
+  const featuredProjects = activeProjects.slice(0, 6);
 
-  const carouselImages = React.useMemo(() => {
+  const carouselImages = useMemo(() => {
     const list: { src: string; alt: string; objectPosition?: string }[] = [...generalImpactImages];
-    getActiveProjects().forEach((p) => {
+    activeProjects.forEach((p) => {
       if (p.heroImage) list.push({ src: p.heroImage, alt: p.title_en, objectPosition: p.heroImagePosition });
       if (p.galleryImages?.[0] && p.galleryImages[0] !== p.heroImage) {
         list.push({ src: p.galleryImages[0], alt: `${p.title_en} - gallery`, objectPosition: p.heroImagePosition });
@@ -79,9 +78,10 @@ const HomePage: React.FC = () => {
       seen.add(img.src);
       return true;
     });
-  }, []);
+  }, [activeProjects]);
 
   const heroImage = carouselImages[0] ?? generalImpactImages[0];
+  const spotlightProject = activeProjects[0];
 
   const thematicFocus = useMemo(
     () =>
@@ -91,7 +91,7 @@ const HomePage: React.FC = () => {
         blurb: t(`home.thematic.items.${key}.blurb`),
         icon:
           key === 'food' ? (
-            <WaterDropOutlined sx={thematicIconSx} />
+            <RestaurantOutlined sx={thematicIconSx} />
           ) : key === 'humanitarian' ? (
             <VolunteerActivismOutlined sx={thematicIconSx} />
           ) : key === 'disability' ? (
@@ -104,211 +104,138 @@ const HomePage: React.FC = () => {
   );
 
   const statsData = [
+    { number: organizationStats.lives_impacted, label: t('home.stats.livesImpacted') },
     { number: organizationStats.families_served, label: t('home.stats.familiesServed') },
     { number: organizationStats.communities_reached, label: t('home.stats.communitiesReached') },
-    { number: organizationStats.lives_impacted, label: t('home.stats.livesImpacted') },
     { number: organizationStats.years_of_service, label: t('home.stats.yearsOfService') },
   ];
 
   return (
     <Box component="main" sx={{ bgcolor: 'background.default' }}>
-      {/* Split hero — clarity first, image as proof */}
-      <Box
-        sx={{
-          pt: { xs: 14, md: 16 },
-          pb: { xs: 6, md: 8 },
-          bgcolor: 'background.paper',
-          borderBottom: '1px solid',
-          borderColor: 'divider',
-        }}
-      >
-        <Container maxWidth="lg">
-          <Grid container spacing={{ xs: 4, md: 6 }} alignItems="center">
-            <Grid item xs={12} md={6}>
-              <Stack spacing={2.5} sx={{ textAlign: { xs: 'center', md: 'left' }, alignItems: { xs: 'center', md: 'flex-start' } }}>
-                <Chip
-                  label={t('hero.subtitle')}
-                  size="small"
-                  sx={{
-                    bgcolor: 'rgba(13, 92, 99, 0.08)',
-                    color: 'info.dark',
-                    fontWeight: 600,
-                    borderRadius: 1,
-                    maxWidth: '100%',
-                    height: 'auto',
-                    py: 0.5,
-                    '& .MuiChip-label': { whiteSpace: 'normal', textAlign: { xs: 'center', md: 'left' } },
-                  }}
-                />
-                <Typography
-                  variant={isMobile ? 'h3' : 'h2'}
-                  component="h1"
-                  sx={{
-                    fontFamily: '"Merriweather", Georgia, serif',
-                    fontWeight: 700,
-                    color: 'text.primary',
-                    lineHeight: 1.2,
-                  }}
-                >
-                  {t('hero.title')}
-                </Typography>
-                <Typography
-                  variant="body1"
-                  sx={{
-                    color: 'text.secondary',
-                    maxWidth: 520,
-                    fontSize: { md: '1.05rem' },
-                    lineHeight: 1.7,
-                  }}
-                >
-                  {t('hero.description')}
-                </Typography>
-                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ pt: 1, width: { xs: '100%', sm: 'auto' } }}>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    size="large"
-                    endIcon={<ArrowForwardIcon />}
-                    onClick={() => navigate('/about')}
-                    sx={{ px: 3, py: 1.25, fontWeight: 600 }}
-                  >
-                    {t('hero.learnMore')}
-                  </Button>
-                  <Button
-                    variant="outlined"
-                    color="primary"
-                    size="large"
-                    onClick={() => navigate('/donate')}
-                    sx={{ px: 3, py: 1.25, borderWidth: 2, '&:hover': { borderWidth: 2 } }}
-                  >
-                    {t('hero.donateNow')}
-                  </Button>
-                </Stack>
-                <Stack direction="row" spacing={2} flexWrap="wrap" useFlexGap sx={{ pt: 1, justifyContent: { xs: 'center', md: 'flex-start' } }}>
-                  <Button size="small" onClick={() => navigate('/programs')} sx={{ color: 'info.main', fontWeight: 600 }}>
-                    {t('home.pathways.projects')}
-                  </Button>
-                  <Typography component="span" variant="body2" color="text.disabled">
-                    ·
-                  </Typography>
-                  <Button size="small" onClick={() => navigate('/programs/soup-kitchen')} sx={{ color: 'info.main', fontWeight: 600 }}>
-                    {t('home.pathways.soupKitchen')}
-                  </Button>
-                  <Typography component="span" variant="body2" color="text.disabled">
-                    ·
-                  </Typography>
-                  <Button size="small" onClick={() => navigate('/contact')} sx={{ color: 'info.main', fontWeight: 600 }}>
-                    {t('home.pathways.contact')}
-                  </Button>
-                </Stack>
-              </Stack>
-            </Grid>
-            <Grid item xs={12} md={6}>
-              {heroImage && (
+      <SEO
+        title={t('seo.home.title', 'Serving communities with dignity and hope')}
+        description={t(
+          'seo.home.description',
+          'Caritas Mutare is the development and humanitarian arm of the Catholic Diocese of Mutare, Zimbabwe. We work alongside families and parishes to deliver food security, livelihoods, inclusion, and emergency response.'
+        )}
+        image={heroImage?.src}
+        canonicalPath="/"
+      />
+
+      {/* Cinematic hero */}
+      {heroImage && (
+        <HeroBanner
+          image={heroImage.src}
+          imageAlt={heroImage.alt}
+          imagePosition={heroImage.objectPosition}
+          eyebrow={t('home.hero.eyebrow', 'Caritas Zimbabwe · Diocese of Mutare')}
+          title={t('home.hero.title', 'Restoring dignity. One family, one community at a time.')}
+          subtitle={t(
+            'home.hero.subtitle',
+            'For over 50 years, we have walked alongside families in eastern Zimbabwe — delivering food, livelihoods, inclusion and emergency response rooted in Catholic social teaching.'
+          )}
+          primaryCta={{
+            label: t('home.hero.ctaPrimary', 'Support our work'),
+            onClick: () => navigate('/donate'),
+          }}
+          secondaryCta={{
+            label: t('home.hero.ctaSecondary', 'See what we do'),
+            onClick: () => navigate('/programs'),
+          }}
+          caption={t('home.heroImageCaption')}
+          footer={
+            <Stack
+              direction={{ xs: 'row', md: 'row' }}
+              spacing={{ xs: 2, md: 5 }}
+              divider={
                 <Box
                   sx={{
-                    position: 'relative',
-                    borderRadius: 3,
-                    overflow: 'hidden',
-                    boxShadow: '0 20px 50px rgba(15, 23, 42, 0.12)',
-                    border: '1px solid',
-                    borderColor: 'divider',
-                    aspectRatio: { xs: '4/3', md: '5/4' },
-                    maxHeight: { md: 440 },
+                    width: '1px',
+                    alignSelf: 'stretch',
+                    bgcolor: 'rgba(255,255,255,0.25)',
+                    display: { xs: 'none', sm: 'block' },
                   }}
-                >
-                  <Box
-                    component="img"
-                    src={heroImage.src}
-                    alt={heroImage.alt}
-                    sx={{
-                      width: '100%',
-                      height: '100%',
-                      objectFit: 'cover',
-                      objectPosition: heroImage.objectPosition ?? 'center center',
-                      display: 'block',
-                    }}
+                />
+              }
+              flexWrap="wrap"
+              useFlexGap
+              sx={{ rowGap: 2 }}
+            >
+              {statsData.map((stat) => (
+                <Box key={stat.label} sx={{ minWidth: { xs: 130, md: 'auto' } }}>
+                  <CountUpAnimation
+                    end={stat.number}
+                    variant="h5"
+                    color="common.white"
+                    fontWeight={800}
+                    duration={1800}
                   />
-                  <Box
+                  <Typography
+                    variant="caption"
                     sx={{
-                      position: 'absolute',
-                      bottom: 0,
-                      left: 0,
-                      right: 0,
-                      background: 'linear-gradient(transparent, rgba(0,0,0,0.55))',
-                      py: 2,
-                      px: 2.5,
+                      color: 'rgba(255,255,255,0.82)',
+                      fontWeight: 500,
+                      letterSpacing: 0.4,
+                      textTransform: 'uppercase',
+                      fontSize: '0.7rem',
                     }}
                   >
-                    <Typography variant="body2" sx={{ color: 'common.white', fontWeight: 500, textShadow: '0 1px 2px rgba(0,0,0,0.5)' }}>
-                      {t('home.heroImageCaption')}
-                    </Typography>
-                  </Box>
+                    {stat.label}
+                  </Typography>
                 </Box>
-              )}
-            </Grid>
-          </Grid>
-        </Container>
-      </Box>
+              ))}
+            </Stack>
+          }
+        />
+      )}
 
       <PartnerLogoStrip title={t('home.partnersTitle')} variant="light" compact />
 
-      {/* Impact metrics — credibility */}
-      <Box sx={{ py: { xs: 5, md: 7 }, bgcolor: SECTION_BG_ALT }}>
-        <Container maxWidth="lg">
+      {/* Mission sentence — a plain, confident declaration */}
+      <Box sx={{ py: { xs: 5, md: 7 }, bgcolor: 'background.paper' }}>
+        <Container maxWidth="md">
           <Typography
             variant="overline"
-            sx={{ color: 'info.main', fontWeight: 700, letterSpacing: 2, display: 'block', textAlign: 'center', mb: 1 }}
+            sx={{ color: 'primary.main', fontWeight: 700, letterSpacing: 2, display: 'block', textAlign: 'center', mb: 2 }}
           >
-            {t('home.stats.overline')}
+            {t('home.mission.overline', 'Why we exist')}
           </Typography>
           <Typography
-            variant="h4"
-            component="h2"
-            textAlign="center"
-            sx={{ fontFamily: '"Merriweather", Georgia, serif', fontWeight: 700, mb: 4, maxWidth: 640, mx: 'auto' }}
+            component="p"
+            sx={{
+              fontFamily: '"Merriweather", Georgia, serif',
+              fontWeight: 400,
+              fontSize: { xs: '1.35rem', md: '1.75rem' },
+              lineHeight: 1.5,
+              textAlign: 'center',
+              color: 'text.primary',
+              maxWidth: 780,
+              mx: 'auto',
+              position: 'relative',
+            }}
           >
-            {t('home.stats.headline')}
+            <FormatQuoteIcon
+              aria-hidden
+              sx={{
+                color: 'primary.main',
+                opacity: 0.2,
+                position: 'absolute',
+                top: -24,
+                left: { xs: 0, md: -44 },
+                fontSize: 56,
+                transform: 'scaleX(-1)',
+              }}
+            />
+            {t(
+              'home.mission.statement',
+              'Poverty is not an accident. Neither is hope. Across the Diocese of Mutare, we turn solidarity into practical, measurable change — with the dignity of every person at the centre.'
+            )}
           </Typography>
-          <Grid container spacing={2}>
-            {statsData.map((stat, index) => (
-              <Grid item xs={6} md={3} key={index}>
-                <Paper
-                  elevation={0}
-                  sx={{
-                    p: 3,
-                    textAlign: 'center',
-                    borderRadius: 2,
-                    bgcolor: 'background.paper',
-                    border: '1px solid',
-                    borderColor: 'divider',
-                    height: '100%',
-                    transition: 'box-shadow 0.2s, transform 0.2s',
-                    '&:hover': {
-                      boxShadow: '0 8px 24px rgba(15,23,42,0.08)',
-                      transform: 'translateY(-2px)',
-                    },
-                  }}
-                >
-                  <CountUpAnimation
-                    end={stat.number}
-                    variant="h4"
-                    color="primary"
-                    fontWeight="bold"
-                    duration={2200}
-                  />
-                  <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5, fontWeight: 500 }}>
-                    {stat.label}
-                  </Typography>
-                </Paper>
-              </Grid>
-            ))}
-          </Grid>
         </Container>
       </Box>
 
-      {/* Thematic focus — pathways without clutter */}
-      <Box sx={{ py: { xs: 5, md: 7 }, bgcolor: 'background.paper' }}>
+      {/* Thematic focus */}
+      <Box sx={{ py: { xs: 5, md: 7 }, bgcolor: SECTION_BG_ALT }}>
         <Container maxWidth="lg">
           <Grid container spacing={4} alignItems="flex-start">
             <Grid item xs={12} md={4}>
@@ -321,7 +248,13 @@ const HomePage: React.FC = () => {
               <Typography variant="body1" color="text.secondary" sx={{ lineHeight: 1.75, mb: 2 }}>
                 {t('home.thematic.intro')}
               </Typography>
-              <Button variant="text" color="info" endIcon={<ArrowForwardIcon />} onClick={() => navigate('/about')} sx={{ fontWeight: 600, px: 0 }}>
+              <Button
+                variant="text"
+                color="info"
+                endIcon={<ArrowForwardIcon />}
+                onClick={() => navigate('/about')}
+                sx={{ fontWeight: 700, px: 0 }}
+              >
                 {t('home.thematic.cta')}
               </Button>
             </Grid>
@@ -337,9 +270,13 @@ const HomePage: React.FC = () => {
                         borderRadius: 2,
                         border: '1px solid',
                         borderColor: 'divider',
-                        bgcolor: SECTION_BG_ALT,
-                        transition: 'border-color 0.2s',
-                        '&:hover': { borderColor: 'info.light' },
+                        bgcolor: 'background.paper',
+                        transition: 'border-color 0.2s, transform 0.2s, box-shadow 0.2s',
+                        '&:hover': {
+                          borderColor: 'info.light',
+                          transform: 'translateY(-2px)',
+                          boxShadow: '0 8px 20px rgba(15,23,42,0.06)',
+                        },
                       }}
                     >
                       <Stack direction="row" spacing={2} alignItems="flex-start">
@@ -362,187 +299,329 @@ const HomePage: React.FC = () => {
         </Container>
       </Box>
 
+      {/* Featured project spotlight */}
+      {spotlightProject && spotlightProject.heroImage && (
+        <Box sx={{ py: { xs: 5, md: 8 }, bgcolor: 'background.paper' }}>
+          <Container maxWidth="lg">
+            <Grid container spacing={{ xs: 4, md: 6 }} alignItems="center">
+              <Grid item xs={12} md={6}>
+                <Box
+                  sx={{
+                    position: 'relative',
+                    borderRadius: 3,
+                    overflow: 'hidden',
+                    aspectRatio: { xs: '4/3', md: '5/6' },
+                    maxHeight: { md: 560 },
+                    boxShadow: '0 28px 60px rgba(15,23,42,0.18)',
+                  }}
+                >
+                  <Box
+                    component="img"
+                    src={spotlightProject.heroImage}
+                    alt={spotlightProject.title_en}
+                    sx={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      objectPosition: spotlightProject.heroImagePosition ?? 'center center',
+                      display: 'block',
+                    }}
+                  />
+                  <Box
+                    sx={{
+                      position: 'absolute',
+                      inset: 0,
+                      background:
+                        'linear-gradient(180deg, rgba(0,0,0,0) 50%, rgba(0,0,0,0.55) 100%)',
+                    }}
+                  />
+                  <Box
+                    sx={{
+                      position: 'absolute',
+                      left: 0,
+                      right: 0,
+                      bottom: 0,
+                      p: { xs: 2.5, md: 3.5 },
+                    }}
+                  >
+                    <Typography
+                      variant="caption"
+                      sx={{
+                        color: 'rgba(255,255,255,0.85)',
+                        fontWeight: 700,
+                        letterSpacing: 1.5,
+                        textTransform: 'uppercase',
+                        fontSize: '0.7rem',
+                      }}
+                    >
+                      {t('home.spotlight.overline', 'Field story')}
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        color: 'common.white',
+                        fontWeight: 600,
+                        mt: 0.5,
+                        fontSize: { xs: '0.95rem', md: '1.05rem' },
+                        textShadow: '0 1px 6px rgba(0,0,0,0.5)',
+                      }}
+                    >
+                      {spotlightProject.location}
+                    </Typography>
+                  </Box>
+                </Box>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <Typography
+                  variant="overline"
+                  sx={{ color: 'primary.main', fontWeight: 700, letterSpacing: 2 }}
+                >
+                  {t('home.spotlight.eyebrow', 'Featured programme')}
+                </Typography>
+                <Typography
+                  variant="h3"
+                  component="h2"
+                  sx={{
+                    fontFamily: '"Merriweather", Georgia, serif',
+                    fontWeight: 700,
+                    mt: 1,
+                    mb: 2,
+                    lineHeight: 1.15,
+                    fontSize: { xs: '1.85rem', md: '2.35rem' },
+                  }}
+                >
+                  {spotlightProject.acronym ? `${spotlightProject.acronym}: ` : ''}
+                  {spotlightProject.title_en}
+                </Typography>
+                <Typography
+                  variant="body1"
+                  color="text.secondary"
+                  sx={{ lineHeight: 1.8, mb: 3, fontSize: { md: '1.05rem' } }}
+                >
+                  {spotlightProject.summary_en}
+                </Typography>
+                <Stack direction="row" spacing={4} sx={{ mb: 3 }} flexWrap="wrap" useFlexGap>
+                  <Box>
+                    <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 700, letterSpacing: 1, textTransform: 'uppercase' }}>
+                      {t('home.spotlight.reach', 'Reach')}
+                    </Typography>
+                    <Typography variant="subtitle1" sx={{ fontWeight: 700, color: 'text.primary' }}>
+                      {spotlightProject.target}
+                    </Typography>
+                  </Box>
+                  <Box>
+                    <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 700, letterSpacing: 1, textTransform: 'uppercase' }}>
+                      {t('home.spotlight.duration', 'Duration')}
+                    </Typography>
+                    <Typography variant="subtitle1" sx={{ fontWeight: 700, color: 'text.primary' }}>
+                      {spotlightProject.duration}
+                    </Typography>
+                  </Box>
+                </Stack>
+                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    size="large"
+                    endIcon={<ArrowForwardIcon />}
+                    onClick={() => navigate(spotlightProject.route)}
+                    sx={{ fontWeight: 700, px: 3 }}
+                  >
+                    {t('home.spotlight.cta', 'Read the story')}
+                  </Button>
+                  <Button
+                    variant="text"
+                    color="info"
+                    size="large"
+                    onClick={() => navigate('/donate')}
+                    sx={{ fontWeight: 700 }}
+                  >
+                    {t('home.spotlight.donateCta', 'Support this work')}
+                  </Button>
+                </Stack>
+              </Grid>
+            </Grid>
+          </Container>
+        </Box>
+      )}
+
+      {/* Community voice — one human moment after the spotlight */}
+      <CommunityVoiceBlock
+        quoteEn={t(
+          'home.voice.quote',
+          "When the rains failed, we thought we had nothing left. Then we learned a different way to farm — and our children ate."
+        )}
+        quoteSh={t(
+          'home.voice.quoteSh',
+          "Pakatadza mvura, taifunga kuti hatichine chimwe. Takadzidza imwe nzira yekurima — vana vedu vakadya."
+        )}
+        attribution={t('home.voice.attribution', 'A mother of three · Ward 7, Bumba')}
+        programmeTag={t('home.voice.programmeTag', 'SERARP · Bumba')}
+        image="/images/programs/agriculture/woman-okra-field.png"
+        imageAlt={t('home.voice.imageAlt', 'A farmer tending her okra field — programme work in eastern Zimbabwe')}
+        imagePosition="center 44%"
+      />
+
       <Divider />
 
-      {/* Projects */}
+      {/* Projects grid */}
       <Box sx={{ py: { xs: 5, md: 7 }, bgcolor: SECTION_BG_ALT }}>
         <Container maxWidth="lg">
-          <Box sx={{ maxWidth: 720, mb: 4 }}>
-            <Typography variant="overline" sx={{ color: 'info.main', fontWeight: 700, letterSpacing: 2 }}>
-              {t('programs.title')}
-            </Typography>
-            <Typography variant="h4" component="h2" sx={{ fontFamily: '"Merriweather", Georgia, serif', fontWeight: 700, mt: 1, mb: 2 }}>
-              {t('home.projects.headline')}
-            </Typography>
-            <Typography variant="body1" color="text.secondary" sx={{ lineHeight: 1.75 }}>
-              {t('programs.description')}
-            </Typography>
-          </Box>
+          <Stack
+            direction={{ xs: 'column', md: 'row' }}
+            spacing={2}
+            justifyContent="space-between"
+            alignItems={{ xs: 'flex-start', md: 'flex-end' }}
+            sx={{ mb: 4 }}
+          >
+            <Box sx={{ maxWidth: 720 }}>
+              <Typography variant="overline" sx={{ color: 'info.main', fontWeight: 700, letterSpacing: 2 }}>
+                {t('programs.title')}
+              </Typography>
+              <Typography
+                variant="h4"
+                component="h2"
+                sx={{ fontFamily: '"Merriweather", Georgia, serif', fontWeight: 700, mt: 1, mb: 1 }}
+              >
+                {t('home.projects.headline')}
+              </Typography>
+              <Typography variant="body1" color="text.secondary" sx={{ lineHeight: 1.75 }}>
+                {t('programs.description')}
+              </Typography>
+            </Box>
+            <Button
+              variant="text"
+              color="info"
+              endIcon={<ArrowForwardIcon />}
+              onClick={() => navigate('/programs')}
+              sx={{ fontWeight: 700, display: { xs: 'none', md: 'inline-flex' } }}
+            >
+              {t('home.projects.viewAll')}
+            </Button>
+          </Stack>
 
           <Grid container spacing={3}>
             {featuredProjects.map((project) => (
               <Grid item xs={12} sm={6} md={4} key={project.id}>
-                <Card
-                  sx={{
-                    height: '100%',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    bgcolor: 'background.paper',
-                    border: '1px solid',
-                    borderColor: 'divider',
-                    transition: 'transform 0.2s, box-shadow 0.2s',
-                    '&:hover': {
-                      transform: 'translateY(-4px)',
-                      boxShadow: '0 12px 32px rgba(15,23,42,0.1)',
-                    },
-                  }}
-                >
-                  {project.heroImage && (
-                    <Box sx={{ position: 'relative', height: 168, overflow: 'hidden', bgcolor: 'grey.100' }}>
-                      <Box
-                        aria-hidden
-                        sx={{
-                          position: 'absolute',
-                          inset: 0,
-                          backgroundImage: `url(${project.heroImage})`,
-                          backgroundSize: 'cover',
-                          backgroundPosition: project.heroImagePosition ?? 'center center',
-                          filter: 'blur(10px)',
-                          transform: 'scale(1.06)',
-                          opacity: 0.45,
-                        }}
-                      />
-                      <Box
-                        component="img"
-                        src={project.heroImage}
-                        alt={project.title_en}
-                        sx={{
-                          position: 'relative',
-                          zIndex: 1,
-                          width: '100%',
-                          height: '100%',
-                          objectFit: 'contain',
-                          objectPosition: project.heroImagePosition ?? 'center center',
-                          display: 'block',
-                        }}
-                      />
-                    </Box>
-                  )}
-                  <CardContent sx={{ flexGrow: 1, py: 2.5 }}>
-                    {!project.heroImage && (
-                      <Box sx={{ mb: 1 }}>
-                        <CategoryIcon sx={{ fontSize: 36, color: 'primary.main' }} />
-                      </Box>
-                    )}
-                    <Typography variant="h6" component="h3" gutterBottom sx={{ fontWeight: 700, lineHeight: 1.35 }}>
-                      {project.acronym ? `${project.acronym}: ` : ''}
-                      {project.title_en}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary" sx={{ mb: 1.5, lineHeight: 1.65 }}>
-                      {project.summary_en}
-                    </Typography>
-                    <Typography variant="caption" display="block" color="text.secondary">
-                      {project.target} · {project.duration}
-                    </Typography>
-                    {(project.donorLogoUrls?.length ?? 0) > 0 && (
-                      <Box sx={{ display: 'flex', justifyContent: 'flex-start', gap: 1, mt: 1.5, flexWrap: 'wrap' }}>
-                        {project.donorLogoUrls?.slice(0, 3).map((url) => (
-                          <Box
-                            key={url}
-                            component="img"
-                            src={url}
-                            alt=""
-                            sx={{ height: 22, objectFit: 'contain', opacity: 0.9 }}
-                          />
-                        ))}
-                      </Box>
-                    )}
-                  </CardContent>
-                  <CardActions sx={{ justifyContent: 'flex-start', px: 2, pb: 2.5, pt: 0 }}>
-                    <Button size="medium" onClick={() => navigate(project.route)} sx={{ color: 'info.main', fontWeight: 600 }}>
-                      {t('home.projects.learnMore')}
-                    </Button>
-                  </CardActions>
-                </Card>
+                <StoryCard
+                  image={project.heroImage}
+                  imageAlt={project.title_en}
+                  imagePosition={project.heroImagePosition}
+                  imageFit="contain"
+                  aspect="4/3"
+                  category={project.acronym ?? t('home.projects.category', 'Programme')}
+                  title={project.title_en}
+                  description={project.summary_en}
+                  meta={`${project.target} · ${project.duration}`}
+                  logos={project.donorLogoUrls}
+                  cta={t('home.projects.learnMore')}
+                  onClick={() => navigate(project.route)}
+                />
               </Grid>
             ))}
           </Grid>
-          <Box sx={{ mt: 4 }}>
-            <Button variant="contained" color="primary" onClick={() => navigate('/programs')} sx={{ px: 3 }}>
+
+          <Box sx={{ mt: 4, display: { xs: 'block', md: 'none' } }}>
+            <Button
+              variant="contained"
+              color="primary"
+              fullWidth
+              endIcon={<ArrowForwardIcon />}
+              onClick={() => navigate('/programs')}
+              sx={{ fontWeight: 700 }}
+            >
               {t('home.projects.viewAll')}
             </Button>
           </Box>
         </Container>
       </Box>
 
+      {/* Donor trust — the "where your gift goes" promise */}
+      <TransparencyBlock />
+
       {/* News */}
       {newsData?.articles && newsData.articles.length > 0 && (
         <Box sx={{ py: { xs: 5, md: 7 }, bgcolor: 'background.paper' }}>
           <Container maxWidth="lg">
-            <Typography variant="h4" component="h2" sx={{ fontFamily: '"Merriweather", Georgia, serif', fontWeight: 700, mb: 1 }}>
-              {t('news.title')}
-            </Typography>
-            <Typography variant="body1" color="text.secondary" sx={{ mb: 4, maxWidth: 560 }}>
-              {t('home.news.intro')}
-            </Typography>
+            <Stack
+              direction={{ xs: 'column', md: 'row' }}
+              spacing={2}
+              justifyContent="space-between"
+              alignItems={{ xs: 'flex-start', md: 'flex-end' }}
+              sx={{ mb: 4 }}
+            >
+              <Box sx={{ maxWidth: 560 }}>
+                <Typography variant="overline" sx={{ color: 'info.main', fontWeight: 700, letterSpacing: 2 }}>
+                  {t('home.news.overline', 'From the field')}
+                </Typography>
+                <Typography
+                  variant="h4"
+                  component="h2"
+                  sx={{ fontFamily: '"Merriweather", Georgia, serif', fontWeight: 700, mt: 1, mb: 1 }}
+                >
+                  {t('news.title')}
+                </Typography>
+                <Typography variant="body1" color="text.secondary" sx={{ lineHeight: 1.75 }}>
+                  {t('home.news.intro')}
+                </Typography>
+              </Box>
+              <Button
+                variant="text"
+                color="info"
+                endIcon={<ArrowForwardIcon />}
+                onClick={() => navigate('/news')}
+                sx={{ fontWeight: 700, display: { xs: 'none', md: 'inline-flex' } }}
+              >
+                {t('home.news.viewAll')}
+              </Button>
+            </Stack>
 
             <Grid container spacing={3}>
-              {newsData.articles.map((article: { id: number; title_en: string; excerpt_en?: string; featured_image?: string; published_at: string; read_time_minutes?: number }) => (
-                <Grid item xs={12} md={4} key={article.id}>
-                  <Card
-                    sx={{
-                      height: '100%',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      cursor: 'pointer',
-                      border: '1px solid',
-                      borderColor: 'divider',
-                      transition: 'transform 0.2s, box-shadow 0.2s',
-                      '&:hover': {
-                        transform: 'translateY(-4px)',
-                        boxShadow: 4,
-                      },
-                    }}
-                    onClick={() => navigate(`/news/${article.id}`)}
-                  >
-                    {article.featured_image && (
-                      <CardMedia component="img" height="200" image={article.featured_image} alt={article.title_en} />
-                    )}
-                    <CardContent sx={{ flexGrow: 1 }}>
-                      <Typography variant="h6" component="h3" gutterBottom sx={{ fontWeight: 700 }}>
-                        {article.title_en}
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary" sx={{ mb: 2, lineHeight: 1.65 }}>
-                        {article.excerpt_en}
-                      </Typography>
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap' }}>
-                        <Typography variant="caption" color="text.secondary">
-                          {new Date(article.published_at).toLocaleDateString()}
-                        </Typography>
-                        {article.read_time_minutes != null && (
-                          <>
-                            <Typography variant="caption" color="text.secondary" sx={{ opacity: 0.8 }}>
-                              ·
-                            </Typography>
-                            <Typography variant="caption" color="text.secondary">
-                              {t('home.news.minRead', { count: article.read_time_minutes })}
-                            </Typography>
-                          </>
-                        )}
-                      </Box>
-                    </CardContent>
-                    <CardActions>
-                      <Button size="small" sx={{ color: 'info.main', fontWeight: 600 }}>
-                        {t('news.readMore')}
-                      </Button>
-                    </CardActions>
-                  </Card>
-                </Grid>
-              ))}
+              {newsData.articles.map(
+                (article: {
+                  id: number;
+                  title_en: string;
+                  excerpt_en?: string;
+                  featured_image?: string;
+                  published_at: string;
+                  read_time_minutes?: number;
+                }) => {
+                  const dateLabel = new Date(article.published_at).toLocaleDateString(undefined, {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                  });
+                  const meta =
+                    article.read_time_minutes != null
+                      ? `${dateLabel} · ${t('home.news.minRead', { count: article.read_time_minutes })}`
+                      : dateLabel;
+                  return (
+                    <Grid item xs={12} sm={6} md={4} key={article.id}>
+                      <StoryCard
+                        image={article.featured_image}
+                        imageAlt={article.title_en}
+                        aspect="16/10"
+                        category={t('home.news.category', 'News')}
+                        title={article.title_en}
+                        description={article.excerpt_en}
+                        meta={meta}
+                        cta={t('news.readMore')}
+                        onClick={() => navigate(`/news/${article.id}`)}
+                      />
+                    </Grid>
+                  );
+                }
+              )}
             </Grid>
 
-            <Box sx={{ mt: 4 }}>
-              <Button variant="outlined" onClick={() => navigate('/news')} sx={{ borderWidth: 2, '&:hover': { borderWidth: 2 } }}>
+            <Box sx={{ mt: 4, display: { xs: 'block', md: 'none' } }}>
+              <Button
+                variant="outlined"
+                color="primary"
+                fullWidth
+                onClick={() => navigate('/news')}
+                sx={{ fontWeight: 700, borderWidth: 2, '&:hover': { borderWidth: 2 } }}
+              >
                 {t('home.news.viewAll')}
               </Button>
             </Box>
@@ -570,54 +649,73 @@ const HomePage: React.FC = () => {
         sx={{
           background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%)`,
           color: 'common.white',
-          py: { xs: 6, md: 8 },
+          py: { xs: 6, md: 10 },
           position: 'relative',
           overflow: 'hidden',
           '&::before': {
             content: '""',
             position: 'absolute',
             inset: 0,
-            background: 'radial-gradient(circle at 20% 50%, rgba(255,255,255,0.08) 0%, transparent 50%)',
+            background:
+              'radial-gradient(circle at 20% 50%, rgba(255,255,255,0.08) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(255,255,255,0.06) 0%, transparent 45%)',
             pointerEvents: 'none',
           },
         }}
       >
         <Container maxWidth="md" sx={{ textAlign: 'center', position: 'relative', zIndex: 1 }}>
-          <Typography variant="h4" component="h2" sx={{ fontFamily: '"Merriweather", Georgia, serif', fontWeight: 700, mb: 2 }}>
+          <Typography
+            variant="overline"
+            sx={{ color: 'rgba(255,255,255,0.75)', fontWeight: 700, letterSpacing: 2, mb: 2, display: 'block' }}
+          >
+            {t('home.closingCta.overline', 'Walk with us')}
+          </Typography>
+          <Typography
+            variant="h3"
+            component="h2"
+            sx={{
+              fontFamily: '"Merriweather", Georgia, serif',
+              fontWeight: 700,
+              mb: 2.5,
+              fontSize: { xs: '1.85rem', md: '2.5rem' },
+              lineHeight: 1.2,
+            }}
+          >
             {t('home.closingCta.title')}
           </Typography>
-          <Typography variant="body1" sx={{ mb: 4, opacity: 0.92, lineHeight: 1.75, maxWidth: 520, mx: 'auto' }}>
+          <Typography variant="body1" sx={{ mb: 4, opacity: 0.92, lineHeight: 1.75, maxWidth: 580, mx: 'auto', fontSize: { md: '1.05rem' } }}>
             {t('home.closingCta.body')}
           </Typography>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} justifyContent="center" alignItems="center">
             <Button
               variant="contained"
               size="large"
-              onClick={() => navigate('/volunteer')}
+              onClick={() => navigate('/donate')}
+              endIcon={<ArrowForwardIcon />}
               sx={{
                 bgcolor: 'common.white',
                 color: 'primary.main',
                 px: 4,
-                fontWeight: 600,
+                py: 1.4,
+                fontWeight: 700,
+                borderRadius: 999,
                 '&:hover': { bgcolor: 'grey.100' },
               }}
             >
-              {t('nav.volunteer')}
+              {t('nav.donate')}
             </Button>
             <Button
-              variant="outlined"
+              variant="text"
               size="large"
-              onClick={() => navigate('/donate')}
+              onClick={() => navigate('/volunteer')}
               sx={{
                 color: 'common.white',
-                borderColor: 'rgba(255,255,255,0.85)',
-                borderWidth: 2,
-                px: 4,
-                fontWeight: 600,
-                '&:hover': { borderColor: 'common.white', bgcolor: 'rgba(255,255,255,0.08)', borderWidth: 2 },
+                px: 3,
+                py: 1.4,
+                fontWeight: 700,
+                '&:hover': { bgcolor: 'rgba(255,255,255,0.08)' },
               }}
             >
-              {t('nav.donate')}
+              {t('nav.volunteer')}
             </Button>
           </Stack>
         </Container>

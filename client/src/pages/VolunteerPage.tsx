@@ -39,6 +39,7 @@ import {
   outlineCardHover,
   formCardHeader,
 } from '../lib/sitePageLayout';
+import { orgContact } from '../lib/organisation';
 
 const volCardSx = { ...outlineCard, ...outlineCardHover };
 
@@ -379,17 +380,15 @@ const VolunteerPage: React.FC = () => {
                     disabled={isSubmitting}
                     sx={{
                       textTransform: 'none',
-                      py: 2,
+                      py: 1.75,
                       mt: 3,
-                      borderRadius: 3,
-                      fontSize: '1.1rem',
-                      fontWeight: 600,
-                      boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
-                      '&:hover': {
-                        boxShadow: '0 6px 16px rgba(0,0,0,0.4)',
-                        transform: 'translateY(-2px)',
-                      },
-                      transition: 'all 0.3s ease',
+                      borderRadius: 999,
+                      fontSize: '1rem',
+                      fontWeight: 700,
+                      boxShadow: 'none',
+                      '&:hover': { boxShadow: '0 4px 12px rgba(13,92,99,0.18)' },
+                      '@media (prefers-reduced-motion: reduce)': { transition: 'none' },
+                      transition: 'box-shadow .2s ease',
                     }}
                   >
                     {isSubmitting ? (
@@ -431,8 +430,13 @@ const VolunteerPage: React.FC = () => {
                 <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>
                   Email Us
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  egumbeze@caritasmutare.org
+                <Typography
+                  component="a"
+                  href={`mailto:${orgContact.email.primary}`}
+                  variant="body2"
+                  sx={{ color: 'text.secondary', textDecoration: 'none', '&:hover': { color: 'primary.main' } }}
+                >
+                  {orgContact.email.primary}
                 </Typography>
               </Card>
             </Grid>
@@ -444,8 +448,13 @@ const VolunteerPage: React.FC = () => {
                 <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>
                   Call Us
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  +263 77 467 1893
+                <Typography
+                  component="a"
+                  href={`tel:${orgContact.phones.main.replace(/\s/g, '')}`}
+                  variant="body2"
+                  sx={{ color: 'text.secondary', textDecoration: 'none', '&:hover': { color: 'primary.main' } }}
+                >
+                  {orgContact.phones.main}
                 </Typography>
               </Card>
             </Grid>
@@ -458,7 +467,7 @@ const VolunteerPage: React.FC = () => {
                   Visit Us
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  Cnr Jason Moyo and Herbert Chitepo, Mutare
+                  {orgContact.address.short}
                 </Typography>
               </Card>
             </Grid>

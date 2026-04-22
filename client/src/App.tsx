@@ -3,7 +3,6 @@ import { Routes, Route, useLocation } from 'react-router-dom';
 import { Box } from '@mui/material';
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
-import BackToHomeLink from './components/BackToHomeLink';
 import HomePage from './pages/HomePage';
 import AboutPage from './pages/AboutPage';
 import ProgramsPage from './pages/ProgramsPage';
@@ -27,11 +26,11 @@ import AuditLogPage from './pages/admin/AuditLogPage';
 import { AuthProvider } from './contexts/AuthContext';
 import { ToastProvider } from './contexts/ToastContext';
 import ErrorBoundary from './components/ErrorBoundary';
+import StickyDonateBar from './components/StickyDonateBar';
 
 function App() {
   const location = useLocation();
   const isAdminArea = location.pathname.startsWith('/admin');
-  const showBackToHome = location.pathname !== '/' && !isAdminArea;
 
   return (
     <ErrorBoundary>
@@ -39,11 +38,6 @@ function App() {
         <AuthProvider>
           <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
             {!isAdminArea && <Navbar />}
-            {showBackToHome && (
-              <Box sx={{ borderBottom: 1, borderColor: 'divider', py: 1.25, px: 3 }}>
-                <BackToHomeLink />
-              </Box>
-            )}
             <Box component="main" sx={{ flexGrow: 1 }}>
               <Routes>
                 {/* Public Routes */}
@@ -77,6 +71,7 @@ function App() {
             </Box>
 
             {!isAdminArea && <Footer />}
+            {!isAdminArea && <StickyDonateBar />}
           </Box>
         </AuthProvider>
       </ToastProvider>

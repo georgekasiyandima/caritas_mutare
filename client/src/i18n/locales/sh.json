@@ -8,7 +8,21 @@
     "donate": "Ipa",
     "volunteer": "Zvipira",
     "contact": "Taura Nesu",
-    "admin": "Admin"
+    "admin": "Admin",
+    "staffSignIn": "Kupinda kwevashandi"
+  },
+  "seo": {
+    "home": {
+      "title": "Kushandira nharaunda nezvikudzo netariro",
+      "description": "Caritas Mutare ndiyo sangano rekusimudzira nerubatsiro reChechi yeCatholic, Diocese yeMutare, Zimbabwe. Tinoshanda nemhuri nemaparishi kupa chikafu, hupenyu, kuunganidzwa, uye rubatsiro rwekukurumidza."
+    }
+  },
+  "stickyDonate": {
+    "title": "Chipo chenyu chinosvika mhuri chaidzo muDiocese yeMutare.",
+    "subtitle": "Zvese zvamunopa zvinoenda kuzvirongwa zvepamberi — chikafu, hupenyu, kuunganidzwa.",
+    "cta": "Ipa",
+    "dismiss": "Vhara",
+    "ariaLabel": "Tsigira Caritas Mutare"
   },
   "hero": {
     "title": "Caritas Mutare",
@@ -19,6 +33,25 @@
   },
   "home": {
     "partnersTitle": "Vashandi vakakosha",
+    "hero": {
+      "eyebrow": "Caritas Zimbabwe · Diocese yeMutare",
+      "title": "Kudzoredza chikudzo. Mhuri imwe, nharaunda imwe panguva.",
+      "subtitle": "Kwemakore anopfuura makumi mashanu, takafamba nemhuri dzekumabvazuva kweZimbabwe — tichipa chikafu, hupenyu, kuunganidzwa nerubatsiro rwekukurumidza zvakamira padzidziso yeCatholic yenharaunda.",
+      "ctaPrimary": "Tsigira basa redu",
+      "ctaSecondary": "Ona zvatinoita"
+    },
+    "mission": {
+      "overline": "Sei tiripo",
+      "statement": "Hurombo harusi tsaona. Kwete zvakare tariro. MuDiocese yeMutare, tinoshandura kubatana kuita shanduko inooneka — chikudzo chemunhu wese chiri pakati."
+    },
+    "spotlight": {
+      "eyebrow": "Chirongwa chakakosha",
+      "overline": "Nyaya yomumunda",
+      "reach": "Vanosvikwa",
+      "duration": "Nguva",
+      "cta": "Verenga nyaya",
+      "donateCta": "Tsigira basa iri"
+    },
     "pathways": {
       "projects": "Ona zvirongwa",
       "soupKitchen": "Soup kitchen",
@@ -60,20 +93,51 @@
     "projects": {
       "headline": "Zvirongwa zvinotsigirwa nevanopa uye zvinotungamirirwa naCaritas",
       "learnMore": "Dzidza zvimwe",
-      "viewAll": "Ona zvirongwa zvose"
+      "viewAll": "Ona zvirongwa zvose",
+      "category": "Chirongwa"
     },
     "news": {
       "intro": "Zvitsva kubva mumunda nedicese.",
       "minRead": "Maminetsi {{count}} kuverenga",
-      "viewAll": "Ona nhau dzose"
+      "viewAll": "Ona nhau dzose",
+      "overline": "Kubva mumunda",
+      "category": "Nhau"
     },
     "impact": {
       "title": "Mhedziso yedu",
       "intro": "Maziso embozha ekuunganidza nharaunda nebasa rezvirongwa muDiocese — chinangwa chimwe chete chinoita kuti mubatane naCaritas."
     },
     "closingCta": {
+      "overline": "Famba nesu",
       "title": "Batana nechinangwa chedu",
       "body": "Famba nesu mukubatana — kuburikidza nemunamato, kuzvipira, kana kupa — kuti nharaunda dzose muMutare dzigone kurarama nezvikudzo netariro."
+    },
+    "voice": {
+      "programmeTag": "SERARP · Bumba",
+      "quote": "When the rains failed, we thought we had nothing left. Then we learned a different way to farm — and our children ate.",
+      "quoteSh": "Pakatadza mvura, taifunga kuti hatichine chimwe. Takadzidza imwe nzira yekurima — vana vedu vakadya.",
+      "attribution": "Amai vevana vatatu · Ward 7, Bumba",
+      "imageAlt": "Murimi achichengeta munda wake weokra — basa rezvirongwa kumabvazuva kweZimbabwe"
+    },
+    "transparency": {
+      "overline": "Pachena",
+      "title": "Chipo chega chega chinoongororwa.",
+      "body": "Tinoburitsa mashoko emari atinoshandisa gore rega rega akaongororwa. Kakawanda kemari yega yega yamunopa kunoenda kuzvirongwa zvenharaunda — chikafu, hupenyu, kuunganidzwa, uye rubatsiro rwekukurumidza — muDiocese yeMutare.",
+      "headlineStat": "yedhora rega rega inoenda kubasa rezvirongwa zvinotsigira nharaunda.",
+      "cta": "Verenga shoko regore",
+      "note": "Mugove uyu unoreva nguva yatakushandisa zvachirimbi. Mashoko ekupedzisira anoburitswa mushoko regore.",
+      "promises": {
+        "audited": "Tinoongororwa nevamwe gore rega rega",
+        "localised": "Mari inoshandiswa muDiocese yeMutare",
+        "reported": "Mhedziso dzinotaurwa kune vatipi"
+      },
+      "allocation": {
+        "items": {
+          "programs": "Zvirongwa zvakanangana",
+          "capacity": "Vashandi nesimba",
+          "admin": "Zvekutonga"
+        }
+      }
     },
     "whatsappWelcome": "Makadii! Tinokutendai nekufarira Caritas Mutare. Tingakubatsirei sei nhasi?"
   },
@@ -167,11 +231,16 @@
     }
   },
   "footer": {
-    "description": "Caritas Mutare yakazvipira kushandira nharaunda kuburikidza nedzidziso yeCatholic yenharaunda uye zvirongwa zvekusimudzira nharaunda.",
+    "description": "Sangano rekusimudzira nerubatsiro reDiocese yeMutare — richishandira nharaunda dzekumabvazuva kweZimbabwe nezvikudzo, kubatana uye rubatsiro runobatika.",
+    "partnersTitle": "Tiri kushanda pamwe na",
+    "explore": "Ongorora",
+    "engage": "Batana nesu",
+    "visit": "Shanyira kana kutaura nesu",
     "quickLinks": "Zvipfupi Zvinongedzo",
     "contactInfo": "Ruzivo Rwekutaura",
     "followUs": "Teverai Isu",
-    "copyright": "© 2024 Caritas Mutare. Kodzero dzese dzakachengetedzwa.",
+    "copyright": "© Caritas Mutare. Kodzero dzese dzakachengetedzwa.",
+    "copyrightSuffix": "Kodzero dzese dzakachengetedzwa.",
     "poweredBy": "Zvinofambiswa nekutenda, tariro, uye rudo"
   },
   "common": {

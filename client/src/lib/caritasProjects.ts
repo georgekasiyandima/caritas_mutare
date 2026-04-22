@@ -321,13 +321,18 @@ export const generalImpactImages: { src: string; alt: string; objectPosition?: s
   { src: '/images/programs/didrr/didrr-gallery-01.png', alt: 'DiDRR Project Mid-Term Review', objectPosition: 'center 34%' },
 ];
 
+/**
+ * Partner logos displayed in the public site strip.
+ *
+ * Only include entries whose asset actually ships in client/public/images/.
+ * Adding a row here without dropping the corresponding file in place will
+ * render as a blank card — PartnerLogoStrip has a runtime fallback that
+ * hides broken entries, but prevention is better than cure.
+ */
 export const partnerLogosForSite: { name: string; logoUrl: string }[] = [
   { name: 'Caritas Mutare', logoUrl: '/images/logo/caritas-mutare-new-logo.png' },
-  { name: 'CAFOD', logoUrl: '/images/partners/cafod.png' },
-  { name: 'Oak Foundation', logoUrl: '/images/partners/oak-foundation-clean.png' },
-  { name: 'CBM Global', logoUrl: '/images/partners/cbm-global.png' },
-  { name: 'Trocaire', logoUrl: '/images/partners/trocaire.png' },
-  { name: 'CRS', logoUrl: '/images/partners/crs.png' },
+  { name: 'CRS', logoUrl: '/images/partners/crs-wordmark.svg' },
+  { name: 'Trocaire', logoUrl: '/images/partners/trocaire-wordmark.svg' },
   { name: 'CCJP Mutare Diocese', logoUrl: '/images/partners/ccjp-mutare.png' },
   { name: 'Zimbabwe Government', logoUrl: '/images/partners/zimbabwe-government.png' },
 ];

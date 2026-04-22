@@ -21,7 +21,7 @@ import {
   Email as EmailIcon,
   Map as MapIcon,
   Schedule as ScheduleIcon,
-  Public as PublicIcon,
+  OpenInNew as OpenInNewIcon,
 } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
 import BackToTopButton from '../components/BackToTopButton';
@@ -35,6 +35,7 @@ import {
   outlineCardHover,
   formCardHeader,
 } from '../lib/sitePageLayout';
+import { orgContact } from '../lib/organisation';
 
 const contactCardSx = { ...outlineCard, ...outlineCardHover };
 
@@ -112,14 +113,17 @@ const ContactPage: React.FC = () => {
                   </Typography>
                 </Box>
                 <Typography variant="body1" color="text.secondary" sx={{ lineHeight: 1.6 }}>
-                  Mai Maria Village Dangamvura<br />
-                  Stand No. 19449 Dangamvura Township<br />
-                  Triangle of Raheen, Mutare District
+                  {orgContact.address.lines.map((line, idx) => (
+                    <React.Fragment key={line}>
+                      {line}
+                      {idx < orgContact.address.lines.length - 1 && <br />}
+                    </React.Fragment>
+                  ))}
                 </Typography>
-                <Chip 
-                  label="Mai Maria Village" 
-                  size="small" 
-                  color="primary" 
+                <Chip
+                  label="Mai Maria Village"
+                  size="small"
+                  color="primary"
                   sx={{ mt: 2 }}
                 />
               </CardContent>
@@ -138,13 +142,20 @@ const ContactPage: React.FC = () => {
                 </Box>
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
                   <Typography variant="body1" color="text.secondary">
-                    <strong>Main:</strong> +263 77 467 1893
+                    <strong>Main:</strong>{' '}
+                    <Box
+                      component="a"
+                      href={`tel:${orgContact.phones.main.replace(/\s/g, '')}`}
+                      sx={{ color: 'inherit', textDecoration: 'none', '&:hover': { color: 'primary.main' } }}
+                    >
+                      {orgContact.phones.main}
+                    </Box>
                   </Typography>
                   <Typography variant="body1" color="text.secondary">
-                    <strong>Office:</strong> +263 20 60504
+                    <strong>Office:</strong> {orgContact.phones.office}
                   </Typography>
                   <Typography variant="body1" color="text.secondary">
-                    <strong>Fax:</strong> +263 20 65077
+                    <strong>Fax:</strong> {orgContact.phones.fax}
                   </Typography>
                 </Box>
               </CardContent>
@@ -161,13 +172,19 @@ const ContactPage: React.FC = () => {
                     {t('contact.email')}
                   </Typography>
                 </Box>
-                <Typography variant="body1" color="text.secondary" sx={{ mb: 2 }}>
-                  admin@caritasmutare.org
-                </Typography>
-                <Chip 
-                  label="Response within 24 hours" 
-                  size="small" 
-                  color="info" 
+                <Box
+                  component="a"
+                  href={`mailto:${orgContact.email.primary}`}
+                  sx={{ color: 'text.secondary', textDecoration: 'none', '&:hover': { color: 'primary.main' }, display: 'block', mb: 2 }}
+                >
+                  <Typography variant="body1" color="inherit">
+                    {orgContact.email.primary}
+                  </Typography>
+                </Box>
+                <Chip
+                  label="Response within 24 hours"
+                  size="small"
+                  color="info"
                 />
               </CardContent>
             </Card>
@@ -184,12 +201,11 @@ const ContactPage: React.FC = () => {
                   </Typography>
                 </Box>
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-                  <Typography variant="body1" color="text.secondary">
-                    <strong>Monday - Thursday:</strong> 8:00 AM - 4:45 PM
-                  </Typography>
-                  <Typography variant="body1" color="text.secondary">
-                    <strong>Friday:</strong> 8:00 AM - 1:00 PM
-                  </Typography>
+                  {orgContact.hours.map((h) => (
+                    <Typography key={h.days} variant="body1" color="text.secondary">
+                      <strong>{h.days}:</strong> {h.time}
+                    </Typography>
+                  ))}
                 </Box>
               </CardContent>
             </Card>
@@ -197,41 +213,57 @@ const ContactPage: React.FC = () => {
             {/* Map Card */}
             <Card elevation={0} sx={contactCardSx}>
               <CardContent sx={{ p: 3 }}>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3 }}>
-                  <Avatar sx={{ bgcolor: 'rgba(13, 92, 99, 0.12)', color: 'info.dark' }}>
-                    <MapIcon />
-                  </Avatar>
-                  <Typography variant="h6" sx={{ fontWeight: 600 }}>
-                    Office Location
-                  </Typography>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    gap: 2,
+                    mb: 3,
+                  }}
+                >
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                    <Avatar sx={{ bgcolor: 'rgba(13, 92, 99, 0.12)', color: 'info.dark' }}>
+                      <MapIcon />
+                    </Avatar>
+                    <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                      Office Location
+                    </Typography>
+                  </Box>
+                  <Button
+                    component="a"
+                    href={orgContact.maps.directionsUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    size="small"
+                    endIcon={<OpenInNewIcon sx={{ fontSize: 14 }} />}
+                    sx={{ textTransform: 'none', fontWeight: 600, color: 'primary.main' }}
+                  >
+                    Directions
+                  </Button>
                 </Box>
                 <Box
                   sx={{
                     width: '100%',
                     height: 250,
-                    borderRadius: 3,
+                    borderRadius: 2,
                     overflow: 'hidden',
-                    border: '2px solid #e0e0e0',
-                    boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                    border: '1px solid',
+                    borderColor: 'divider',
                   }}
                 >
                   <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3834.1234567890!2d32.6167!3d-18.9707!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1931a5a1b2c3d4e5%3A0x1234567890abcdef!2sMutare%2C%20Zimbabwe!5e0!3m2!1sen!2szw!4v1234567890123!5m2!1sen!2szw"
+                    src={orgContact.maps.embedSrc}
                     width="100%"
                     height="100%"
                     style={{ border: 0 }}
-                    allowFullScreen
                     loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                    title="Caritas Mutare Office Location"
+                    title="Caritas Mutare · Mai Maria Village, Dangamvura"
                   />
                 </Box>
-                <Box sx={{ mt: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
-                  <PublicIcon sx={{ fontSize: 16, color: 'text.secondary' }} />
-                <Typography variant="body2" color="text.secondary">
-                    Mai Maria Village, Dangamvura, Mutare District
+                <Typography variant="body2" color="text.secondary" sx={{ mt: 2 }}>
+                  {orgContact.address.short}
                 </Typography>
-                </Box>
               </CardContent>
             </Card>
           </Box>
@@ -314,19 +346,17 @@ const ContactPage: React.FC = () => {
                   size="large"
                   fullWidth
                   disabled={isSubmitting}
-                            sx={{ 
-                              textTransform: 'none', 
-                              py: 2, 
+                            sx={{
+                              textTransform: 'none',
+                              py: 1.75,
                               mt: 3,
-                              borderRadius: 3,
-                              fontSize: '1.1rem',
-                              fontWeight: 600,
-                              boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
-                              '&:hover': {
-                                boxShadow: '0 6px 16px rgba(0,0,0,0.4)',
-                                transform: 'translateY(-2px)',
-                              },
-                              transition: 'all 0.3s ease',
+                              borderRadius: 999,
+                              fontSize: '1rem',
+                              fontWeight: 700,
+                              boxShadow: 'none',
+                              '&:hover': { boxShadow: '0 4px 12px rgba(13,92,99,0.18)' },
+                              '@media (prefers-reduced-motion: reduce)': { transition: 'none' },
+                              transition: 'box-shadow .2s ease',
                             }}
                 >
                   {isSubmitting ? (

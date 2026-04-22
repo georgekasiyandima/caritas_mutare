@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, Container, Typography } from '@mui/material';
 import { partnerLogosForSite } from '../lib/caritasProjects';
 
@@ -8,11 +8,31 @@ interface PartnerLogoStripProps {
   compact?: boolean;
 }
 
+/**
+ * Renders the strip of supporter / partner logos.
+ * Any logo that fails to load is hidden rather than leaving an empty white
+ * card in the layout. If every logo fails (or the list is empty) the whole
+ * strip disappears — a partner band that can't show partners adds no value.
+ */
 const PartnerLogoStrip: React.FC<PartnerLogoStripProps> = ({
   title = 'Supported by',
   variant = 'light',
   compact = false,
 }) => {
+  const [hidden, setHidden] = useState<Set<string>>(new Set());
+
+  const visiblePartners = partnerLogosForSite.filter((p) => !hidden.has(p.name));
+  if (visiblePartners.length === 0) return null;
+
+  const handleError = (name: string) => {
+    setHidden((prev) => {
+      if (prev.has(name)) return prev;
+      const next = new Set(prev);
+      next.add(name);
+      return next;
+    });
+  };
+
   return (
     <Box
       sx={{
@@ -46,7 +66,7 @@ const PartnerLogoStrip: React.FC<PartnerLogoStripProps> = ({
             gap: 3,
           }}
         >
-          {partnerLogosForSite.map((partner) => (
+          {visiblePartners.map((partner) => (
             <Box
               key={partner.name}
               sx={{
@@ -54,7 +74,10 @@ const PartnerLogoStrip: React.FC<PartnerLogoStripProps> = ({
                 py: 1,
                 borderRadius: 2.5,
                 backgroundColor: variant === 'dark' ? 'rgba(255,255,255,0.98)' : 'white',
-                boxShadow: variant === 'dark' ? '0 8px 24px rgba(0,0,0,0.25)' : '0 4px 16px rgba(15,23,42,0.08)',
+                boxShadow:
+                  variant === 'dark'
+                    ? '0 8px 24px rgba(0,0,0,0.25)'
+                    : '0 4px 16px rgba(15,23,42,0.08)',
                 border: '1px solid',
                 borderColor: 'grey.200',
                 display: 'flex',
@@ -63,7 +86,14 @@ const PartnerLogoStrip: React.FC<PartnerLogoStripProps> = ({
                 transition: 'transform 0.2s ease, box-shadow 0.2s ease',
                 '&:hover': {
                   transform: 'translateY(-2px)',
-                  boxShadow: variant === 'dark' ? '0 10px 26px rgba(0,0,0,0.32)' : '0 8px 20px rgba(15,23,42,0.14)',
+                  boxShadow:
+                    variant === 'dark'
+                      ? '0 10px 26px rgba(0,0,0,0.32)'
+                      : '0 8px 20px rgba(15,23,42,0.14)',
+                },
+                '@media (prefers-reduced-motion: reduce)': {
+                  transition: 'none',
+                  '&:hover': { transform: 'none' },
                 },
               }}
             >
@@ -71,6 +101,8 @@ const PartnerLogoStrip: React.FC<PartnerLogoStripProps> = ({
                 component="img"
                 src={partner.logoUrl}
                 alt={partner.name}
+                loading="lazy"
+                onError={() => handleError(partner.name)}
                 sx={{
                   height: compact ? 30 : 36,
                   maxWidth: 120,
