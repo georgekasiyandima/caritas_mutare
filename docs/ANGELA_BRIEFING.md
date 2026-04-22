@@ -10,31 +10,44 @@ Here's a short, non-technical update on where we are with the Caritas Mutare
 website and admin system, and what I'll need from your side in the next few
 weeks to get us fully live.
 
+A quick framing note first: this is **Caritas Mutare's first website**, so
+we're building from a clean slate. That's a good thing — we don't have to
+unpick anything old — but it does mean we should ship something real and
+modest first, let the team live with it for a few weeks, and then grow it.
+
 ---
 
-## 1. What's ready to look at
+## 1. What's ready to look at — public preview
 
-The public website is already deployed and running on Vercel. It includes:
+The **public website** is deployed to Vercel and you can share the link with
+colleagues for feedback. It includes:
 
 - A bilingual (English / Shona) homepage, About, Leadership, Programmes, News,
   Donate, Volunteer, and Contact pages.
-- A sticky "Donate" button and a cleaned-up navigation that works on both
-  desktop and mobile.
-- A Staff Sign-in entry point (top-right admin icon, and also in the footer)
-  so the Caritas Mutare team can log into the admin console from anywhere.
+- A sticky "Donate" button and clean navigation on both desktop and mobile.
+- A Staff Sign-in entry point in the top navigation for when the admin
+  console goes live (see §2 below).
 
-Behind the website there is now an **admin console** where the team can:
+**Please note:** what's live right now is the *public-facing* site only.
+The Sign-in button is visible but will not work yet — that's the next wave of
+work (about 2–3 weeks from now, see §2). For now, please treat the Vercel
+link as a **preview** and send me any feedback on wording, layout, images or
+flow.
 
-- Add and update **projects / programmes** (with status, funding partner,
-  district, M&E fields).
+The admin console — where the team will eventually be able to:
+
+- Add and update **projects / programmes** (status, funding partner,
+  district, monitoring & evaluation fields).
 - Register **beneficiaries** (individuals and households) with disability
   inclusion fields.
 - Capture **activity logs** — what was done, when, by whom.
 - Record **soup kitchen** entries (meals served, attendance).
+- Upload **photos and documents** for news articles and reports.
 - Export data to **CSV** for reporting.
 - See an **audit log** of who changed what (for accountability).
 
-Everything is protected behind a staff login.
+— is fully built but not yet connected to the production server. That's the
+next piece of work I'm starting on.
 
 ---
 
@@ -102,29 +115,91 @@ them with me privately and we'll decide together what to publish.
 
 ---
 
-## 4. Email and domain — a small but important decision
+## 4. Email and domain — what I already know, and what I still need from you
 
-Two things we need to sort out on the Caritas Mutare side:
+Good news: the domain `caritasmutare.org` is already registered and the
+`admin@caritasmutare.org` mailbox is already working. From the public DNS I
+can see that the domain, DNS and email are all hosted with **Utande** (the
+Zimbabwean ISP), which is completely fine. The small implication is that
+whenever we make changes on the website side, we have to be careful not to
+touch anything that affects email.
 
-1. **The domain.** I'm assuming `caritasmutare.org` (or similar) — could you
-   confirm the exact domain you want, and who on your side has access to its
-   DNS settings? I'll need them to add a few records so the site and emails
-   work reliably.
-2. **Email inboxes.** Does Caritas Mutare already use Google Workspace (Gmail
-   under your own domain, e.g. `angela@caritasmutare.org`)? If yes, great —
-   we just add a couple of aliases like `info@`, `donate@`, `volunteer@`.
-   If no, Google runs a **Workspace for Nonprofits** programme that gives
-   qualifying organisations Gmail / Drive / Calendar for free. I'm happy to
-   help you apply if that would be useful.
+To plan the go-live properly, could you confirm the following on your side:
 
-Separately, the website itself needs to send automated emails (contact form
+1. **Utande control-panel access** — who in Mutare has login credentials to
+   the Utande portal where the domain, DNS and `admin@` mailbox live? When we
+   point `www.caritasmutare.org` at the new site, that person (or I, with
+   temporary access) will need to add **one DNS record**. MX and email
+   records stay untouched.
+2. **Existing mailboxes** — besides `admin@caritasmutare.org`, are there any
+   other inboxes already in use (e.g. `info@`, `angela@`, `donate@`)? This
+   affects what we put on the "Contact" page.
+3. **Domain registration** — who is listed as the registrant, and when does
+   the domain renew? (Visible inside the Utande portal.) I just want to make
+   sure it won't silently expire on us.
+4. **Email upgrade — optional, no rush** — Utande mail works, but many
+   nonprofits eventually move to **Google Workspace for Nonprofits** (free if
+   approved). It gives you Gmail under your own domain, shared Drive,
+   Calendar, Meet — things that make team collaboration a lot smoother.
+   Happy to apply for this on Caritas Mutare's behalf if and when you're
+   interested; not urgent.
+
+Separately, the website itself needs to send automated emails (contact-form
 notifications, donor receipts, volunteer applications). I'll wire that up on
-my side using a service called Resend — you won't have to manage it, but it
-does need those DNS records to be in place.
+my side using a service called **Resend**. It adds a couple of DNS records
+(again, not touching your email MX) and you won't have to manage it.
 
 ---
 
-## 5. Hosting & running costs — so there are no surprises
+## 5. How content & media will be managed (before and after go-live)
+
+A common concern I want to answer up front: *"once the site is live, how does
+the team actually add new stories, photos and reports?"*
+
+The answer depends on the stage we're in. We'll work in three clear phases:
+
+### Phase 1 — Pre-launch (now → first content drop)
+You and your field officers drop content into a **shared Google Drive
+folder** I'll set up for Caritas Mutare, structured by programme and news
+item. That includes photos, one-paragraph summaries, testimonials, and any
+documents. I'll then optimise the images, polish the copy lightly, and
+publish it onto the site from my end. This keeps things simple while the
+team gets used to the look and feel, and it lets me catch any issues with
+image quality or consent before anything goes public.
+
+### Phase 2 — After go-live (normal operations)
+Once the admin console is connected, Caritas staff log in at
+`caritasmutare.org/admin` and:
+
+- Create or edit news articles, projects, team members, soup-kitchen entries
+  etc. directly through friendly forms.
+- **Upload photos and documents** through an upload button — no need to
+  email files to me. These are stored on a professional file-storage service
+  (Cloudflare R2) which is fast and free up to 10 GB.
+- Save as **Draft** first, review, then **Publish** when ready.
+
+I'll run a 30-minute training session for 2–3 people, and I'll leave a
+short **"How to publish a news article" PDF + video** in the admin so new
+staff can learn without needing me.
+
+### Videos
+We will **not** host videos on the website itself — it's expensive and
+slow. Videos go on the **Caritas Mutare YouTube channel**, and the website
+embeds them from there. Same pattern used by UNICEF, CAFOD and Caritas
+Internationalis.
+
+### Photo + consent basics
+I'll send a one-page guide, but the short version is:
+
+- Ideally landscape, at least 1600 pixels wide.
+- File names like `chimanimani-food-distribution-2025-03.jpg` (not
+  `IMG_4712.HEIC`) — this helps us find things later.
+- For any photo where a person's face is identifiable, we need a signed
+  consent form on file. I'll provide a template.
+
+---
+
+## 6. Hosting & running costs — so there are no surprises
 
 The platform is deliberately built on low-cost modern infrastructure. Realistic
 monthly running cost, once we are fully live, is roughly **USD 10–40 / month**,
@@ -146,20 +221,37 @@ are set up on your side.
 
 ---
 
-## 6. What happens next (next 4–6 weeks)
+## 7. What happens next (realistic 4–6 week plan)
 
-1. **You (Angela):** share the content listed in §2 and §3 above, as and when
-   you can. Even partial drops are useful — we can add content in waves.
-2. **Me:** finish the production backend, connect the admin console to a
-   managed database, and wire up email + payments.
-3. **Together:** a 30-minute screen-share call once I push the admin console
-   live, so I can walk you and anyone else on the team through using it.
-4. **Go-live:** point the `caritasmutare.org` domain at the new site and
-   announce it.
+**Week 1–2 (me):**
+- Deploy the backend to a production server (Render), with a managed
+  Postgres database (Neon) and file storage (Cloudflare R2).
+- Connect the admin console to the deployed backend.
+- Create real admin accounts for you and one colleague.
+
+**Week 1–4 (you):**
+- Share the content listed in §2 and §3 above, as and when you can. Even
+  partial drops are useful — we can publish in waves.
+- Confirm the Utande portal access and mailbox questions in §4.
+- Send me the logo, brand colours, and 30–50 field photos.
+
+**Week 3–4 (together):**
+- A 30-minute screen-share call once the admin is live so I can walk you
+  and 1–2 colleagues through using it.
+- First wave of real content published (a few programmes + a handful of
+  stories).
+
+**Week 4–6 (together):**
+- Add the final DNS record so the site goes live at
+  `www.caritasmutare.org`.
+- Announce the launch to partners and donors.
+
+Nothing here is rigid — if real content takes longer than expected, we push
+the announcement. A quiet, complete site is better than a loud, empty one.
 
 ---
 
-## 7. A note on working style
+## 8. A note on working style
 
 I'm based in Cape Town; you're in Mutare. To keep us on the same page:
 

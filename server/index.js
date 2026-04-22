@@ -16,12 +16,22 @@ async function main() {
     process.exit(1);
   }
 
-  try {
-    await knex.seed.run();
-    console.log('✅ Seeds completed');
-  } catch (err) {
-    console.error('❌ Seed failed:', err.message);
-    process.exit(1);
+  // Seeds run automatically in development (nice DX) and are opt-in for
+  // production. Set RUN_SEEDS_ON_BOOT=true on Render when you want the
+  // seed file to attempt to bootstrap the first admin + site settings.
+  const shouldRunSeeds =
+    process.env.NODE_ENV !== 'production' || process.env.RUN_SEEDS_ON_BOOT === 'true';
+
+  if (shouldRunSeeds) {
+    try {
+      await knex.seed.run();
+      console.log('✅ Seeds completed');
+    } catch (err) {
+      console.error('❌ Seed failed:', err.message);
+      process.exit(1);
+    }
+  } else {
+    console.log('ℹ️  Skipping seeds (set RUN_SEEDS_ON_BOOT=true to enable in production)');
   }
 
   const express = require('express');
@@ -56,9 +66,47 @@ async function main() {
   });
   app.use('/api/auth/login', loginLimiter);
 
+  // CORS
+  //
+  // In production we expect traffic from a small, known set of origins:
+  //   - the Vercel production URL (e.g. https://caritas-mutare.vercel.app)
+  //   - the eventual custom domain (https://www.caritasmutare.org)
+  //   - any Vercel preview deployments we want to allow for testing
+  //
+  // `CLIENT_URL` can be a single origin or a comma-separated list. We also
+  // optionally allow `*.vercel.app` preview URLs when `ALLOW_VERCEL_PREVIEWS`
+  // is set to "true" — handy while we iterate, and easy to turn off later.
+  //
+  // Local development always permits http://localhost:3000 so we never have
+  // to mess with env vars to run the frontend locally against this API.
+  const explicitOrigins = (process.env.CLIENT_URL || '')
+    .split(',')
+    .map((value) => value.trim())
+    .filter(Boolean);
+
+  const allowVercelPreviews = process.env.ALLOW_VERCEL_PREVIEWS === 'true';
+
   app.use(
     cors({
-      origin: process.env.NODE_ENV === 'production' ? process.env.CLIENT_URL : 'http://localhost:3000',
+      origin(origin, callback) {
+        // Same-origin / server-to-server / curl requests send no Origin header
+        // and should always be allowed through.
+        if (!origin) return callback(null, true);
+
+        if (process.env.NODE_ENV !== 'production' && origin === 'http://localhost:3000') {
+          return callback(null, true);
+        }
+
+        if (explicitOrigins.includes(origin)) {
+          return callback(null, true);
+        }
+
+        if (allowVercelPreviews && /^https:\/\/[a-z0-9-]+\.vercel\.app$/i.test(origin)) {
+          return callback(null, true);
+        }
+
+        return callback(new Error(`Not allowed by CORS: ${origin}`));
+      },
       credentials: true,
     })
   );

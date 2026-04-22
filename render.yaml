@@ -1,0 +1,57 @@
+# =============================================================================
+# Render Blueprint for the Caritas Mutare API
+# =============================================================================
+# When this file is present in the repo root, Render can build the API service
+# with a "Deploy to Render" or "Apply Blueprint" flow instead of clicking
+# through the dashboard wizard.
+#
+# What it does:
+#   - Creates a Node web service that runs the Express API from ./server
+#   - Binds it to Render's free tier (sleeps after 15 min of inactivity,
+#     fine for admin-only traffic while we're getting started).
+#   - Declares every environment variable the API expects. Values marked
+#     `sync: false` must be entered manually in the Render dashboard because
+#     they are secrets or depend on resources outside this blueprint (e.g.
+#     the Neon Postgres URL, JWT secret).
+#
+# See docs/DEPLOYMENT.md for the full step-by-step.
+# -----------------------------------------------------------------------------
+
+services:
+  - type: web
+    name: caritas-mutare-api
+    runtime: node
+    plan: free
+    rootDir: server
+    buildCommand: npm install
+    startCommand: node index.js
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      # Neon / Supabase / Render Postgres connection string.
+      # Paste the full `postgres://...?sslmode=require` URL in the dashboard.
+      - key: DATABASE_URL
+        sync: false
+      # Secret used to sign JWTs. Generate once with:  openssl rand -hex 48
+      - key: JWT_SECRET
+        sync: false
+      - key: JWT_EXPIRES_IN
+        value: 7d
+      # Allowed frontend origins. Comma-separated. Start with the Vercel URL.
+      # Example:  https://caritas-mutare.vercel.app,https://www.caritasmutare.org
+      - key: CLIENT_URL
+        sync: false
+      - key: ALLOW_VERCEL_PREVIEWS
+        value: "true"
+      # First admin bootstrap — set these once for the first deploy, then
+      # remove/rotate after successful login.
+      - key: RUN_SEEDS_ON_BOOT
+        value: "true"
+      - key: BOOTSTRAP_ADMIN_USERNAME
+        sync: false
+      - key: BOOTSTRAP_ADMIN_EMAIL
+        sync: false
+      - key: BOOTSTRAP_ADMIN_PASSWORD
+        sync: false
