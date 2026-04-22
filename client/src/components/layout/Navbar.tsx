@@ -78,7 +78,13 @@ const Navbar: React.FC = () => {
   }, [location.pathname]);
 
   const navTextColor = transparent ? 'common.white' : 'text.primary';
-  const logoSrc = '/images/logo/caritas-mutare-clear.png';
+  // On the homepage the navbar sits transparently over a dark hero, where the
+  // maroon-on-transparent artwork is unreadable. Fall back to the solid-plate
+  // version only in that state; everywhere else the clean transparent logo
+  // reads fine against the white navbar.
+  const logoSrc = transparent
+    ? '/images/logo/caritas-mutare-solid.png'
+    : '/images/logo/caritas-mutare-clear.png';
 
   /** Compact two-state language switch — EN · SH. */
   const LanguageSwitch: React.FC<{ size?: 'small' | 'medium' }> = ({ size = 'small' }) => {
