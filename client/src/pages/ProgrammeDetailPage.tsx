@@ -60,13 +60,20 @@ const ProgrammeDetailPage: React.FC = () => {
     'Showing Tsuro gender champions explaining gender roles and responsibilities of men, women, girls and boys through a family tree.',
   ];
 
+  // Captions line up 1-to-1 with the galleryImages array in `caritasProjects.ts`.
+  // Keep the order in sync when images are added or reordered.
   const soupKitchenGalleryCaptions = [
-    'Soup kitchen attendees with their meals at the distribution site.',
-    'Soup kitchen attendees receiving their meals',
-    'Soup kitchen attendee receiving a meal at the serving counter.',
+    'Caritas Mutare volunteers preparing meals together in large pots at the Soup Kitchen.',
+    'Carmelite Nun helping in preparation of meals.',
+    'A volunteer serving a hot meal to a community member at the Soup Kitchen.',
+    'Elderly community members receiving their meals at the Soup Kitchen.',
+    'Community members queuing for a nutritious meal served once a month.',
+    'Soup Kitchen attendees with their meals at the distribution site.',
+    'Soup Kitchen attendees receiving their meals.',
+    'Soup Kitchen attendee receiving a meal at the serving counter.',
     'Soup Kitchen volunteers preparing meals for the vulnerable individuals who receive meals.',
-    'One of the children living and working in the street after getting his meal during the SOUP kitchen',
-    'Volunteers preparing fresh salad and vegetables for soup kitchen meals.',
+    'One of the children living and working on the street after getting his meal during the Soup Kitchen.',
+    'Volunteers preparing fresh salad and vegetables for Soup Kitchen meals.',
   ];
 
   const cfnshppGalleryCaptions = [

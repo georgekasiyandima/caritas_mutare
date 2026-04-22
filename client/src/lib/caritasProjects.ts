@@ -197,7 +197,7 @@ export const caritasProjects: CaritasProject[] = [
     donors: ['Caritas Mutare'],
     partners: [],
     target: 'Vulnerable communities within Mutare urban',
-    location: 'Mutare urban (e.g. Holy Trinity Cathedral)',
+    location: 'Mutare Urban - Holy Trinity Cathedral',
     duration: 'Ongoing',
     staff: 'All Caritas Staff',
     theoryOfChange_en: 'If the Soup Kitchen provides nutritious meals and a safe space to vulnerable groups (hungry, elderly, disabled, marginalized) in Mutare, guided by Catholic Social Teaching, then these individuals will experience reduced hunger, improved nutrition, and restored dignity, leading to enhanced physical and psychological well-being, social inclusion, and potential pathways to deeper social transformation.',
@@ -213,6 +213,7 @@ export const caritasProjects: CaritasProject[] = [
     heroImagePosition: 'center 40%',
     galleryImages: [
       '/images/programs/soup-kitchen/soup-kitchen-gallery-07.png',
+      '/images/programs/soup-kitchen/soup-kitchen-gallery-11.png',
       '/images/programs/soup-kitchen/soup-kitchen-gallery-08.png',
       '/images/programs/soup-kitchen/soup-kitchen-gallery-09.png',
       '/images/programs/soup-kitchen/soup-kitchen-gallery-10.png',
@@ -317,6 +318,7 @@ export const generalImpactImages: { src: string; alt: string; objectPosition?: s
   { src: '/images/programs/soup-kitchen/soup-kitchen-gallery-07.png', alt: 'Volunteers cooking at the Caritas Mutare Soup Kitchen', objectPosition: 'center 40%' },
   { src: '/images/programs/serarp/serarp-mechanics-nyanyadzi-college.png', alt: 'Mechanics class in progress at Nyanyadzi College (SERARP)', objectPosition: 'center 36%' },
   { src: '/images/programs/soup-kitchen/soup-kitchen-gallery-08.png', alt: 'Serving hot meals at the Soup Kitchen', objectPosition: 'center 40%' },
+  { src: '/images/programs/soup-kitchen/soup-kitchen-gallery-11.png', alt: 'Carmelite Nun helping in preparation of meals at the Caritas Mutare Soup Kitchen', objectPosition: 'center 38%' },
   { src: '/images/general/community-gathering-1.png', alt: 'Community engagement and learning', objectPosition: 'center 35%' },
   { src: '/images/programs/soup-kitchen/soup-kitchen-gallery-09.png', alt: 'Community members queue for a nutritious meal', objectPosition: 'center 40%' },
   { src: '/images/general/community-impact-1.png', alt: 'Community impact event', objectPosition: 'center center' },
@@ -338,7 +340,7 @@ export const generalImpactImages: { src: string; alt: string; objectPosition?: s
  * hides broken entries, but prevention is better than cure.
  */
 export const partnerLogosForSite: { name: string; logoUrl: string }[] = [
-  { name: 'Caritas Mutare', logoUrl: '/images/logo/caritas-mutare-new-logo.png' },
+  { name: 'Caritas Mutare', logoUrl: '/images/logo/caritas-mutare-clear.png' },
   { name: 'CRS', logoUrl: '/images/partners/crs.png' },
   { name: 'Trócaire', logoUrl: '/images/partners/trocaire.png' },
   { name: 'CCJP Mutare Diocese', logoUrl: '/images/partners/ccjp-mutare.png' },

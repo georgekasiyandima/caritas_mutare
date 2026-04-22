@@ -36,12 +36,12 @@ const NewsPage: React.FC = () => {
     return response.json();
   });
 
-  // Dedicated hero for the News page. Hard-coded so it stays visually distinct
-  // from the Programs page hero.
+  // Dedicated hero for the News page. A community-gathering shot reads more
+  // like an "updates from the field" story than the previous close-up.
   const heroImageSource = {
-    src: '/images/general/beneficiary-with-food.png',
-    alt: 'A Caritas Mutare beneficiary receiving food support',
-    objectPosition: 'center center',
+    src: '/images/general/community-gathering-1.png',
+    alt: 'Caritas Mutare community engagement in the Diocese of Mutare',
+    objectPosition: 'center 35%',
   };
 
   return (

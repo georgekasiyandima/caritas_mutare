@@ -21,7 +21,6 @@ import { ArrowForward as ArrowForwardIcon, FormatQuote as FormatQuoteIcon } from
 import HeroBanner from '../components/HeroBanner';
 import SEO from '../components/SEO';
 import PartnerLogoStrip from '../components/PartnerLogoStrip';
-import { generalImpactImages } from '../lib/caritasProjects';
 import {
   SECTION_BG_ALT,
   pageRoot,
@@ -39,7 +38,13 @@ const AboutPage: React.FC = () => {
   const navigate = useNavigate();
   const theme = useTheme();
 
-  const heroImageSource = generalImpactImages[2] ?? generalImpactImages[0];
+  // Hard-coded About hero so it stays mission-aligned ("Promoting dignified
+  // lives") regardless of changes to the shared impact-carousel ordering.
+  const heroImageSource = {
+    src: '/images/general/promoting-dignified-lives-1.png',
+    alt: 'Promoting dignified lives in a safe environment across the Diocese of Mutare',
+    objectPosition: 'center 35%',
+  };
 
   const values = [
     'Dignity of human beings',

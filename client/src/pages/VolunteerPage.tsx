@@ -11,8 +11,6 @@ import {
   CircularProgress,
   Box,
   Chip,
-  useTheme,
-  useMediaQuery,
   Avatar,
 } from '@mui/material';
 import {
@@ -29,12 +27,10 @@ import {
 } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
 import BackToTopButton from '../components/BackToTopButton';
+import HeroBanner from '../components/HeroBanner';
+import SEO from '../components/SEO';
 import {
   pageRoot,
-  pageHero,
-  pageOverline,
-  pageH1,
-  pageLead,
   outlineCard,
   outlineCardHover,
   formCardHeader,
@@ -45,8 +41,6 @@ const volCardSx = { ...outlineCard, ...outlineCardHover };
 
 const VolunteerPage: React.FC = () => {
   const { t } = useTranslation();
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [formData, setFormData] = useState({
     full_name: '',
     email: '',
@@ -185,21 +179,29 @@ const VolunteerPage: React.FC = () => {
 
   return (
     <Box sx={pageRoot}>
-      <Box sx={pageHero}>
-        <Container maxWidth="lg">
-          <Box sx={{ textAlign: 'center', maxWidth: 720, mx: 'auto' }}>
-            <Typography variant="overline" sx={{ ...pageOverline, display: 'block', mb: 1 }}>
-              Serve with us
-            </Typography>
-            <Typography variant={isMobile ? 'h3' : 'h2'} component="h1" sx={{ ...pageH1, mb: 2 }}>
-              {t('volunteer.title')}
-            </Typography>
-            <Typography variant="body1" sx={{ ...pageLead, mx: 'auto' }}>
-              Join our mission to serve the community with compassion and dedication. Your time and skills can make a real difference in people&apos;s lives.
-            </Typography>
-          </Box>
-        </Container>
-      </Box>
+      <SEO
+        title={t('volunteer.seo.title', 'Volunteer with Caritas Mutare')}
+        description={t(
+          'volunteer.seo.description',
+          'Join our mission to serve communities across the Diocese of Mutare with compassion and dedication.'
+        )}
+        image="/images/programs/soup-kitchen/soup-kitchen-gallery-07.png"
+        canonicalPath="/volunteer"
+      />
+
+      <HeroBanner
+        image="/images/programs/soup-kitchen/soup-kitchen-gallery-07.png"
+        imageAlt="Caritas Mutare volunteers preparing meals together at the Soup Kitchen"
+        imagePosition="center 42%"
+        size="standard"
+        overlay={0.6}
+        eyebrow={t('volunteer.hero.eyebrow', 'Serve with us')}
+        title={t('volunteer.title')}
+        subtitle={t(
+          'volunteer.hero.subtitle',
+          'Join our mission to serve the community with compassion and dedication. Your time and skills can make a real difference in people’s lives.'
+        )}
+      />
 
       <Container maxWidth="lg" sx={{ py: { xs: 5, md: 7 } }}>
         <Grid container spacing={6}>

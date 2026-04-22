@@ -78,7 +78,7 @@ const Navbar: React.FC = () => {
   }, [location.pathname]);
 
   const navTextColor = transparent ? 'common.white' : 'text.primary';
-  const logoSrc = '/images/logo/caritas-mutare-new-logo.png';
+  const logoSrc = '/images/logo/caritas-mutare-clear.png';
 
   /** Compact two-state language switch — EN · SH. */
   const LanguageSwitch: React.FC<{ size?: 'small' | 'medium' }> = ({ size = 'small' }) => {
