@@ -14,6 +14,7 @@ import {
   LinkedIn as LinkedInIcon,
   Instagram as InstagramIcon,
   YouTube as YouTubeIcon,
+  WhatsApp as WhatsAppIcon,
   Email as EmailIcon,
   Phone as PhoneIcon,
   LocationOn as LocationIcon,
@@ -83,6 +84,13 @@ const FOOTER_SOCIALS: Array<{
     href: 'https://www.youtube.com/',
     icon: <YouTubeIcon fontSize="small" />,
     brand: '#FF0000',
+  },
+  {
+    key: 'whatsapp',
+    label: 'WhatsApp',
+    href: `https://wa.me/${orgContact.phones.main.replace(/[^\d]/g, '')}`,
+    icon: <WhatsAppIcon fontSize="small" />,
+    brand: '#25D366',
   },
   {
     key: 'email',

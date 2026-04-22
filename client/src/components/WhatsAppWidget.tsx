@@ -55,8 +55,8 @@ const WhatsAppWidget: React.FC<WhatsAppWidgetProps> = ({
   };
 
   const positionStyles = {
-    'bottom-right': { bottom: 24, right: 24 },
-    'bottom-left': { bottom: 24, left: 24 },
+    'bottom-right': { bottom: { xs: 96, md: 88 }, right: { xs: 16, md: 24 } },
+    'bottom-left': { bottom: { xs: 96, md: 88 }, left: { xs: 16, md: 24 } },
   };
 
   return (

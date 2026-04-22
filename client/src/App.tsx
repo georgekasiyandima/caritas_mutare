@@ -27,6 +27,7 @@ import { AuthProvider } from './contexts/AuthContext';
 import { ToastProvider } from './contexts/ToastContext';
 import ErrorBoundary from './components/ErrorBoundary';
 import StickyDonateBar from './components/StickyDonateBar';
+import WhatsAppWidget from './components/WhatsAppWidget';
 
 function App() {
   const location = useLocation();
@@ -72,6 +73,7 @@ function App() {
 
             {!isAdminArea && <Footer />}
             {!isAdminArea && <StickyDonateBar />}
+            {!isAdminArea && <WhatsAppWidget />}
           </Box>
         </AuthProvider>
       </ToastProvider>
