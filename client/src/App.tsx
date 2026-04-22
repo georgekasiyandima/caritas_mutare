@@ -27,7 +27,6 @@ import { AuthProvider } from './contexts/AuthContext';
 import { ToastProvider } from './contexts/ToastContext';
 import ErrorBoundary from './components/ErrorBoundary';
 import StickyDonateBar from './components/StickyDonateBar';
-import BackToHomeLink from './components/BackToHomeLink';
 
 function App() {
   const location = useLocation();
@@ -39,7 +38,6 @@ function App() {
         <AuthProvider>
           <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
             {!isAdminArea && <Navbar />}
-            {!isAdminArea && <BackToHomeLink />}
             <Box component="main" sx={{ flexGrow: 1 }}>
               <Routes>
                 {/* Public Routes */}

@@ -41,7 +41,7 @@ const NewsPage: React.FC = () => {
   const heroImageSource = {
     src: '/images/general/beneficiary-with-food.png',
     alt: 'A Caritas Mutare beneficiary receiving food support',
-    objectPosition: 'center 35%',
+    objectPosition: 'center center',
   };
 
   return (

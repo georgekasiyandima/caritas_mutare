@@ -21,6 +21,7 @@ import {
   Menu as MenuIcon,
   Close as CloseIcon,
   ArrowForward as ArrowForwardIcon,
+  ArrowBack as ArrowBackIcon,
   FavoriteBorder as HeartIcon,
   AdminPanelSettingsOutlined as AdminIcon,
 } from '@mui/icons-material';
@@ -361,6 +362,34 @@ const Navbar: React.FC = () => {
         }}
       >
         <Toolbar disableGutters sx={{ minHeight: { xs: 64, sm: 72 }, px: { xs: 2, md: 3 } }}>
+          {!isLandingPage && (
+            <Tooltip title={t('nav.backHome', 'Back to home')} arrow>
+              <IconButton
+                component={Link}
+                to="/"
+                aria-label={t('nav.backHome', 'Back to home')}
+                size="small"
+                sx={{
+                  mr: { xs: 1, sm: 1.5 },
+                  width: 36,
+                  height: 36,
+                  color: navTextColor,
+                  border: '1px solid',
+                  borderColor: transparent ? 'rgba(255,255,255,0.35)' : 'divider',
+                  borderRadius: 999,
+                  transition: 'background-color .2s, border-color .2s, transform .2s',
+                  '&:hover': {
+                    bgcolor: transparent ? 'rgba(255,255,255,0.1)' : 'action.hover',
+                    borderColor: transparent ? 'common.white' : 'primary.main',
+                    transform: 'translateX(-2px)',
+                  },
+                }}
+              >
+                <ArrowBackIcon fontSize="small" />
+              </IconButton>
+            </Tooltip>
+          )}
+
           <Box
             component={Link}
             to="/"

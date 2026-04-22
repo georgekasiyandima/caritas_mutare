@@ -12,6 +12,7 @@ import {
 import {
   Facebook as FacebookIcon,
   LinkedIn as LinkedInIcon,
+  Instagram as InstagramIcon,
   YouTube as YouTubeIcon,
   Email as EmailIcon,
   Phone as PhoneIcon,
@@ -49,6 +50,32 @@ const FOOTER_SOCIALS: Array<{
     href: orgContact.social.linkedin,
     icon: <LinkedInIcon fontSize="small" />,
     brand: '#0A66C2',
+  },
+  {
+    key: 'instagram',
+    label: 'Instagram',
+    href: 'https://www.instagram.com/caritasmutare/',
+    icon: <InstagramIcon fontSize="small" />,
+    brand: '#E1306C',
+  },
+  {
+    key: 'x',
+    label: 'X (Twitter)',
+    href: 'https://x.com/CaritasMutare',
+    icon: (
+      <Box
+        component="span"
+        sx={{
+          fontWeight: 700,
+          fontSize: '0.95rem',
+          lineHeight: 1,
+          fontFamily: 'system-ui, -apple-system, sans-serif',
+        }}
+      >
+        X
+      </Box>
+    ),
+    brand: '#000000',
   },
   {
     key: 'youtube',
@@ -100,18 +127,33 @@ const Footer: React.FC = () => {
         <Grid container spacing={{ xs: 4, md: 6 }}>
           {/* Brand & mission */}
           <Grid item xs={12} md={4}>
-            <Box
-              component="img"
-              src="/images/logo/caritas-mutare-new-logo.png"
-              alt="Caritas Mutare"
-              sx={{
-                height: 72,
-                objectFit: 'contain',
-                filter: 'brightness(0) invert(1)',
-                opacity: 0.92,
-                mb: 2,
-              }}
-            />
+            <Stack spacing={0.5} sx={{ mb: 2 }}>
+              <Typography
+                variant="h6"
+                component="div"
+                sx={{
+                  fontFamily: '"Merriweather", Georgia, serif',
+                  fontWeight: 700,
+                  color: 'common.white',
+                  letterSpacing: 0.3,
+                  lineHeight: 1.2,
+                  fontSize: '1.4rem',
+                }}
+              >
+                Caritas Zimbabwe
+              </Typography>
+              <Typography
+                variant="overline"
+                sx={{
+                  color: 'rgba(255,255,255,0.55)',
+                  fontWeight: 700,
+                  letterSpacing: 1.5,
+                  fontSize: '0.7rem',
+                }}
+              >
+                Diocese of Mutare
+              </Typography>
+            </Stack>
             <Typography
               variant="body2"
               sx={{
