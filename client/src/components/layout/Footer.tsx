@@ -299,12 +299,27 @@ const Footer: React.FC = () => {
               <Box sx={{ display: 'flex', gap: 1.25, alignItems: 'center' }}>
                 <PhoneIcon fontSize="small" sx={{ color: 'rgba(255,255,255,0.55)' }} />
                 <Link
-                  href="tel:+263774671893"
+                  href={`tel:${orgContact.phones.main.replace(/\s/g, '')}`}
                   underline="hover"
                   sx={{ color: 'inherit', fontSize: '0.9rem' }}
                 >
-                  +263 77 467 1893
+                  {orgContact.phones.main}
                 </Link>
+              </Box>
+              <Box sx={{ display: 'flex', gap: 1.25, alignItems: 'center' }}>
+                <PhoneIcon fontSize="small" sx={{ color: 'rgba(255,255,255,0.55)' }} />
+                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 0.25 }}>
+                  <Typography variant="caption" sx={{ color: 'rgba(255,255,255,0.45)', lineHeight: 1.2, letterSpacing: 0.3 }}>
+                    {t('contact.tollFree')}
+                  </Typography>
+                  <Link
+                    href={`tel:${orgContact.phones.tollFree.replace(/\s/g, '')}`}
+                    underline="hover"
+                    sx={{ color: 'inherit', fontSize: '0.9rem' }}
+                  >
+                    {orgContact.phones.tollFree}
+                  </Link>
+                </Box>
               </Box>
               <Box sx={{ display: 'flex', gap: 1.25, alignItems: 'center' }}>
                 <EmailIcon fontSize="small" sx={{ color: 'rgba(255,255,255,0.55)' }} />

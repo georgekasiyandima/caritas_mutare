@@ -19,6 +19,8 @@ export const orgContact = {
     main: '+263 77 467 1893',
     office: '+263 20 60504',
     fax: '+263 20 65077',
+    /** National toll-free (0800 + subscriber 60959171). */
+    tollFree: '0800 609 591 71',
   },
   address: {
     /** Single address line suitable for a label or chip. */

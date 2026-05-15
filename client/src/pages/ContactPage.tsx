@@ -152,6 +152,16 @@ const ContactPage: React.FC = () => {
                     </Box>
                   </Typography>
                   <Typography variant="body1" color="text.secondary">
+                    <strong>{t('contact.tollFree')}:</strong>{' '}
+                    <Box
+                      component="a"
+                      href={`tel:${orgContact.phones.tollFree.replace(/\s/g, '')}`}
+                      sx={{ color: 'inherit', textDecoration: 'none', '&:hover': { color: 'primary.main' } }}
+                    >
+                      {orgContact.phones.tollFree}
+                    </Box>
+                  </Typography>
+                  <Typography variant="body1" color="text.secondary">
                     <strong>Office:</strong> {orgContact.phones.office}
                   </Typography>
                   <Typography variant="body1" color="text.secondary">

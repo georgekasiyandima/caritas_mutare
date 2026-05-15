@@ -219,6 +219,7 @@
     "description": "Get in touch with us for more information or to get involved",
     "address": "Address",
     "phone": "Phone",
+    "tollFree": "Toll-free",
     "email": "Email",
     "form": {
       "name": "Name",
