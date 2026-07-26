@@ -1,33 +1,41 @@
-import React from 'react';
+import {lazy, Suspense} from 'react';
+
+//Static imports
+
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { Box } from '@mui/material';
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
-import HomePage from './pages/HomePage';
-import AboutPage from './pages/AboutPage';
-import ProgramsPage from './pages/ProgramsPage';
-import NewsPage from './pages/NewsPage';
-import NewsDetailPage from './pages/NewsDetailPage';
-import DonatePage from './pages/DonatePage';
-import VolunteerPage from './pages/VolunteerPage';
-import ContactPage from './pages/ContactPage';
-import LeadershipPage from './pages/LeadershipPage';
-import ProgrammeDetailPage from './pages/ProgrammeDetailPage';
-import AdminLoginPage from './pages/admin/AdminLoginPage';
 import AdminLayout from './components/admin/AdminLayout';
 import ProtectedRoute from './components/admin/ProtectedRoute';
-import DashboardHome from './pages/admin/DashboardHome';
-import ProjectsPage from './pages/admin/ProjectsPage';
-import ProjectDetailPage from './pages/admin/ProjectDetailPage';
-import BeneficiariesPage from './pages/admin/BeneficiariesPage';
-import ActivityLogsPage from './pages/admin/ActivityLogsPage';
-import SoupKitchenPage from './pages/admin/SoupKitchenPage';
-import AuditLogPage from './pages/admin/AuditLogPage';
 import { AuthProvider } from './contexts/AuthContext';
 import { ToastProvider } from './contexts/ToastContext';
 import ErrorBoundary from './components/ErrorBoundary';
 import StickyDonateBar from './components/StickyDonateBar';
 import WhatsAppWidget from './components/WhatsAppWidget';
+import LoadingSpinner from './components/LoadingSpinner';
+
+//Lazy-loaded route pages
+
+const HomePage = lazy(() => import('./pages/HomePage'));
+const AboutPage = lazy(() => import('./pages/AboutPage'));
+const ProgramsPage = lazy(() => import('./pages/ProgramsPage'));
+const NewsPage = lazy(() => import('./pages/NewsPage'));
+const NewsDetailPage = lazy(() => import('./pages/NewsDetailPage'));
+const DonatePage = lazy(() => import('./pages/DonatePage'));
+const VolunteerPage = lazy(() => import('./pages/VolunteerPage'));
+const ContactPage = lazy(() => import('./pages/ContactPage'));
+const LeadershipPage = lazy(() => import('./pages/LeadershipPage'));
+const ProgrammeDetailPage = lazy(() => import('./pages/ProgrammeDetailPage'));
+const AdminLoginPage = lazy(() => import('./pages/admin/AdminLoginPage'));
+const DashboardHome = lazy(() => import('./pages/admin/DashboardHome'));
+const ProjectsPage = lazy(() => import('./pages/admin/ProjectsPage'));
+const ProjectDetailPage = lazy(() => import('./pages/admin/ProjectDetailPage'));
+const BeneficiariesPage = lazy(() => import('./pages/admin/BeneficiariesPage'));
+const ActivityLogsPage = lazy(() => import('./pages/admin/ActivityLogsPage'));
+const SoupKitchenPage = lazy(() => import('./pages/admin/SoupKitchenPage'));
+const AuditLogPage = lazy(() => import('./pages/admin/AuditLogPage'));
+
 
 function App() {
   const location = useLocation();
@@ -40,6 +48,7 @@ function App() {
           <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
             {!isAdminArea && <Navbar />}
             <Box component="main" sx={{ flexGrow: 1 }}>
+              <Suspense fallback={<LoadingSpinner />}>
               <Routes>
                 {/* Public Routes */}
                 <Route path="/" element={<HomePage />} />
@@ -69,6 +78,7 @@ function App() {
                   </Route>
                 </Route>
               </Routes>
+              </Suspense>
             </Box>
 
             {!isAdminArea && <Footer />}
