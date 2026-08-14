@@ -1,22 +1,15 @@
-import {lazy, Suspense} from 'react';
+import { lazy, Suspense } from 'react';
+import { Routes, Route } from 'react-router-dom';
 
-//Static imports
-
-import { Routes, Route, useLocation } from 'react-router-dom';
-import { Box } from '@mui/material';
-import Navbar from './components/layout/Navbar';
-import Footer from './components/layout/Footer';
+import PublicLayout from './components/layout/PublicLayout';
 import AdminLayout from './components/admin/AdminLayout';
 import ProtectedRoute from './components/admin/ProtectedRoute';
 import { AuthProvider } from './contexts/AuthContext';
 import { ToastProvider } from './contexts/ToastContext';
 import ErrorBoundary from './components/ErrorBoundary';
-import StickyDonateBar from './components/StickyDonateBar';
-import WhatsAppWidget from './components/WhatsAppWidget';
 import LoadingSpinner from './components/LoadingSpinner';
 
-//Lazy-loaded route pages
-
+// Lazy-loaded route pages
 const HomePage = lazy(() => import('./pages/HomePage'));
 const AboutPage = lazy(() => import('./pages/AboutPage'));
 const ProgramsPage = lazy(() => import('./pages/ProgramsPage'));
@@ -38,19 +31,14 @@ const AuditLogPage = lazy(() => import('./pages/admin/AuditLogPage'));
 
 
 function App() {
-  const location = useLocation();
-  const isAdminArea = location.pathname.startsWith('/admin');
-
   return (
     <ErrorBoundary>
       <ToastProvider>
         <AuthProvider>
-          <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-            {!isAdminArea && <Navbar />}
-            <Box component="main" sx={{ flexGrow: 1 }}>
-              <Suspense fallback={<LoadingSpinner />}>
-              <Routes>
-                {/* Public Routes */}
+          <Suspense fallback={<LoadingSpinner />}>
+            <Routes>
+              {/* Public site – layout declared by the route tree */}
+              <Route element={<PublicLayout />}>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/about" element={<AboutPage />} />
                 <Route path="/leadership" element={<LeadershipPage />} />
