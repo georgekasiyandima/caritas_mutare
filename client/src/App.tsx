@@ -28,7 +28,7 @@ const BeneficiariesPage = lazy(() => import('./pages/admin/BeneficiariesPage'));
 const ActivityLogsPage = lazy(() => import('./pages/admin/ActivityLogsPage'));
 const SoupKitchenPage = lazy(() => import('./pages/admin/SoupKitchenPage'));
 const AuditLogPage = lazy(() => import('./pages/admin/AuditLogPage'));
-
+const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 
 function App() {
   return (
@@ -49,30 +49,28 @@ function App() {
                 <Route path="/donate" element={<DonatePage />} />
                 <Route path="/volunteer" element={<VolunteerPage />} />
                 <Route path="/contact" element={<ContactPage />} />
+                <Route path="*" element={<NotFoundPage />} />
+              </Route>
 
-                {/* Admin Routes */}
-                <Route path="/admin/login" element={<AdminLoginPage />} />
-                <Route element={<ProtectedRoute />}>
-                  <Route path="/admin" element={<AdminLayout />}>
-                    <Route index element={<DashboardHome />} />
-                    <Route path="projects" element={<ProjectsPage />} />
-                    <Route path="projects/:id" element={<ProjectDetailPage />} />
-                    <Route path="beneficiaries" element={<BeneficiariesPage />} />
-                    <Route path="activity-logs" element={<ActivityLogsPage />} />
-                    <Route path="soup-kitchen" element={<SoupKitchenPage />} />
-                    <Route element={<ProtectedRoute roles={['admin']} redirectTo="/admin" />}>
-                      <Route path="audit-log" element={<AuditLogPage />} />
-                    </Route>
+              {/* Login is a special full-screen page – no public or admin chrome */}
+              <Route path="/admin/login" element={<AdminLoginPage />} />
+
+              {/* Admin area */}
+              <Route element={<ProtectedRoute />}>
+                <Route path="/admin" element={<AdminLayout />}>
+                  <Route index element={<DashboardHome />} />
+                  <Route path="projects" element={<ProjectsPage />} />
+                  <Route path="projects/:id" element={<ProjectDetailPage />} />
+                  <Route path="beneficiaries" element={<BeneficiariesPage />} />
+                  <Route path="activity-logs" element={<ActivityLogsPage />} />
+                  <Route path="soup-kitchen" element={<SoupKitchenPage />} />
+                  <Route element={<ProtectedRoute roles={['admin']} redirectTo="/admin" />}>
+                    <Route path="audit-log" element={<AuditLogPage />} />
                   </Route>
                 </Route>
-              </Routes>
-              </Suspense>
-            </Box>
-
-            {!isAdminArea && <Footer />}
-            {!isAdminArea && <StickyDonateBar />}
-            {!isAdminArea && <WhatsAppWidget />}
-          </Box>
+              </Route>
+            </Routes>
+          </Suspense>
         </AuthProvider>
       </ToastProvider>
     </ErrorBoundary>
