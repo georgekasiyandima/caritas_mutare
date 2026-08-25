@@ -29,6 +29,7 @@ import {
   History as AuditIcon,
   MailOutline as MailIcon,
   VolunteerActivism as VolunteerNavIcon,
+  FavoriteBorder as PledgeIcon,
   Logout as LogoutIcon,
   Menu as MenuIcon,
   OpenInNew as OpenInNewIcon,
@@ -54,6 +55,7 @@ const NAV_ITEMS: NavItem[] = [
   { to: '/admin/soup-kitchen', label: 'Soup Kitchen', icon: <SoupKitchenIcon /> },
   { to: '/admin/messages', label: 'Messages', icon: <MailIcon /> },
   { to: '/admin/volunteers', label: 'Volunteers', icon: <VolunteerNavIcon /> },
+  { to: '/admin/pledges', label: 'Pledges', icon: <PledgeIcon /> },
   { to: '/admin/audit-log', label: 'Audit Log', icon: <AuditIcon />, roles: ['admin'] },
 ];
 

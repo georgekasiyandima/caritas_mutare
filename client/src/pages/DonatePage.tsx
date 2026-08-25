@@ -52,24 +52,45 @@ import {
   outlineCardHover,
 } from '../lib/sitePageLayout';
 import { orgContact } from '../lib/organisation';
+import { apiPost, ApiError } from '../lib/api';
 
 const sideCardSx: SxProps<Theme> = [outlineCard, outlineCardHover] as SxProps<Theme>;
 const impactCardSx: SxProps<Theme> = [outlineCard, outlineCardHover, { height: '100%' }] as SxProps<Theme>;
 
+const EMPTY_FORM = {
+  amount: '',
+  currency: 'USD',
+  donor_name: '',
+  donor_email: '',
+  donor_phone: '',
+  message: '',
+  is_anonymous: false,
+};
+
+function fieldErrorsFromApi(details: unknown): Record<string, string> {
+  if (!details || typeof details !== 'object' || !('errors' in details)) {
+    return {};
+  }
+  const list = (details as { errors?: Array<{ path?: string; msg?: string }> }).errors;
+  if (!Array.isArray(list)) return {};
+  const mapped: Record<string, string> = {};
+  list.forEach((err) => {
+    if (err.path && err.msg && !mapped[err.path]) {
+      mapped[err.path] = err.msg;
+    }
+  });
+  return mapped;
+}
+
 const DonatePage: React.FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({
-    amount: '',
-    currency: 'USD',
-    donor_name: '',
-    donor_email: '',
-    donor_phone: '',
-    message: '',
-    is_anonymous: false,
-  });
+  const [formData, setFormData] = useState(EMPTY_FORM);
+  const [honeypot, setHoneypot] = useState('');
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const heroImageSource = generalImpactImages[0];
 
@@ -141,32 +162,56 @@ const DonatePage: React.FC = () => {
   ];
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value, type, checked } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: type === 'checkbox' ? checked : value,
-    }));
+    const { name, value, checked } = e.target;
+    setFormData((prev) => {
+      if (name === 'is_anonymous') {
+        return { ...prev, is_anonymous: checked };
+      }
+      if (
+        name === 'amount' ||
+        name === 'currency' ||
+        name === 'donor_name' ||
+        name === 'donor_email' ||
+        name === 'donor_phone' ||
+        name === 'message'
+      ) {
+        return { ...prev, [name]: value };
+      }
+      return prev;
+    });
+    if (fieldErrors[name]) {
+      setFieldErrors((prev) => {
+        const copy = { ...prev };
+        delete copy[name];
+        return copy;
+      });
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     setSubmitStatus('idle');
+    setErrorMessage('');
+    setFieldErrors({});
 
     try {
-      await new Promise(resolve => setTimeout(resolve, 1800));
-      setSubmitStatus('success');
-      setFormData({
-        amount: '',
-        currency: 'USD',
-        donor_name: '',
-        donor_email: '',
-        donor_phone: '',
-        message: '',
-        is_anonymous: false,
+      await apiPost('/api/donations', {
+        ...formData,
+        amount: Number(formData.amount),
+        company_website: honeypot,
       });
+      setSubmitStatus('success');
+      setFormData(EMPTY_FORM);
+      setHoneypot('');
     } catch (error) {
       setSubmitStatus('error');
+      if (error instanceof ApiError) {
+        setErrorMessage(error.message);
+        setFieldErrors(fieldErrorsFromApi(error.details));
+      } else {
+        setErrorMessage('There was an error processing your pledge. Please try again or email us directly.');
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -340,7 +385,26 @@ const DonatePage: React.FC = () => {
                   </Typography>
                 </Box>
 
-                <Box component="form" onSubmit={handleSubmit} sx={{ p: { xs: 3, md: 4 } }}>
+                <Box component="form" onSubmit={handleSubmit} noValidate sx={{ p: { xs: 3, md: 4 }, position: 'relative' }}>
+                  <Box
+                    aria-hidden="true"
+                    sx={{
+                      position: 'absolute',
+                      left: '-10000px',
+                      width: 1,
+                      height: 1,
+                      overflow: 'hidden',
+                    }}
+                  >
+                    <TextField
+                      name="company_website"
+                      label="Company website"
+                      tabIndex={-1}
+                      autoComplete="off"
+                      value={honeypot}
+                      onChange={(e) => setHoneypot(e.target.value)}
+                    />
+                  </Box>
                   {/* Amount */}
                   <Typography variant="subtitle1" sx={{ fontWeight: 700, mb: 2 }}>
                     Choose an amount
@@ -384,6 +448,8 @@ const DonatePage: React.FC = () => {
                         inputProps={{ min: 1 }}
                         required
                         variant="outlined"
+                        error={Boolean(fieldErrors.amount)}
+                        helperText={fieldErrors.amount}
                       />
                     </Grid>
                     <Grid item xs={12} sm={4}>
@@ -392,7 +458,7 @@ const DonatePage: React.FC = () => {
                         <Select
                           name="currency"
                           value={formData.currency}
-                          onChange={(e) => setFormData(prev => ({ ...prev, currency: e.target.value }))}
+                          onChange={(e) => setFormData((prev) => ({ ...prev, currency: String(e.target.value) }))}
                           label="Currency"
                         >
                           {currencies.map((currency) => (
@@ -421,6 +487,8 @@ const DonatePage: React.FC = () => {
                         onChange={handleInputChange}
                         required
                         variant="outlined"
+                        error={Boolean(fieldErrors.donor_name)}
+                        helperText={fieldErrors.donor_name}
                       />
                     </Grid>
                     <Grid item xs={12} sm={6}>
@@ -432,6 +500,8 @@ const DonatePage: React.FC = () => {
                         value={formData.donor_email}
                         onChange={handleInputChange}
                         variant="outlined"
+                        error={Boolean(fieldErrors.donor_email)}
+                        helperText={fieldErrors.donor_email}
                       />
                     </Grid>
                     <Grid item xs={12} sm={6}>
@@ -474,7 +544,7 @@ const DonatePage: React.FC = () => {
 
                   {submitStatus === 'error' && (
                     <Alert severity="error" sx={{ mb: 3 }}>
-                      There was an error processing your pledge. Please try again or email us directly.
+                      {errorMessage || 'There was an error processing your pledge. Please try again or email us directly.'}
                     </Alert>
                   )}
 

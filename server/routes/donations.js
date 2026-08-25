@@ -5,56 +5,108 @@ const { authenticateToken, requireAdmin } = require('../middleware/auth');
 
 const router = express.Router();
 
-// Submit donation (public)
-router.post('/', [
-  body('donor_name').notEmpty().withMessage('Donor name is required'),
-  body('amount').isFloat({ min: 1 }).withMessage('Amount must be greater than 0'),
-  body('donor_email').optional().isEmail().withMessage('Valid email is required')
-], async (req, res) => {
-  try {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
+const PLEDGE_MESSAGE =
+  'Thank you. Your intent to give has been received. Our team will confirm payment details shortly.';
 
-    const {
-      donor_name,
-      donor_email,
-      amount,
-      currency = 'USD',
-      payment_method,
-      message,
-      is_anonymous = false
-    } = req.body;
+function discardHoneypot(req, res, next) {
+  const bait =
+    typeof req.body?.company_website === 'string'
+      ? req.body.company_website.trim()
+      : '';
 
-    // In a real implementation, you would integrate with a payment gateway here
-    // For now, we'll simulate a successful payment
-    const payment_id = `pay_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-
-    const result = await dbRun(
-      `INSERT INTO donations (donor_name, donor_email, amount, currency, payment_method, payment_status, payment_id, message, is_anonymous)
-       VALUES (?, ?, ?, ?, ?, 'completed', ?, ?, ?)`,
-      [donor_name, donor_email, amount, currency, payment_method, payment_id, message, is_anonymous]
-    );
-
-    const donation = await dbGet('SELECT * FROM donations WHERE id = ?', [result.id]);
-
-    res.status(201).json({
-      message: 'Donation processed successfully',
-      donation: {
-        id: donation.id,
-        amount: donation.amount,
-        currency: donation.currency,
-        payment_id: donation.payment_id,
-        created_at: donation.created_at
-      }
+  if (bait) {
+    console.warn('Donation honeypot triggered; submission discarded');
+    return res.status(201).json({
+      success: true,
+      message: PLEDGE_MESSAGE,
     });
-
-  } catch (error) {
-    console.error('Error processing donation:', error);
-    res.status(500).json({ message: 'Server error processing donation' });
   }
-});
+
+  return next();
+}
+
+// Public pledge — never records a completed payment. Card/mobile money
+// processors come later, after Caritas owns the merchant account.
+router.post(
+  '/',
+  discardHoneypot,
+  [
+    body('donor_name')
+      .trim()
+      .notEmpty()
+      .withMessage('Name is required')
+      .isLength({ min: 2, max: 100 })
+      .withMessage('Name must be between 2 and 100 characters'),
+    body('amount').isFloat({ min: 1 }).withMessage('Amount must be greater than 0'),
+    body('currency')
+      .optional({ values: 'falsy' })
+      .trim()
+      .isLength({ min: 3, max: 8 }),
+    body('donor_email')
+      .optional({ values: 'falsy' })
+      .trim()
+      .isEmail()
+      .withMessage('Please provide a valid email address')
+      .normalizeEmail()
+      .isLength({ max: 254 }),
+    body('donor_phone').optional({ values: 'falsy' }).trim().isLength({ max: 40 }),
+    body('message').optional({ values: 'falsy' }).trim().isLength({ max: 2000 }),
+    body('payment_method').optional({ values: 'falsy' }).trim().isLength({ max: 80 }),
+    body('frequency').optional({ values: 'falsy' }).isIn(['one_time', 'monthly']),
+    body('designation').optional({ values: 'falsy' }).trim().isLength({ max: 80 }),
+    body('is_anonymous').optional().isBoolean(),
+  ],
+  async (req, res) => {
+    try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+      }
+
+      const {
+        donor_name,
+        donor_email,
+        donor_phone,
+        amount,
+        currency = 'USD',
+        payment_method,
+        message,
+        is_anonymous = false,
+        frequency = 'one_time',
+        designation = 'most_needed',
+      } = req.body;
+
+      await dbRun(
+        `INSERT INTO donations (
+           donor_name, donor_email, donor_phone, amount, currency,
+           payment_method, payment_status, message, is_anonymous,
+           frequency, designation, source
+         ) VALUES (?, ?, ?, ?, ?, ?, 'pending', ?, ?, ?, ?, ?)`,
+        [
+          donor_name,
+          donor_email ? String(donor_email).toLowerCase() : null,
+          donor_phone || null,
+          amount,
+          currency,
+          payment_method || null,
+          message || null,
+          is_anonymous ? 1 : 0,
+          frequency,
+          designation,
+          'web_donate_page',
+        ]
+      );
+
+      res.status(201).json({
+        success: true,
+        message: PLEDGE_MESSAGE,
+      });
+    } catch (error) {
+      console.error('Error saving donation pledge:', error);
+      res.status(500).json({ message: 'Server error processing donation pledge' });
+    }
+  }
+);
 
 // Get donation statistics (public)
 router.get('/stats', async (req, res) => {
@@ -101,8 +153,11 @@ router.use(requireAdmin);
 // Get all donations (admin)
 router.get('/admin', async (req, res) => {
   try {
-    const { page = 1, limit = 20, status, currency } = req.query;
+    const page = Math.max(1, parseInt(req.query.page, 10) || 1);
+    const limit = Math.min(100, Math.max(1, parseInt(req.query.limit, 10) || 25));
     const offset = (page - 1) * limit;
+    const status = typeof req.query.status === 'string' ? req.query.status : '';
+    const currency = typeof req.query.currency === 'string' ? req.query.currency : '';
 
     let whereClause = 'WHERE 1=1';
     const params = [];
@@ -119,25 +174,75 @@ router.get('/admin', async (req, res) => {
 
     const donations = await dbAll(
       `SELECT * FROM donations ${whereClause} ORDER BY created_at DESC LIMIT ? OFFSET ?`,
-      [...params, parseInt(limit), offset]
+      [...params, limit, offset]
     );
 
     const totalCount = await dbGet(
       `SELECT COUNT(*) as count FROM donations ${whereClause}`,
       params
     );
+    const pendingRow = await dbGet(
+      `SELECT COUNT(*) as count FROM donations WHERE payment_status = ?`,
+      ['pending']
+    );
 
     res.json({
       donations,
       pagination: {
-        page: parseInt(page),
-        limit: parseInt(limit),
-        total: totalCount.count,
-        pages: Math.ceil(totalCount.count / limit)
-      }
+        page,
+        limit,
+        total: Number(totalCount?.count) || 0,
+        pages: Math.ceil((Number(totalCount?.count) || 0) / limit),
+      },
+      pending_count: Number(pendingRow?.count) || 0,
     });
   } catch (error) {
     console.error('Error fetching donations:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Static path must sit before /admin/:id.
+router.get('/admin/analytics', async (req, res) => {
+  try {
+    const monthlyDonations = await dbAll(
+      `SELECT 
+        strftime('%Y-%m', created_at) as month,
+        COUNT(*) as count,
+        SUM(amount) as total
+       FROM donations 
+       WHERE payment_status = 'completed' 
+       AND created_at >= datetime('now', '-12 months')
+       GROUP BY strftime('%Y-%m', created_at)
+       ORDER BY month DESC`
+    );
+
+    const paymentMethodStats = await dbAll(
+      `SELECT payment_method, COUNT(*) as count, SUM(amount) as total
+       FROM donations 
+       WHERE payment_status = 'completed'
+       GROUP BY payment_method`
+    );
+
+    const topDonors = await dbAll(
+      `SELECT 
+        CASE WHEN is_anonymous = 1 THEN 'Anonymous' ELSE donor_name END as donor_name,
+        COUNT(*) as donation_count,
+        SUM(amount) as total_amount
+       FROM donations 
+       WHERE payment_status = 'completed'
+       GROUP BY donor_name, is_anonymous
+       ORDER BY total_amount DESC
+       LIMIT 10`
+    );
+
+    res.json({
+      monthly_donations: monthlyDonations,
+      payment_methods: paymentMethodStats,
+      top_donors: topDonors
+    });
+  } catch (error) {
+    console.error('Error fetching donation analytics:', error);
     res.status(500).json({ message: 'Server error' });
   }
 });
@@ -190,56 +295,6 @@ router.put('/admin/:id', [
     });
   } catch (error) {
     console.error('Error updating donation:', error);
-    res.status(500).json({ message: 'Server error' });
-  }
-});
-
-// Get donation analytics (admin)
-router.get('/admin/analytics', async (req, res) => {
-  try {
-    const { period = '30' } = req.query; // days
-
-    // Monthly donations for the last 12 months
-    const monthlyDonations = await dbAll(
-      `SELECT 
-        strftime('%Y-%m', created_at) as month,
-        COUNT(*) as count,
-        SUM(amount) as total
-       FROM donations 
-       WHERE payment_status = 'completed' 
-       AND created_at >= datetime('now', '-12 months')
-       GROUP BY strftime('%Y-%m', created_at)
-       ORDER BY month DESC`
-    );
-
-    // Donations by payment method
-    const paymentMethodStats = await dbAll(
-      `SELECT payment_method, COUNT(*) as count, SUM(amount) as total
-       FROM donations 
-       WHERE payment_status = 'completed'
-       GROUP BY payment_method`
-    );
-
-    // Top donors
-    const topDonors = await dbAll(
-      `SELECT 
-        CASE WHEN is_anonymous = 1 THEN 'Anonymous' ELSE donor_name END as donor_name,
-        COUNT(*) as donation_count,
-        SUM(amount) as total_amount
-       FROM donations 
-       WHERE payment_status = 'completed'
-       GROUP BY donor_name, is_anonymous
-       ORDER BY total_amount DESC
-       LIMIT 10`
-    );
-
-    res.json({
-      monthly_donations: monthlyDonations,
-      payment_methods: paymentMethodStats,
-      top_donors: topDonors
-    });
-  } catch (error) {
-    console.error('Error fetching donation analytics:', error);
     res.status(500).json({ message: 'Server error' });
   }
 });

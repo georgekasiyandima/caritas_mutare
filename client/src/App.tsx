@@ -29,6 +29,7 @@ const ActivityLogsPage = lazy(() => import('./pages/admin/ActivityLogsPage'));
 const SoupKitchenPage = lazy(() => import('./pages/admin/SoupKitchenPage'));
 const MessagesPage = lazy(() => import('./pages/admin/MessagesPage'));
 const VolunteersPage = lazy(() => import('./pages/admin/VolunteersPage'));
+const DonationsPage = lazy(() => import('./pages/admin/DonationsPage'));
 const AuditLogPage = lazy(() => import('./pages/admin/AuditLogPage'));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 
@@ -68,6 +69,7 @@ function App() {
                   <Route path="soup-kitchen" element={<SoupKitchenPage />} />
                   <Route path="messages" element={<MessagesPage />} />
                   <Route path="volunteers" element={<VolunteersPage />} />
+                  <Route path="pledges" element={<DonationsPage />} />
                   <Route element={<ProtectedRoute roles={['admin']} redirectTo="/admin" />}>
                     <Route path="audit-log" element={<AuditLogPage />} />
                   </Route>
