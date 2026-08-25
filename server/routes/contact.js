@@ -1,6 +1,7 @@
 const express = require('express');
-const { body, validationResult } = require('express-validator');
-const { dbRun } = require('../database/database');
+const { body, param, validationResult } = require('express-validator');
+const { dbRun, dbGet, dbAll } = require('../database/database');
+const { authenticateToken, requireAdmin } = require('../middleware/auth');
 
 const router = express.Router();
 
@@ -91,6 +92,146 @@ router.post(
       res.status(500).json({
         message: 'Something went wrong while sending your message. Please try again later.',
       });
+    }
+  }
+);
+
+const MAX_PAGE_SIZE = 100;
+const STATUSES = ['unread', 'read', 'replied', 'archived'];
+
+function parsePagination(req) {
+  const page = Math.max(1, parseInt(req.query.page, 10) || 1);
+  const pageSize = Math.min(
+    MAX_PAGE_SIZE,
+    Math.max(1, parseInt(req.query.pageSize, 10) || 25)
+  );
+  return { page, pageSize, offset: (page - 1) * pageSize };
+}
+
+function sendValidation(req, res) {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    res.status(400).json({ errors: errors.array() });
+    return true;
+  }
+  return false;
+}
+
+// Everything below is staff-only. Public POST stays above this line so
+// visitors never need a token.
+router.use(authenticateToken);
+router.use(requireAdmin);
+
+router.get('/', async (req, res) => {
+  try {
+    const { page, pageSize, offset } = parsePagination(req);
+    const status = typeof req.query.status === 'string' ? req.query.status : '';
+    const q = typeof req.query.q === 'string' ? req.query.q.trim() : '';
+
+    if (status && !STATUSES.includes(status)) {
+      return res.status(400).json({ message: 'Invalid status filter' });
+    }
+
+    let where = 'WHERE 1=1';
+    const params = [];
+
+    if (status) {
+      where += ' AND status = ?';
+      params.push(status);
+    }
+
+    if (q) {
+      where += ' AND (name LIKE ? OR email LIKE ? OR subject LIKE ?)';
+      const term = `%${q}%`;
+      params.push(term, term, term);
+    }
+
+    const rows = await dbAll(
+      `SELECT id, name, email, subject, message, status, created_at
+       FROM contact_messages ${where}
+       ORDER BY CASE status WHEN 'unread' THEN 0 ELSE 1 END, created_at DESC
+       LIMIT ? OFFSET ?`,
+      [...params, pageSize, offset]
+    );
+
+    const totalRow = await dbGet(
+      `SELECT COUNT(*) as count FROM contact_messages ${where}`,
+      params
+    );
+    const unreadRow = await dbGet(
+      `SELECT COUNT(*) as count FROM contact_messages WHERE status = ?`,
+      ['unread']
+    );
+
+    res.json({
+      data: rows,
+      pagination: {
+        page,
+        pageSize,
+        total: Number(totalRow?.count) || 0,
+      },
+      unread_count: Number(unreadRow?.count) || 0,
+    });
+  } catch (error) {
+    console.error('Error listing contact messages:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+router.get(
+  '/:id',
+  [param('id').isInt({ min: 1 }).withMessage('Invalid message id')],
+  async (req, res) => {
+    try {
+      if (sendValidation(req, res)) return;
+
+      const message = await dbGet(
+        `SELECT id, name, email, subject, message, status, created_at
+         FROM contact_messages WHERE id = ?`,
+        [req.params.id]
+      );
+
+      if (!message) {
+        return res.status(404).json({ message: 'Message not found' });
+      }
+
+      res.json({ data: message });
+    } catch (error) {
+      console.error('Error fetching contact message:', error);
+      res.status(500).json({ message: 'Server error' });
+    }
+  }
+);
+
+router.patch(
+  '/:id',
+  [
+    param('id').isInt({ min: 1 }).withMessage('Invalid message id'),
+    body('status').isIn(STATUSES).withMessage('Invalid status'),
+  ],
+  async (req, res) => {
+    try {
+      if (sendValidation(req, res)) return;
+
+      const result = await dbRun(
+        'UPDATE contact_messages SET status = ? WHERE id = ?',
+        [req.body.status, req.params.id]
+      );
+
+      if (result.changes === 0) {
+        return res.status(404).json({ message: 'Message not found' });
+      }
+
+      const message = await dbGet(
+        `SELECT id, name, email, subject, message, status, created_at
+         FROM contact_messages WHERE id = ?`,
+        [req.params.id]
+      );
+
+      res.json({ data: message });
+    } catch (error) {
+      console.error('Error updating contact message:', error);
+      res.status(500).json({ message: 'Server error' });
     }
   }
 );

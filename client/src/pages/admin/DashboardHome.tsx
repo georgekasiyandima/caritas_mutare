@@ -103,6 +103,9 @@ const DashboardHome: React.FC = () => {
         subtitle="Today's operational snapshot across programmes, beneficiaries, and service delivery."
         actions={
           <>
+            <Button component={RouterLink} to="/admin/messages" variant="outlined">
+              Review messages
+            </Button>
             <Button component={RouterLink} to="/admin/projects" variant="outlined">
               Manage projects
             </Button>
