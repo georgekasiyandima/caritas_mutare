@@ -36,6 +36,7 @@ import { useAuth } from '../../contexts/AuthContext';
  *  - About (mission, leadership, history)
  *  - Programs (what we do)
  *  - News (proof we are still doing it)
+ *  - Marathon (annual 21km fundraiser)
  *  - Volunteer
  *  - Contact
  *
@@ -47,6 +48,7 @@ const NAV_ITEMS: Array<{ key: string; path: string }> = [
   { key: 'about', path: '/about' },
   { key: 'programs', path: '/programs' },
   { key: 'news', path: '/news' },
+  { key: 'events', path: '/events/marathon' },
   { key: 'volunteer', path: '/volunteer' },
   { key: 'contact', path: '/contact' },
 ];

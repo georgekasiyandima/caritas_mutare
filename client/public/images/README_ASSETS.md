@@ -44,6 +44,7 @@ When you send images “by project”, we only need: **project name (or slug) + 
 | **programs/soup-kitchen/** | `soup-kitchen-gallery-01.png` … `06.png` | Official programme gallery (hero = 01). Extra assets may live under `gallery/` (legacy page). |
 | **programs/infrastructure/** | `water-bridge-construction.png` | Water/bridge construction (CETLRCCAP / general). |
 | **general/** | `promoting-dignified-lives-1.png`, `promoting-dignified-lives-oak-caritas.png`, `health-champions-1.png`, `community-gathering-1.png`, `community-impact-1.png`, `construction-1.png`, `workshop-planning.png`, `beneficiary-with-food.png`, `food-seed-festival-event.png` | Impact section, homepage, events (e.g. Food & Seed Festival). |
+| **events/marathon/** | `DSC_2841.jpg` … `DSC_2913.jpg` (49 photos from the [Caritas Charity Run](https://drive.google.com/drive/folders/1vvXQDPGCu3rQDo1SqRM_YOhuGQIs97P4) folder). Hero and gallery selection live in `client/src/lib/marathonEvent.ts`. | Marathon page. |
 | **leadership/** | `bishop-horan.png` | Bishop Paul Horan (O’CARM). Add Fr. Gumbeze, Sr. Angeline when available. |
 | **placeholders/** | — | Temporary placeholders if needed. |
 

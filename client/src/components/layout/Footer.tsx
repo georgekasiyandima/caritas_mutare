@@ -109,6 +109,7 @@ const Footer: React.FC = () => {
     { key: 'leadership', path: '/leadership' },
     { key: 'programs', path: '/programs' },
     { key: 'news', path: '/news' },
+    { key: 'events', path: '/events/marathon' },
   ];
 
   const engageLinks = [
