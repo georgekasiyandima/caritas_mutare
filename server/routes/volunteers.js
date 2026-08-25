@@ -5,62 +5,112 @@ const { authenticateToken, requireAdmin } = require('../middleware/auth');
 
 const router = express.Router();
 
-// Submit volunteer application (public)
-router.post('/', [
-  body('full_name').notEmpty().withMessage('Full name is required'),
-  body('email').isEmail().withMessage('Valid email is required'),
-  body('phone').optional().isMobilePhone().withMessage('Valid phone number is required')
-], async (req, res) => {
-  try {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
+const SUCCESS_MESSAGE =
+  'Thank you. Your volunteer application has been received. We will be in touch.';
 
-    const {
-      full_name,
-      email,
-      phone,
-      skills,
-      availability,
-      interests,
-      message
-    } = req.body;
+function discardHoneypot(req, res, next) {
+  const bait =
+    typeof req.body?.company_website === 'string'
+      ? req.body.company_website.trim()
+      : '';
 
-    // Check if volunteer already exists
-    const existingVolunteer = await dbGet(
-      'SELECT id FROM volunteers WHERE email = ?',
-      [email]
-    );
-
-    if (existingVolunteer) {
-      return res.status(400).json({ message: 'Volunteer application already exists for this email' });
-    }
-
-    const result = await dbRun(
-      `INSERT INTO volunteers (full_name, email, phone, skills, availability, interests, message)
-       VALUES (?, ?, ?, ?, ?, ?, ?)`,
-      [full_name, email, phone, skills, availability, interests, message]
-    );
-
-    const volunteer = await dbGet('SELECT * FROM volunteers WHERE id = ?', [result.id]);
-
-    res.status(201).json({
-      message: 'Volunteer application submitted successfully',
-      volunteer: {
-        id: volunteer.id,
-        full_name: volunteer.full_name,
-        email: volunteer.email,
-        status: volunteer.status,
-        created_at: volunteer.created_at
-      }
+  if (bait) {
+    console.warn('Volunteer honeypot triggered; submission discarded');
+    return res.status(201).json({
+      success: true,
+      message: SUCCESS_MESSAGE,
     });
-
-  } catch (error) {
-    console.error('Error submitting volunteer application:', error);
-    res.status(500).json({ message: 'Server error processing volunteer application' });
   }
-});
+
+  return next();
+}
+
+// Submit volunteer application (public)
+router.post(
+  '/',
+  discardHoneypot,
+  [
+    body('full_name')
+      .trim()
+      .notEmpty()
+      .withMessage('Full name is required')
+      .isLength({ min: 2, max: 100 })
+      .withMessage('Full name must be between 2 and 100 characters'),
+    body('email')
+      .trim()
+      .notEmpty()
+      .withMessage('Email is required')
+      .isEmail()
+      .withMessage('Please provide a valid email address')
+      .normalizeEmail()
+      .isLength({ max: 254 })
+      .withMessage('Email is too long'),
+    // isMobilePhone() is locale-specific and rejects many valid Zimbabwe numbers.
+    // Length + trim is enough at this slice; staff can follow up by phone.
+    body('phone')
+      .optional({ values: 'falsy' })
+      .trim()
+      .isLength({ max: 40 })
+      .withMessage('Phone number is too long'),
+    body('skills').optional({ values: 'falsy' }).trim().isLength({ max: 2000 }),
+    body('availability').optional({ values: 'falsy' }).trim().isLength({ max: 1000 }),
+    body('interests').optional({ values: 'falsy' }).trim().isLength({ max: 1000 }),
+    body('message').optional({ values: 'falsy' }).trim().isLength({ max: 5000 }),
+  ],
+  async (req, res) => {
+    try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+      }
+
+      const {
+        full_name,
+        email,
+        phone,
+        skills,
+        availability,
+        interests,
+        message,
+      } = req.body;
+
+      const normalisedEmail = String(email).toLowerCase();
+
+      const existingVolunteer = await dbGet(
+        'SELECT id FROM volunteers WHERE email = ?',
+        [normalisedEmail]
+      );
+
+      if (existingVolunteer) {
+        return res.status(409).json({
+          message: 'We already have a volunteer application for this email address.',
+        });
+      }
+
+      await dbRun(
+        `INSERT INTO volunteers (full_name, email, phone, skills, availability, interests, message)
+         VALUES (?, ?, ?, ?, ?, ?, ?)`,
+        [
+          full_name,
+          normalisedEmail,
+          phone || null,
+          skills || null,
+          availability || null,
+          interests || null,
+          message || null,
+        ]
+      );
+
+      res.status(201).json({
+        success: true,
+        message: SUCCESS_MESSAGE,
+      });
+    } catch (error) {
+      console.error('Error submitting volunteer application:', error);
+      res.status(500).json({ message: 'Server error processing volunteer application' });
+    }
+  }
+);
 
 // Admin routes (require authentication)
 router.use(authenticateToken);
@@ -107,6 +157,79 @@ router.get('/', async (req, res) => {
     });
   } catch (error) {
     console.error('Error fetching volunteers:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Static admin paths must be registered before /:id or they are treated as ids.
+router.get('/stats', async (req, res) => {
+  try {
+    const totalStats = await dbGet(
+      'SELECT COUNT(*) as total_volunteers FROM volunteers'
+    );
+
+    const statusStats = await dbAll(
+      'SELECT status, COUNT(*) as count FROM volunteers GROUP BY status'
+    );
+
+    const recentStats = await dbGet(
+      `SELECT COUNT(*) as recent_volunteers 
+       FROM volunteers 
+       WHERE created_at >= datetime('now', '-30 days')`
+    );
+
+    const skillsStats = await dbAll(
+      `SELECT 
+        CASE 
+          WHEN skills IS NULL OR skills = '' THEN 'No skills specified'
+          ELSE skills 
+        END as skill_category,
+        COUNT(*) as count
+       FROM volunteers 
+       GROUP BY skill_category
+       ORDER BY count DESC
+       LIMIT 10`
+    );
+
+    res.json({
+      total: totalStats.total_volunteers || 0,
+      recent: recentStats.recent_volunteers || 0,
+      by_status: statusStats,
+      by_skills: skillsStats
+    });
+  } catch (error) {
+    console.error('Error fetching volunteer stats:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+router.get('/export/csv', async (req, res) => {
+  try {
+    const volunteers = await dbAll(
+      'SELECT full_name, email, phone, skills, availability, interests, status, created_at FROM volunteers ORDER BY created_at DESC'
+    );
+
+    const csvHeader = 'Full Name,Email,Phone,Skills,Availability,Interests,Status,Created At\n';
+    const csvData = volunteers.map(volunteer => {
+      return [
+        `"${volunteer.full_name}"`,
+        `"${volunteer.email}"`,
+        `"${volunteer.phone || ''}"`,
+        `"${volunteer.skills || ''}"`,
+        `"${volunteer.availability || ''}"`,
+        `"${volunteer.interests || ''}"`,
+        `"${volunteer.status}"`,
+        `"${volunteer.created_at}"`
+      ].join(',');
+    }).join('\n');
+
+    const csv = csvHeader + csvData;
+
+    res.setHeader('Content-Type', 'text/csv');
+    res.setHeader('Content-Disposition', 'attachment; filename=volunteers.csv');
+    res.send(csv);
+  } catch (error) {
+    console.error('Error exporting volunteers:', error);
     res.status(500).json({ message: 'Server error' });
   }
 });
@@ -175,85 +298,6 @@ router.delete('/:id', async (req, res) => {
     res.json({ message: 'Volunteer deleted successfully' });
   } catch (error) {
     console.error('Error deleting volunteer:', error);
-    res.status(500).json({ message: 'Server error' });
-  }
-});
-
-// Get volunteer statistics (admin)
-router.get('/stats', async (req, res) => {
-  try {
-    // Get total volunteers
-    const totalStats = await dbGet(
-      'SELECT COUNT(*) as total_volunteers FROM volunteers'
-    );
-
-    // Get volunteers by status
-    const statusStats = await dbAll(
-      'SELECT status, COUNT(*) as count FROM volunteers GROUP BY status'
-    );
-
-    // Get recent volunteers (last 30 days)
-    const recentStats = await dbGet(
-      `SELECT COUNT(*) as recent_volunteers 
-       FROM volunteers 
-       WHERE created_at >= datetime('now', '-30 days')`
-    );
-
-    // Get volunteers by skills
-    const skillsStats = await dbAll(
-      `SELECT 
-        CASE 
-          WHEN skills IS NULL OR skills = '' THEN 'No skills specified'
-          ELSE skills 
-        END as skill_category,
-        COUNT(*) as count
-       FROM volunteers 
-       GROUP BY skill_category
-       ORDER BY count DESC
-       LIMIT 10`
-    );
-
-    res.json({
-      total: totalStats.total_volunteers || 0,
-      recent: recentStats.recent_volunteers || 0,
-      by_status: statusStats,
-      by_skills: skillsStats
-    });
-  } catch (error) {
-    console.error('Error fetching volunteer stats:', error);
-    res.status(500).json({ message: 'Server error' });
-  }
-});
-
-// Export volunteers data (admin)
-router.get('/export/csv', async (req, res) => {
-  try {
-    const volunteers = await dbAll(
-      'SELECT full_name, email, phone, skills, availability, interests, status, created_at FROM volunteers ORDER BY created_at DESC'
-    );
-
-    // Convert to CSV format
-    const csvHeader = 'Full Name,Email,Phone,Skills,Availability,Interests,Status,Created At\n';
-    const csvData = volunteers.map(volunteer => {
-      return [
-        `"${volunteer.full_name}"`,
-        `"${volunteer.email}"`,
-        `"${volunteer.phone || ''}"`,
-        `"${volunteer.skills || ''}"`,
-        `"${volunteer.availability || ''}"`,
-        `"${volunteer.interests || ''}"`,
-        `"${volunteer.status}"`,
-        `"${volunteer.created_at}"`
-      ].join(',');
-    }).join('\n');
-
-    const csv = csvHeader + csvData;
-
-    res.setHeader('Content-Type', 'text/csv');
-    res.setHeader('Content-Disposition', 'attachment; filename=volunteers.csv');
-    res.send(csv);
-  } catch (error) {
-    console.error('Error exporting volunteers:', error);
     res.status(500).json({ message: 'Server error' });
   }
 });

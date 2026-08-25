@@ -36,22 +36,44 @@ import {
   formCardHeader,
 } from '../lib/sitePageLayout';
 import { orgContact } from '../lib/organisation';
+import { apiPost, ApiError } from '../lib/api';
 
 const volCardSx = { ...outlineCard, ...outlineCardHover };
 
+const EMPTY_FORM = {
+  full_name: '',
+  email: '',
+  phone: '',
+  skills: '',
+  availability: '',
+  interests: '',
+  message: '',
+};
+
+function fieldErrorsFromApi(details: unknown): Record<string, string> {
+  if (!details || typeof details !== 'object' || !('errors' in details)) {
+    return {};
+  }
+  const list = (details as { errors?: Array<{ path?: string; msg?: string }> }).errors;
+  if (!Array.isArray(list)) return {};
+
+  const mapped: Record<string, string> = {};
+  list.forEach((err) => {
+    if (err.path && err.msg && !mapped[err.path]) {
+      mapped[err.path] = err.msg;
+    }
+  });
+  return mapped;
+}
+
 const VolunteerPage: React.FC = () => {
   const { t } = useTranslation();
-  const [formData, setFormData] = useState({
-    full_name: '',
-    email: '',
-    phone: '',
-    skills: '',
-    availability: '',
-    interests: '',
-    message: '',
-  });
+  const [formData, setFormData] = useState(EMPTY_FORM);
+  const [honeypot, setHoneypot] = useState('');
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const volunteerOpportunities = [
     {
@@ -100,32 +122,42 @@ const VolunteerPage: React.FC = () => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
+    if (fieldErrors[name]) {
+      setFieldErrors((prev) => {
+        const next = { ...prev };
+        delete next[name];
+        return next;
+      });
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     setSubmitStatus('idle');
+    setErrorMessage('');
+    setFieldErrors({});
 
     try {
-      // In a real implementation, you would send this to your backend
-      await new Promise(resolve => setTimeout(resolve, 2000)); // Simulate API call
-      setSubmitStatus('success');
-      setFormData({
-        full_name: '',
-        email: '',
-        phone: '',
-        skills: '',
-        availability: '',
-        interests: '',
-        message: '',
+      await apiPost('/api/volunteers', {
+        ...formData,
+        company_website: honeypot,
       });
+      setSubmitStatus('success');
+      setFormData(EMPTY_FORM);
+      setHoneypot('');
     } catch (error) {
       setSubmitStatus('error');
+      if (error instanceof ApiError) {
+        setErrorMessage(error.message);
+        setFieldErrors(fieldErrorsFromApi(error.details));
+      } else {
+        setErrorMessage('There was an error submitting your application. Please try again.');
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -286,7 +318,26 @@ const VolunteerPage: React.FC = () => {
                 </Typography>
               </Box>
         <CardContent sx={{ p: 4 }}>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} noValidate style={{ position: 'relative' }}>
+                  <Box
+                    aria-hidden="true"
+                    sx={{
+                      position: 'absolute',
+                      left: '-10000px',
+                      width: 1,
+                      height: 1,
+                      overflow: 'hidden',
+                    }}
+                  >
+                    <TextField
+                      name="company_website"
+                      label="Company website"
+                      tabIndex={-1}
+                      autoComplete="off"
+                      value={honeypot}
+                      onChange={(e) => setHoneypot(e.target.value)}
+                    />
+                  </Box>
                   <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
                 <TextField
                   fullWidth
@@ -296,6 +347,8 @@ const VolunteerPage: React.FC = () => {
                   onChange={handleInputChange}
                   required
                       variant="outlined"
+                      error={Boolean(fieldErrors.full_name)}
+                      helperText={fieldErrors.full_name}
                       sx={{ '& .MuiOutlinedInput-root': { borderRadius: 2 } }}
                 />
                 <TextField
@@ -307,6 +360,8 @@ const VolunteerPage: React.FC = () => {
                   onChange={handleInputChange}
                   required
                       variant="outlined"
+                      error={Boolean(fieldErrors.email)}
+                      helperText={fieldErrors.email}
                       sx={{ '& .MuiOutlinedInput-root': { borderRadius: 2 } }}
                 />
                 <TextField
@@ -316,6 +371,8 @@ const VolunteerPage: React.FC = () => {
                   value={formData.phone}
                   onChange={handleInputChange}
                       variant="outlined"
+                      error={Boolean(fieldErrors.phone)}
+                      helperText={fieldErrors.phone}
                       sx={{ '& .MuiOutlinedInput-root': { borderRadius: 2 } }}
                 />
                 <TextField
@@ -370,7 +427,7 @@ const VolunteerPage: React.FC = () => {
 
                   {submitStatus === 'error' && (
                     <Alert severity="error" sx={{ mt: 3, borderRadius: 2 }}>
-                There was an error submitting your application. Please try again.
+                {errorMessage || 'There was an error submitting your application. Please try again.'}
               </Alert>
             )}
 
