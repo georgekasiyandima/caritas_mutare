@@ -77,7 +77,11 @@ async function main() {
       message: 'Too many messages from this address. Please try again in 15 minutes.',
     },
   });
-  app.use('/api/contact', contactLimiter);
+  // Only public POSTs are capped. Staff listing messages must not share that budget.
+  app.use('/api/contact', (req, res, next) => {
+    if (req.method === 'POST') return contactLimiter(req, res, next);
+    return next();
+  });
 
   // CORS
   //

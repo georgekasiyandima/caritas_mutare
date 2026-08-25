@@ -207,46 +207,5 @@ router.put('/settings', async (req, res) => {
   }
 });
 
-// Get contact messages
-router.get('/contact-messages', async (req, res) => {
-  try {
-    const messages = await dbAll(
-      'SELECT * FROM contact_messages ORDER BY created_at DESC'
-    );
-    res.json({ messages });
-  } catch (error) {
-    console.error('Error fetching contact messages:', error);
-    res.status(500).json({ message: 'Server error' });
-  }
-});
-
-// Update contact message status
-router.put('/contact-messages/:id', [
-  body('status').isIn(['unread', 'read', 'replied', 'archived']).withMessage('Invalid status')
-], async (req, res) => {
-  try {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-
-    const { status } = req.body;
-
-    const result = await dbRun(
-      'UPDATE contact_messages SET status = ? WHERE id = ?',
-      [status, req.params.id]
-    );
-
-    if (result.changes === 0) {
-      return res.status(404).json({ message: 'Message not found' });
-    }
-
-    res.json({ message: 'Message status updated successfully' });
-  } catch (error) {
-    console.error('Error updating message status:', error);
-    res.status(500).json({ message: 'Server error' });
-  }
-});
-
 module.exports = router;
 
