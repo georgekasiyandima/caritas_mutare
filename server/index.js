@@ -97,6 +97,20 @@ async function main() {
     return next();
   });
 
+  const donationLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 5,
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: {
+      message: 'Too many pledges from this address. Please try again in 15 minutes.',
+    },
+  });
+  app.use('/api/donations', (req, res, next) => {
+    if (req.method === 'POST') return donationLimiter(req, res, next);
+    return next();
+  });
+
   // CORS
   //
   // In production we expect traffic from a small, known set of origins:
