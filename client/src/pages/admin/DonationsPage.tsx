@@ -56,6 +56,15 @@ const STATUS_COLOR: Record<PaymentStatus, 'warning' | 'success' | 'error' | 'def
   refunded: 'default',
 };
 
+// Stored as payment_status = 'completed' so stats and a future processor
+// keep a standard payment enum. Staff see "Received" — money arrived.
+const STATUS_LABEL: Record<PaymentStatus, string> = {
+  pending: 'Pending',
+  completed: 'Received',
+  failed: 'Failed',
+  refunded: 'Refunded',
+};
+
 function formatWhen(value: string) {
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return value;
@@ -125,7 +134,7 @@ const DonationsPage: React.FC = () => {
     <Box>
       <PageHeader
         title="Pledges"
-        subtitle="Public donate-form pledges. Mark completed only after the payment has actually arrived."
+        subtitle="Public donate-form pledges. Mark received only after the payment has actually arrived."
         actions={
           pendingCount > 0 ? (
             <Chip label={`${pendingCount} pending`} color="warning" />
@@ -146,7 +155,7 @@ const DonationsPage: React.FC = () => {
           >
             <MenuItem value="">All</MenuItem>
             <MenuItem value="pending">Pending</MenuItem>
-            <MenuItem value="completed">Completed</MenuItem>
+            <MenuItem value="completed">Received</MenuItem>
             <MenuItem value="failed">Failed</MenuItem>
             <MenuItem value="refunded">Refunded</MenuItem>
           </Select>
@@ -172,7 +181,7 @@ const DonationsPage: React.FC = () => {
                   <TableCell>Donor</TableCell>
                   <TableCell>Amount</TableCell>
                   <TableCell>Status</TableCell>
-                  <TableCell>Received</TableCell>
+                  <TableCell>Pledged</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -197,9 +206,8 @@ const DonationsPage: React.FC = () => {
                     <TableCell>
                       <Chip
                         size="small"
-                        label={row.payment_status}
+                        label={STATUS_LABEL[row.payment_status]}
                         color={STATUS_COLOR[row.payment_status]}
-                        sx={{ textTransform: 'capitalize' }}
                       />
                     </TableCell>
                     <TableCell>
@@ -238,9 +246,9 @@ const DonationsPage: React.FC = () => {
             <Box>
               <Chip
                 size="small"
-                label={selected.payment_status}
+                label={STATUS_LABEL[selected.payment_status]}
                 color={STATUS_COLOR[selected.payment_status]}
-                sx={{ textTransform: 'capitalize', mb: 1 }}
+                sx={{ mb: 1 }}
               />
               <Typography variant="h6" sx={{ fontWeight: 700 }}>
                 {selected.currency} {selected.amount}
