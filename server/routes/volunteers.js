@@ -119,8 +119,11 @@ router.use(requireAdmin);
 // Get all volunteers (admin)
 router.get('/', async (req, res) => {
   try {
-    const { page = 1, limit = 20, status, search } = req.query;
+    const page = Math.max(1, parseInt(req.query.page, 10) || 1);
+    const limit = Math.min(100, Math.max(1, parseInt(req.query.limit, 10) || 25));
     const offset = (page - 1) * limit;
+    const status = typeof req.query.status === 'string' ? req.query.status : '';
+    const search = typeof req.query.search === 'string' ? req.query.search.trim() : '';
 
     let whereClause = 'WHERE 1=1';
     const params = [];
@@ -138,22 +141,27 @@ router.get('/', async (req, res) => {
 
     const volunteers = await dbAll(
       `SELECT * FROM volunteers ${whereClause} ORDER BY created_at DESC LIMIT ? OFFSET ?`,
-      [...params, parseInt(limit), offset]
+      [...params, limit, offset]
     );
 
     const totalCount = await dbGet(
       `SELECT COUNT(*) as count FROM volunteers ${whereClause}`,
       params
     );
+    const pendingRow = await dbGet(
+      `SELECT COUNT(*) as count FROM volunteers WHERE status = ?`,
+      ['pending']
+    );
 
     res.json({
       volunteers,
       pagination: {
-        page: parseInt(page),
-        limit: parseInt(limit),
-        total: totalCount.count,
-        pages: Math.ceil(totalCount.count / limit)
-      }
+        page,
+        limit,
+        total: Number(totalCount?.count) || 0,
+        pages: Math.ceil((Number(totalCount?.count) || 0) / limit),
+      },
+      pending_count: Number(pendingRow?.count) || 0,
     });
   } catch (error) {
     console.error('Error fetching volunteers:', error);

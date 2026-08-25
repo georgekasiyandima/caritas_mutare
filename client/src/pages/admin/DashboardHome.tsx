@@ -106,6 +106,9 @@ const DashboardHome: React.FC = () => {
             <Button component={RouterLink} to="/admin/messages" variant="outlined">
               Review messages
             </Button>
+            <Button component={RouterLink} to="/admin/volunteers" variant="outlined">
+              Review volunteers
+            </Button>
             <Button component={RouterLink} to="/admin/projects" variant="outlined">
               Manage projects
             </Button>
