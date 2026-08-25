@@ -1,0 +1,45 @@
+---
+description: React page and component conventions for the Caritas Mutare client
+globs: client/src/**/*.tsx
+alwaysApply: false
+---
+
+# Client conventions
+
+Full context in `docs/ARCHITECTURE.md`.
+
+## Layout
+
+- Wrap pages in `<Box sx={pageRoot}>` and add `<SEO>` with a `canonicalPath`.
+- Use the tokens in `lib/sitePageLayout.ts` (`outlineCard`, `SECTION_BG_ALT`,
+  `pageHero`, `closingCtaSectionSx`) rather than hardcoding spacing or borders.
+- Never add `Navbar` or `Footer` to a page — `PublicLayout` supplies them.
+- New pages need a `lazy()` import *and* a `<Route>` in `App.tsx`.
+
+## MUI `sx` typing
+
+Spreading style objects inline produces a union TypeScript can't assign to
+`SxProps<Theme>`. Declare it as a typed array instead.
+
+```tsx
+// ❌ BAD — "No overload matches this call"
+<Card sx={{ ...outlineCard, height: '100%' }} />
+
+// ✅ GOOD
+const cardSx: SxProps<Theme> = [outlineCard, { height: '100%' }] as SxProps<Theme>;
+<Card sx={cardSx} />
+```
+
+## Data and content
+
+- Fetch through `lib/api.ts` (`apiGet`/`apiPost`/...), not raw `fetch`. It
+  attaches the bearer token and normalises errors into `ApiError`.
+- Prefer React Query for new read-only screens.
+- Import contact details from `lib/organisation.ts`. Never hardcode a phone
+  number, email, or address into a component.
+- Gate admin routes with `<ProtectedRoute roles={[...]}>`, not inline role checks.
+
+## Strings
+
+User-facing copy goes through `useTranslation`, with keys added to **both**
+`i18n/locales/en.json` and `sh.json`.
