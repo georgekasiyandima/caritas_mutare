@@ -36,42 +36,82 @@ import {
   formCardHeader,
 } from '../lib/sitePageLayout';
 import { orgContact } from '../lib/organisation';
+import { apiPost, ApiError } from '../lib/api';
 
 const contactCardSx = { ...outlineCard, ...outlineCardHover };
+
+const EMPTY_FORM = {
+  name: '',
+  email: '',
+  subject: '',
+  message: '',
+};
+
+function fieldErrorsFromApi(details: unknown): Record<string, string> {
+  if (!details || typeof details !== 'object' || !('errors' in details)) {
+    return {};
+  }
+  const list = (details as { errors?: Array<{ path?: string; msg?: string }> }).errors;
+  if (!Array.isArray(list)) return {};
+
+  const mapped: Record<string, string> = {};
+  list.forEach((err) => {
+    if (err.path && err.msg && !mapped[err.path]) {
+      mapped[err.path] = err.msg;
+    }
+  });
+  return mapped;
+}
 
 const ContactPage: React.FC = () => {
   const { t } = useTranslation();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    subject: '',
-    message: '',
-  });
+  const [formData, setFormData] = useState(EMPTY_FORM);
+  const [honeypot, setHoneypot] = useState('');
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
+    if (fieldErrors[name]) {
+      setFieldErrors((prev) => {
+        const next = { ...prev };
+        delete next[name];
+        return next;
+      });
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     setSubmitStatus('idle');
+    setErrorMessage('');
+    setFieldErrors({});
 
     try {
-      // In a real implementation, you would send this to your backend
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
+      await apiPost('/api/contact', {
+        ...formData,
+        company_website: honeypot,
+      });
       setSubmitStatus('success');
-      setFormData({ name: '', email: '', subject: '', message: '' });
+      setFormData(EMPTY_FORM);
+      setHoneypot('');
     } catch (error) {
       setSubmitStatus('error');
+      if (error instanceof ApiError) {
+        setErrorMessage(error.message);
+        setFieldErrors(fieldErrorsFromApi(error.details));
+      } else {
+        setErrorMessage('There was an error sending your message. Please try again.');
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -291,7 +331,26 @@ const ContactPage: React.FC = () => {
               </Typography>
             </Box>
             <CardContent sx={{ p: 4 }}>
-              <form onSubmit={handleSubmit}>
+              <form onSubmit={handleSubmit} noValidate style={{ position: 'relative' }}>
+                <Box
+                  aria-hidden="true"
+                  sx={{
+                    position: 'absolute',
+                    left: '-10000px',
+                    width: 1,
+                    height: 1,
+                    overflow: 'hidden',
+                  }}
+                >
+                  <TextField
+                    name="company_website"
+                    label="Company website"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    value={honeypot}
+                    onChange={(e) => setHoneypot(e.target.value)}
+                  />
+                </Box>
                 <Grid container spacing={3}>
                   <Grid item xs={12} sm={6}>
                     <TextField
@@ -301,6 +360,8 @@ const ContactPage: React.FC = () => {
                       value={formData.name}
                       onChange={handleInputChange}
                       required
+                      error={Boolean(fieldErrors.name)}
+                      helperText={fieldErrors.name}
                     />
                   </Grid>
                   <Grid item xs={12} sm={6}>
@@ -312,6 +373,8 @@ const ContactPage: React.FC = () => {
                       value={formData.email}
                       onChange={handleInputChange}
                       required
+                      error={Boolean(fieldErrors.email)}
+                      helperText={fieldErrors.email}
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -322,6 +385,8 @@ const ContactPage: React.FC = () => {
                       value={formData.subject}
                       onChange={handleInputChange}
                       required
+                      error={Boolean(fieldErrors.subject)}
+                      helperText={fieldErrors.subject}
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -334,6 +399,8 @@ const ContactPage: React.FC = () => {
                       value={formData.message}
                       onChange={handleInputChange}
                       required
+                      error={Boolean(fieldErrors.message)}
+                      helperText={fieldErrors.message}
                     />
                   </Grid>
                 </Grid>
@@ -346,7 +413,7 @@ const ContactPage: React.FC = () => {
 
                 {submitStatus === 'error' && (
                   <Alert severity="error" sx={{ mt: 3 }}>
-                    There was an error sending your message. Please try again.
+                    {errorMessage || 'There was an error sending your message. Please try again.'}
                   </Alert>
                 )}
 

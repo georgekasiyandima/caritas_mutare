@@ -66,6 +66,19 @@ async function main() {
   });
   app.use('/api/auth/login', loginLimiter);
 
+  // Public forms get a tighter cap than the global API limiter. 5 messages
+  // per 15 minutes is enough for a real person and cheap against inbox flooding.
+  const contactLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 5,
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: {
+      message: 'Too many messages from this address. Please try again in 15 minutes.',
+    },
+  });
+  app.use('/api/contact', contactLimiter);
+
   // CORS
   //
   // In production we expect traffic from a small, known set of origins:
@@ -77,14 +90,30 @@ async function main() {
   // optionally allow `*.vercel.app` preview URLs when `ALLOW_VERCEL_PREVIEWS`
   // is set to "true" — handy while we iterate, and easy to turn off later.
   //
-  // Local development always permits http://localhost:3000 so we never have
-  // to mess with env vars to run the frontend locally against this API.
+  // Locally, CRA prints both localhost and a LAN address. Browsers also treat
+  // 127.0.0.1 as a different origin from localhost. Rejecting those as a thrown
+  // Error became a 500 on the contact form — deny must not look like a crash.
   const explicitOrigins = (process.env.CLIENT_URL || '')
     .split(',')
     .map((value) => value.trim())
     .filter(Boolean);
 
   const allowVercelPreviews = process.env.ALLOW_VERCEL_PREVIEWS === 'true';
+
+  function isLocalDevOrigin(origin) {
+    try {
+      const { hostname } = new URL(origin);
+      if (hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '::1') {
+        return true;
+      }
+      if (/^192\.168\.\d{1,3}\.\d{1,3}$/.test(hostname)) return true;
+      if (/^10\.\d{1,3}\.\d{1,3}\.\d{1,3}$/.test(hostname)) return true;
+      if (/^172\.(1[6-9]|2\d|3[0-1])\.\d{1,3}\.\d{1,3}$/.test(hostname)) return true;
+      return false;
+    } catch (_err) {
+      return false;
+    }
+  }
 
   app.use(
     cors({
@@ -93,7 +122,7 @@ async function main() {
         // and should always be allowed through.
         if (!origin) return callback(null, true);
 
-        if (process.env.NODE_ENV !== 'production' && origin === 'http://localhost:3000') {
+        if (process.env.NODE_ENV !== 'production' && isLocalDevOrigin(origin)) {
           return callback(null, true);
         }
 
@@ -105,7 +134,8 @@ async function main() {
           return callback(null, true);
         }
 
-        return callback(new Error(`Not allowed by CORS: ${origin}`));
+        console.warn(`Blocked by CORS: ${origin}`);
+        return callback(null, false);
       },
       credentials: true,
     })
@@ -119,6 +149,7 @@ async function main() {
   app.use('/uploads', express.static('uploads'));
 
   app.use('/api/auth', require('./routes/auth'));
+  app.use('/api/contact', require('./routes/contact'));
   app.use('/api/content', require('./routes/content'));
   app.use('/api/donations', require('./routes/donations'));
   app.use('/api/volunteers', require('./routes/volunteers'));
@@ -147,11 +178,21 @@ async function main() {
 
   module.exports = app;
 
-  app.listen(PORT, () => {
+  const server = app.listen(PORT, () => {
     console.log(`🚀 Server running on port ${PORT}`);
     console.log(`📊 Environment: ${process.env.NODE_ENV || 'development'}`);
     console.log(`🔗 API Base URL: http://localhost:${PORT}/api`);
     console.log(`🛡️  Admin API:   http://localhost:${PORT}/api/system/overview`);
+  });
+
+  server.on('error', (err) => {
+    if (err.code === 'EADDRINUSE') {
+      console.error(
+        `❌ Port ${PORT} is already in use. Stop the other API process, then restart.`
+      );
+      process.exit(1);
+    }
+    throw err;
   });
 }
 
