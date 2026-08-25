@@ -16,6 +16,7 @@ const ProgramsPage = lazy(() => import('./pages/ProgramsPage'));
 const NewsPage = lazy(() => import('./pages/NewsPage'));
 const NewsDetailPage = lazy(() => import('./pages/NewsDetailPage'));
 const DonatePage = lazy(() => import('./pages/DonatePage'));
+const MarathonPage = lazy(() => import('./pages/MarathonPage'));
 const VolunteerPage = lazy(() => import('./pages/VolunteerPage'));
 const ContactPage = lazy(() => import('./pages/ContactPage'));
 const LeadershipPage = lazy(() => import('./pages/LeadershipPage'));
@@ -49,6 +50,7 @@ function App() {
                 <Route path="/programs/:slug" element={<ProgrammeDetailPage />} />
                 <Route path="/news" element={<NewsPage />} />
                 <Route path="/news/:id" element={<NewsDetailPage />} />
+                <Route path="/events/marathon" element={<MarathonPage />} />
                 <Route path="/donate" element={<DonatePage />} />
                 <Route path="/volunteer" element={<VolunteerPage />} />
                 <Route path="/contact" element={<ContactPage />} />

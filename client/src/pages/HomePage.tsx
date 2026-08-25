@@ -31,10 +31,13 @@ import TransparencyBlock from '../components/TransparencyBlock';
 import CommunityVoiceBlock from '../components/CommunityVoiceBlock';
 import SEO from '../components/SEO';
 import { useQuery } from 'react-query';
+import type { SxProps, Theme } from '@mui/material';
 import { getActiveProjects, generalImpactImages } from '../lib/caritasProjects';
-import { SECTION_BG_ALT } from '../lib/sitePageLayout';
+import { SECTION_BG_ALT, outlineCard } from '../lib/sitePageLayout';
+import { marathonEvent } from '../lib/marathonEvent';
 
 const thematicIconSx = { fontSize: 32, color: 'info.main' } as const;
+const marathonStripSx: SxProps<Theme> = [outlineCard, { overflow: 'hidden' }] as SxProps<Theme>;
 const THEMATIC_KEYS = ['food', 'humanitarian', 'disability', 'community'] as const;
 
 const HomePage: React.FC = () => {
@@ -462,6 +465,58 @@ const HomePage: React.FC = () => {
       />
 
       <Divider />
+
+      {/* Flagship event */}
+      <Box sx={{ py: { xs: 5, md: 7 }, bgcolor: 'background.paper' }}>
+        <Container maxWidth="lg">
+          <Box sx={marathonStripSx}>
+            <Grid container>
+            <Grid item xs={12} md={5}>
+              <Box
+                component="img"
+                src={marathonEvent.hero.src}
+                alt={marathonEvent.hero.alt}
+                sx={{
+                  width: '100%',
+                  height: { xs: 220, md: '100%' },
+                  minHeight: { md: 280 },
+                  objectFit: 'cover',
+                  objectPosition: marathonEvent.hero.objectPosition,
+                  display: 'block',
+                }}
+              />
+            </Grid>
+            <Grid item xs={12} md={7}>
+              <Box sx={{ p: { xs: 3, md: 5 } }}>
+                <Typography variant="overline" sx={{ color: 'primary.main', fontWeight: 700, letterSpacing: 2 }}>
+                  {marathonEvent.year} event
+                </Typography>
+                <Typography
+                  variant="h4"
+                  component="h2"
+                  sx={{ fontFamily: '"Merriweather", Georgia, serif', fontWeight: 700, mt: 1, mb: 1.5 }}
+                >
+                  {marathonEvent.shortName}
+                </Typography>
+                <Typography variant="body1" color="text.secondary" sx={{ lineHeight: 1.75, mb: 2.5, maxWidth: 520 }}>
+                  {marathonEvent.distanceKm} kilometres. USD {marathonEvent.entryFeeUsd} entry. Every runner
+                  helps keep the Soup Kitchen serving.
+                </Typography>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  endIcon={<ArrowForwardIcon />}
+                  onClick={() => navigate(marathonEvent.path)}
+                  sx={{ fontWeight: 700, borderRadius: 999, px: 3 }}
+                >
+                  View the marathon
+                </Button>
+              </Box>
+            </Grid>
+            </Grid>
+          </Box>
+        </Container>
+      </Box>
 
       {/* Projects grid */}
       <Box sx={{ py: { xs: 5, md: 7 }, bgcolor: SECTION_BG_ALT }}>
