@@ -1,6 +1,7 @@
 const express = require('express');
 const { body, validationResult } = require('express-validator');
 const { dbGet, dbAll, dbRun } = require('../database/database');
+const { daysAgo } = require('../database/sqlCompat');
 const { authenticateToken, requireAdmin } = require('../middleware/auth');
 
 const router = express.Router();
@@ -11,7 +12,7 @@ router.get('/', async (req, res) => {
     const { page = 1, limit = 10, category } = req.query;
     const offset = (page - 1) * limit;
 
-    let whereClause = 'WHERE status = "published"';
+    let whereClause = "WHERE status = 'published'";
     const params = [];
 
     if (category) {
@@ -57,7 +58,7 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
   try {
     const article = await dbGet(
-      'SELECT * FROM news WHERE id = ? AND status = "published"',
+      "SELECT * FROM news WHERE id = ? AND status = 'published'",
       [req.params.id]
     );
 
@@ -91,7 +92,7 @@ router.get('/featured/latest', async (req, res) => {
     const rows = await dbAll(
       `SELECT id, title_en, title_sh, excerpt_en, excerpt_sh, featured_image, published_at, content_en
        FROM news 
-       WHERE status = "published" 
+       WHERE status = 'published' 
        ORDER BY published_at DESC 
        LIMIT ?`,
       [parseInt(limit)]
@@ -319,7 +320,8 @@ router.get('/admin/stats', async (req, res) => {
     const recentStats = await dbGet(
       `SELECT COUNT(*) as recent_articles 
        FROM news 
-       WHERE created_at >= datetime('now', '-30 days')`
+       WHERE created_at >= ?`,
+      [daysAgo(30)]
     );
 
     // Get articles by author
