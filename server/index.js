@@ -83,6 +83,20 @@ async function main() {
     return next();
   });
 
+  const volunteerLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 5,
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: {
+      message: 'Too many applications from this address. Please try again in 15 minutes.',
+    },
+  });
+  app.use('/api/volunteers', (req, res, next) => {
+    if (req.method === 'POST') return volunteerLimiter(req, res, next);
+    return next();
+  });
+
   // CORS
   //
   // In production we expect traffic from a small, known set of origins:
