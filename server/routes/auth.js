@@ -14,6 +14,11 @@ if (isProduction && !process.env.JWT_SECRET) {
 }
 const jwtSecret = process.env.JWT_SECRET || 'dev-only-change-me';
 
+// Roles that /register may assign. Only 'admin' is meaningful today because
+// requireAdmin gates every staff endpoint — adding a lesser role here without
+// relaxing those guards would create accounts that can log in but do nothing.
+const ASSIGNABLE_ROLES = ['admin'];
+
 // Login endpoint
 router.post('/login', [
   body('username').notEmpty().withMessage('Username is required'),
@@ -102,7 +107,9 @@ router.post('/register', [
   authenticateToken,
   body('username').isLength({ min: 3 }).withMessage('Username must be at least 3 characters'),
   body('email').isEmail().withMessage('Valid email is required'),
-  body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters')
+  body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters'),
+  body('role').optional().isIn(ASSIGNABLE_ROLES)
+    .withMessage(`Role must be one of: ${ASSIGNABLE_ROLES.join(', ')}`)
 ], async (req, res) => {
   try {
     // Only admin can register new users

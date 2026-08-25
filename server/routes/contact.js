@@ -2,6 +2,7 @@ const express = require('express');
 const { body, param, validationResult } = require('express-validator');
 const { dbRun, dbGet, dbAll } = require('../database/database');
 const { authenticateToken, requireAdmin } = require('../middleware/auth');
+const { discardHoneypot } = require('../middleware/honeypot');
 
 const router = express.Router();
 
@@ -19,26 +20,11 @@ const SUCCESS_MESSAGE =
  * - A filled honeypot looks like success to the sender so bots do not learn
  *   to retry. We do not persist those submissions.
  */
-function discardHoneypot(req, res, next) {
-  const bait =
-    typeof req.body?.company_website === 'string'
-      ? req.body.company_website.trim()
-      : '';
-
-  if (bait) {
-    console.warn('Contact honeypot triggered; submission discarded');
-    return res.status(201).json({
-      success: true,
-      message: SUCCESS_MESSAGE,
-    });
-  }
-
-  return next();
-}
+const honeypot = discardHoneypot({ label: 'Contact', message: SUCCESS_MESSAGE });
 
 router.post(
   '/',
-  discardHoneypot,
+  honeypot,
   [
     body('name')
       .trim()

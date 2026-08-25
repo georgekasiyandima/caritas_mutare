@@ -2,6 +2,8 @@ const express = require('express');
 const { body, validationResult } = require('express-validator');
 const { dbGet, dbAll, dbRun } = require('../database/database');
 const { daysAgo, monthsAgo, monthBucket } = require('../database/sqlCompat');
+const { discardHoneypot } = require('../middleware/honeypot');
+const { idParam, runValidation } = require('../middleware/validate');
 const { authenticateToken, requireAdmin } = require('../middleware/auth');
 
 const router = express.Router();
@@ -9,28 +11,13 @@ const router = express.Router();
 const PLEDGE_MESSAGE =
   'Thank you. Your intent to give has been received. Our team will confirm payment details shortly.';
 
-function discardHoneypot(req, res, next) {
-  const bait =
-    typeof req.body?.company_website === 'string'
-      ? req.body.company_website.trim()
-      : '';
-
-  if (bait) {
-    console.warn('Donation honeypot triggered; submission discarded');
-    return res.status(201).json({
-      success: true,
-      message: PLEDGE_MESSAGE,
-    });
-  }
-
-  return next();
-}
+const honeypot = discardHoneypot({ label: 'Donation', message: PLEDGE_MESSAGE });
 
 // Public pledge — never records a completed payment. Card/mobile money
 // processors come later, after Caritas owns the merchant account.
 router.post(
   '/',
-  discardHoneypot,
+  honeypot,
   [
     body('donor_name')
       .trim()
@@ -252,7 +239,7 @@ router.get('/admin/analytics', async (req, res) => {
 });
 
 // Get single donation (admin)
-router.get('/admin/:id', async (req, res) => {
+router.get('/admin/:id', [idParam(), runValidation], async (req, res) => {
   try {
     const donation = await dbGet(
       'SELECT * FROM donations WHERE id = ?',
@@ -272,14 +259,11 @@ router.get('/admin/:id', async (req, res) => {
 
 // Update donation status (admin)
 router.put('/admin/:id', [
-  body('payment_status').isIn(['pending', 'completed', 'failed', 'refunded']).withMessage('Invalid payment status')
+  idParam(),
+  body('payment_status').isIn(['pending', 'completed', 'failed', 'refunded']).withMessage('Invalid payment status'),
+  runValidation
 ], async (req, res) => {
   try {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-
     const { payment_status } = req.body;
 
     const result = await dbRun(

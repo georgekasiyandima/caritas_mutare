@@ -3,33 +3,20 @@ const { body, validationResult } = require('express-validator');
 const { dbGet, dbAll, dbRun } = require('../database/database');
 const { daysAgo } = require('../database/sqlCompat');
 const { authenticateToken, requireAdmin } = require('../middleware/auth');
+const { discardHoneypot } = require('../middleware/honeypot');
+const { idParam, runValidation } = require('../middleware/validate');
 
 const router = express.Router();
 
 const SUCCESS_MESSAGE =
   'Thank you. Your volunteer application has been received. We will be in touch.';
 
-function discardHoneypot(req, res, next) {
-  const bait =
-    typeof req.body?.company_website === 'string'
-      ? req.body.company_website.trim()
-      : '';
-
-  if (bait) {
-    console.warn('Volunteer honeypot triggered; submission discarded');
-    return res.status(201).json({
-      success: true,
-      message: SUCCESS_MESSAGE,
-    });
-  }
-
-  return next();
-}
+const honeypot = discardHoneypot({ label: 'Volunteer', message: SUCCESS_MESSAGE });
 
 // Submit volunteer application (public)
 router.post(
   '/',
-  discardHoneypot,
+  honeypot,
   [
     body('full_name')
       .trim()
@@ -245,7 +232,7 @@ router.get('/export/csv', async (req, res) => {
 });
 
 // Get single volunteer (admin)
-router.get('/:id', async (req, res) => {
+router.get('/:id', [idParam(), runValidation], async (req, res) => {
   try {
     const volunteer = await dbGet(
       'SELECT * FROM volunteers WHERE id = ?',
@@ -265,14 +252,11 @@ router.get('/:id', async (req, res) => {
 
 // Update volunteer status (admin)
 router.put('/:id', [
-  body('status').isIn(['pending', 'approved', 'rejected', 'active', 'inactive']).withMessage('Invalid status')
+  idParam(),
+  body('status').isIn(['pending', 'approved', 'rejected', 'active', 'inactive']).withMessage('Invalid status'),
+  runValidation
 ], async (req, res) => {
   try {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-
     const { status } = req.body;
 
     const result = await dbRun(
@@ -297,7 +281,7 @@ router.put('/:id', [
 });
 
 // Delete volunteer (admin)
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', [idParam(), runValidation], async (req, res) => {
   try {
     const result = await dbRun('DELETE FROM volunteers WHERE id = ?', [req.params.id]);
 
