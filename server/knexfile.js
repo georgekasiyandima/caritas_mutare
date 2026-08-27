@@ -1,8 +1,18 @@
 /**
- * Knex configuration — SQLite for local/light production, PostgreSQL when DATABASE_URL is set.
+ * Knex configuration — SQLite locally unless a Neon/Postgres URL is set.
+ * Tests always use a temp SQLite file, even if DATABASE_URL is in `.env`,
+ * so the suite never hits production data.
+ *
+ * This API is a long-running Express process that also runs Knex migrations
+ * on boot. Prefer the **direct** (non-pooler) URL:
+ *   DATABASE_URL_UNPOOLED  first, then DATABASE_URL
+ * PgBouncer pooled hosts (`-pooler` in the hostname) can break migrations
+ * (`prepared statement already exists`). Knex already pools connections.
+ *
  * Run from server directory: `npm run migrate` / `npm run seed`
  */
 const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '.env') });
 
 const sqliteFilename = process.env.DATABASE_PATH || path.join(__dirname, 'database.sqlite');
 
@@ -23,8 +33,31 @@ function sqliteConfig() {
   };
 }
 
+function postgresUrl() {
+  return process.env.DATABASE_URL_UNPOOLED || process.env.DATABASE_URL;
+}
+
+function postgresConfig() {
+  const connectionString = postgresUrl();
+  const needsSslFlag =
+    connectionString && !/[?&]sslmode=/i.test(connectionString);
+  return {
+    client: 'pg',
+    connection: needsSslFlag
+      ? `${connectionString}${connectionString.includes('?') ? '&' : '?'}sslmode=require`
+      : connectionString,
+    pool: { min: 0, max: 10 },
+    migrations,
+    seeds,
+  };
+}
+
+function databaseConfig() {
+  return postgresUrl() ? postgresConfig() : sqliteConfig();
+}
+
 module.exports = {
-  development: sqliteConfig(),
+  development: databaseConfig(),
 
   // Tests point DATABASE_PATH at a unique temp file per suite (see
   // tests/setupEnv.js). It deliberately is not ':memory:' — the legacy routes
@@ -37,13 +70,5 @@ module.exports = {
     pool: { min: 1, max: 1 },
   },
 
-  production: process.env.DATABASE_URL
-    ? {
-        client: 'pg',
-        connection: process.env.DATABASE_URL,
-        pool: { min: 0, max: 10 },
-        migrations,
-        seeds,
-      }
-    : sqliteConfig(),
+  production: databaseConfig(),
 };

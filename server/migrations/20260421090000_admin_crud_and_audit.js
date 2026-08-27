@@ -3,7 +3,7 @@
  *  - Adds M&E fields to beneficiaries (gender, age_group, DOB, household_size, consent).
  *  - Adds `registered_on` so reporting by registration date is not tied to created_at.
  *  - Adds an append-only `audit_logs` table capturing every admin mutation.
- *  - Backfills `registered_on` from created_at for existing rows (SQLite-safe update).
+ *  - Backfills `registered_on` from created_at for existing rows.
  */
 
 async function ensureColumn(knex, table, column, builder) {
@@ -34,9 +34,13 @@ exports.up = async function up(knex) {
       t.string('registered_on')
     );
 
+    const isPg = knex.client.config.client === 'pg';
+    const dateExpr = isPg
+      ? knex.raw("to_char(created_at, 'YYYY-MM-DD')")
+      : knex.raw('substr(created_at, 1, 10)');
     await knex('system_beneficiaries')
       .whereNull('registered_on')
-      .update({ registered_on: knex.raw("substr(created_at, 1, 10)") });
+      .update({ registered_on: dateExpr });
   }
 
   if (!(await knex.schema.hasTable('audit_logs'))) {
