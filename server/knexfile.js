@@ -26,9 +26,15 @@ function sqliteConfig() {
 module.exports = {
   development: sqliteConfig(),
 
+  // Tests point DATABASE_PATH at a unique temp file per suite (see
+  // tests/setupEnv.js). It deliberately is not ':memory:' — the legacy routes
+  // talk to SQLite through the raw `sqlite3` driver in database/database.js
+  // rather than through Knex, and two drivers cannot share one in-memory
+  // database. A temp file is the only way both see the same schema and rows.
+  // Single connection because concurrent writers to one SQLite file lock.
   test: {
     ...sqliteConfig(),
-    connection: { filename: ':memory:' },
+    pool: { min: 1, max: 1 },
   },
 
   production: process.env.DATABASE_URL

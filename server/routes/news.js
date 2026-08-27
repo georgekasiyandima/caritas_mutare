@@ -1,5 +1,5 @@
 const express = require('express');
-const { body, validationResult } = require('express-validator');
+const { body, param, validationResult } = require('express-validator');
 const { dbGet, dbAll, dbRun } = require('../database/database');
 const { daysAgo } = require('../database/sqlCompat');
 const { authenticateToken, requireAdmin } = require('../middleware/auth');
@@ -284,26 +284,8 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-// Get single article (admin)
-router.get('/admin/:id', async (req, res) => {
-  try {
-    const article = await dbGet(
-      'SELECT * FROM news WHERE id = ?',
-      [req.params.id]
-    );
-
-    if (!article) {
-      return res.status(404).json({ message: 'Article not found' });
-    }
-
-    res.json({ article });
-  } catch (error) {
-    console.error('Error fetching article:', error);
-    res.status(500).json({ message: 'Server error' });
-  }
-});
-
 // Get news statistics (admin)
+// Static path must sit before /admin/:id, otherwise Express matches "stats" as an id.
 router.get('/admin/stats', async (req, res) => {
   try {
     // Get total articles
@@ -341,6 +323,30 @@ router.get('/admin/stats', async (req, res) => {
     });
   } catch (error) {
     console.error('Error fetching news stats:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Get single article (admin)
+router.get('/admin/:id', param('id').isInt(), async (req, res) => {
+  try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const article = await dbGet(
+      'SELECT * FROM news WHERE id = ?',
+      [req.params.id]
+    );
+
+    if (!article) {
+      return res.status(404).json({ message: 'Article not found' });
+    }
+
+    res.json({ article });
+  } catch (error) {
+    console.error('Error fetching article:', error);
     res.status(500).json({ message: 'Server error' });
   }
 });

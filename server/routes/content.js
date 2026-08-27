@@ -2,6 +2,7 @@ const express = require('express');
 const { body, validationResult } = require('express-validator');
 const { dbGet, dbAll, dbRun } = require('../database/database');
 const { authenticateToken, requireAdmin } = require('../middleware/auth');
+const { idParam, runValidation } = require('../middleware/validate');
 
 const router = express.Router();
 
@@ -19,7 +20,7 @@ router.get('/programs', async (req, res) => {
 });
 
 // Get single program (public)
-router.get('/programs/:id', async (req, res) => {
+router.get('/programs/:id', [idParam(), runValidation], async (req, res) => {
   try {
     const program = await dbGet(
       "SELECT * FROM programs WHERE id = ? AND status = 'active'",
@@ -103,15 +104,12 @@ router.post('/programs', [
 
 // Update program
 router.put('/programs/:id', [
+  idParam(),
   body('title_en').notEmpty().withMessage('English title is required'),
-  body('description_en').notEmpty().withMessage('English description is required')
+  body('description_en').notEmpty().withMessage('English description is required'),
+  runValidation
 ], async (req, res) => {
   try {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-
     const {
       title_en,
       title_sh,
@@ -147,7 +145,7 @@ router.put('/programs/:id', [
 });
 
 // Delete program
-router.delete('/programs/:id', async (req, res) => {
+router.delete('/programs/:id', [idParam(), runValidation], async (req, res) => {
   try {
     const result = await dbRun('DELETE FROM programs WHERE id = ?', [req.params.id]);
 

@@ -77,7 +77,12 @@ function buildSqliteAdapter() {
       });
     });
 
-  return { db, dbRun, dbGet, dbAll };
+  const close = () =>
+    new Promise((resolve, reject) => {
+      db.close((err) => (err ? reject(err) : resolve()));
+    });
+
+  return { db, dbRun, dbGet, dbAll, close };
 }
 
 function buildPostgresAdapter() {
@@ -110,7 +115,9 @@ function buildPostgresAdapter() {
     return Array.isArray(result?.rows) ? result.rows : [];
   };
 
-  return { db: null, dbRun, dbGet, dbAll };
+  const close = async () => {};
+
+  return { db: null, dbRun, dbGet, dbAll, close };
 }
 
 module.exports = isPg ? buildPostgresAdapter() : buildSqliteAdapter();
