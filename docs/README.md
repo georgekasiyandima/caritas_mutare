@@ -8,6 +8,7 @@ documentation for the Caritas Mutare web application.
 | **[ARCHITECTURE.md](ARCHITECTURE.md)** | How the system fits together, the conventions to follow when adding to it, and the register of known issues. Start here. |
 | **[ENGINEERING_WORKFLOW.md](ENGINEERING_WORKFLOW.md)** | Engineering workflow: branch strategy, definitions of ready/done, environments, quality gates, sprint plan, and development roadmap. |
 | **[DEPLOYMENT.md](DEPLOYMENT.md)** | Production deployment runbook for Vercel, Render, Neon, and related setup. |
+| **[RENDER_AND_NEON.md](RENDER_AND_NEON.md)** | Click-by-click: create Neon, deploy the API on Render, check `/api/health`. Do this to make Vercel forms and login work. |
 | **[DECISIONS.md](DECISIONS.md)** | Log of key architectural and product decisions, and why we made them. |
 | **[EMAIL_AND_DOMAIN.md](EMAIL_AND_DOMAIN.md)** | Engineering notes on DNS/mail. |
 | **[ANGELA_EMAIL_BRIEF.md](ANGELA_EMAIL_BRIEF.md)** | Plain-language briefing for Angela on email, the domain, and mailbox decisions. Share this with Caritas. |
