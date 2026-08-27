@@ -5,6 +5,7 @@ const { daysAgo, monthsAgo, monthBucket } = require('../database/sqlCompat');
 const { discardHoneypot } = require('../middleware/honeypot');
 const { idParam, runValidation } = require('../middleware/validate');
 const { authenticateToken, requireAdmin } = require('../middleware/auth');
+const { writeAudit } = require('../middleware/audit');
 
 const router = express.Router();
 
@@ -266,16 +267,27 @@ router.put('/admin/:id', [
   try {
     const { payment_status } = req.body;
 
-    const result = await dbRun(
+    const before = await dbGet('SELECT id, payment_status FROM donations WHERE id = ?', [
+      req.params.id,
+    ]);
+    if (!before) {
+      return res.status(404).json({ message: 'Donation not found' });
+    }
+
+    await dbRun(
       'UPDATE donations SET payment_status = ? WHERE id = ?',
       [payment_status, req.params.id]
     );
 
-    if (result.changes === 0) {
-      return res.status(404).json({ message: 'Donation not found' });
-    }
-
     const donation = await dbGet('SELECT * FROM donations WHERE id = ?', [req.params.id]);
+
+    await writeAudit(req, {
+      action: 'update',
+      entity: 'donations',
+      entityId: Number(req.params.id),
+      before: { payment_status: before.payment_status },
+      after: { payment_status: donation.payment_status },
+    });
 
     res.json({
       message: 'Donation updated successfully',

@@ -185,5 +185,11 @@ describe('POST /api/donations', () => {
     expect(res.status).toBe(200);
     const updated = await knex('donations').where({ id: created.id }).first();
     expect(updated.payment_status).toBe('completed');
+
+    const audit = await knex('audit_logs')
+      .where({ entity: 'donations', action: 'update', entity_id: created.id })
+      .first();
+    expect(audit).toBeDefined();
+    expect(audit.actor_username).toBe('admin');
   });
 });

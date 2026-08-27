@@ -3,6 +3,7 @@ const { body, param, validationResult } = require('express-validator');
 const { dbRun, dbGet, dbAll } = require('../database/database');
 const { authenticateToken, requireAdmin } = require('../middleware/auth');
 const { discardHoneypot } = require('../middleware/honeypot');
+const { writeAudit } = require('../middleware/audit');
 
 const router = express.Router();
 
@@ -199,20 +200,32 @@ router.patch(
     try {
       if (sendValidation(req, res)) return;
 
-      const result = await dbRun(
+      const before = await dbGet(
+        `SELECT id, status FROM contact_messages WHERE id = ?`,
+        [req.params.id]
+      );
+      if (!before) {
+        return res.status(404).json({ message: 'Message not found' });
+      }
+
+      await dbRun(
         'UPDATE contact_messages SET status = ? WHERE id = ?',
         [req.body.status, req.params.id]
       );
-
-      if (result.changes === 0) {
-        return res.status(404).json({ message: 'Message not found' });
-      }
 
       const message = await dbGet(
         `SELECT id, name, email, subject, message, status, created_at
          FROM contact_messages WHERE id = ?`,
         [req.params.id]
       );
+
+      await writeAudit(req, {
+        action: 'update',
+        entity: 'contact_messages',
+        entityId: Number(req.params.id),
+        before: { status: before.status },
+        after: { status: message.status },
+      });
 
       res.json({ data: message });
     } catch (error) {
