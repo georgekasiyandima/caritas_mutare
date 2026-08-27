@@ -9,7 +9,7 @@ const router = express.Router();
 router.get('/programs', async (req, res) => {
   try {
     const programs = await dbAll(
-      'SELECT * FROM programs WHERE status = "active" ORDER BY order_index ASC, created_at DESC'
+      "SELECT * FROM programs WHERE status = 'active' ORDER BY order_index ASC, created_at DESC"
     );
     res.json({ programs });
   } catch (error) {
@@ -22,7 +22,7 @@ router.get('/programs', async (req, res) => {
 router.get('/programs/:id', async (req, res) => {
   try {
     const program = await dbGet(
-      'SELECT * FROM programs WHERE id = ? AND status = "active"',
+      "SELECT * FROM programs WHERE id = ? AND status = 'active'",
       [req.params.id]
     );
 

@@ -1,6 +1,7 @@
 const express = require('express');
 const { body, validationResult } = require('express-validator');
 const { dbGet, dbAll, dbRun } = require('../database/database');
+const { daysAgo, monthsAgo, monthBucket } = require('../database/sqlCompat');
 const { authenticateToken, requireAdmin } = require('../middleware/auth');
 
 const router = express.Router();
@@ -113,19 +114,20 @@ router.get('/stats', async (req, res) => {
   try {
     // Get total donations
     const totalStats = await dbGet(
-      'SELECT COUNT(*) as total_donations, SUM(amount) as total_amount, AVG(amount) as average_amount FROM donations WHERE payment_status = "completed"'
+      "SELECT COUNT(*) as total_donations, SUM(amount) as total_amount, AVG(amount) as average_amount FROM donations WHERE payment_status = 'completed'"
     );
 
     // Get recent donations (last 30 days)
     const recentStats = await dbGet(
       `SELECT COUNT(*) as recent_donations, SUM(amount) as recent_amount 
        FROM donations 
-       WHERE payment_status = "completed" AND created_at >= datetime('now', '-30 days')`
+       WHERE payment_status = 'completed' AND created_at >= ?`,
+      [daysAgo(30)]
     );
 
     // Get donations by currency
     const currencyStats = await dbAll(
-      'SELECT currency, COUNT(*) as count, SUM(amount) as total FROM donations WHERE payment_status = "completed" GROUP BY currency'
+      "SELECT currency, COUNT(*) as count, SUM(amount) as total FROM donations WHERE payment_status = 'completed' GROUP BY currency"
     );
 
     res.json({
@@ -205,16 +207,18 @@ router.get('/admin', async (req, res) => {
 // Static path must sit before /admin/:id.
 router.get('/admin/analytics', async (req, res) => {
   try {
+    const monthExpr = monthBucket('created_at');
     const monthlyDonations = await dbAll(
       `SELECT 
-        strftime('%Y-%m', created_at) as month,
+        ${monthExpr} as month,
         COUNT(*) as count,
         SUM(amount) as total
        FROM donations 
        WHERE payment_status = 'completed' 
-       AND created_at >= datetime('now', '-12 months')
-       GROUP BY strftime('%Y-%m', created_at)
-       ORDER BY month DESC`
+       AND created_at >= ?
+       GROUP BY ${monthExpr}
+       ORDER BY month DESC`,
+      [monthsAgo(12)]
     );
 
     const paymentMethodStats = await dbAll(

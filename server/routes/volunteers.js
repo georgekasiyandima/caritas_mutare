@@ -1,6 +1,7 @@
 const express = require('express');
 const { body, validationResult } = require('express-validator');
 const { dbGet, dbAll, dbRun } = require('../database/database');
+const { daysAgo } = require('../database/sqlCompat');
 const { authenticateToken, requireAdmin } = require('../middleware/auth');
 
 const router = express.Router();
@@ -183,7 +184,8 @@ router.get('/stats', async (req, res) => {
     const recentStats = await dbGet(
       `SELECT COUNT(*) as recent_volunteers 
        FROM volunteers 
-       WHERE created_at >= datetime('now', '-30 days')`
+       WHERE created_at >= ?`,
+      [daysAgo(30)]
     );
 
     const skillsStats = await dbAll(
