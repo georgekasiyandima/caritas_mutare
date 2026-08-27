@@ -1,0 +1,52 @@
+---
+description: Express route and database conventions for the Caritas Mutare API
+globs: server/**/*.js
+alwaysApply: false
+---
+
+# Server conventions
+
+Full context in `docs/ARCHITECTURE.md`.
+
+## Follow `system.js`, not the legacy routes
+
+`routes/system.js` is the target pattern: Knex query builder,
+`express-validator` on every endpoint, shared pagination/CSV helpers, and an
+audit-log write on every mutation.
+
+`content.js`, `news.js`, `donations.js`, `volunteers.js` and `contact.js` are
+legacy raw-SQL routes. When you touch one, move it toward the `system.js`
+pattern rather than adding more raw SQL.
+
+## Production is Postgres — SQLite-only SQL will throw
+
+```js
+// ❌ BAD — Postgres reads "published" as an identifier, not a string
+`WHERE status = "published"`
+// ❌ BAD — SQLite-only date functions
+`WHERE created_at >= datetime('now', '-30 days')`
+
+// ✅ GOOD
+knex('news').where({ status: 'published' })
+knex('news').where('created_at', '>=', knex.raw("now() - interval '30 days'"))
+```
+
+Single-quote every SQL string literal. Never interpolate user input into SQL —
+use bindings or the query builder.
+
+## Routes
+
+- Register literal paths **before** parameterised ones, or `/admin/stats` will
+  match `/admin/:id`.
+- Validate `:id` params with `param('id').isInt()`.
+- Validate enum fields against a whitelist, including `role` on register.
+- Protect staff endpoints with `authenticateToken` + `requireAdmin`.
+
+## Schema
+
+Never edit an applied migration; add a new one in `server/migrations/`.
+
+## Donations are pledges
+
+Public submissions save `payment_status: 'pending'` with no `payment_id`. Only
+staff mark them received. Never default new donation code to completed.
