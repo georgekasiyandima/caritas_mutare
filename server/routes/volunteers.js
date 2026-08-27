@@ -4,6 +4,7 @@ const { dbGet, dbAll, dbRun } = require('../database/database');
 const { daysAgo } = require('../database/sqlCompat');
 const { authenticateToken, requireAdmin } = require('../middleware/auth');
 const { discardHoneypot } = require('../middleware/honeypot');
+const { writeAudit } = require('../middleware/audit');
 const { idParam, runValidation } = require('../middleware/validate');
 
 const router = express.Router();
@@ -259,16 +260,25 @@ router.put('/:id', [
   try {
     const { status } = req.body;
 
-    const result = await dbRun(
+    const before = await dbGet('SELECT id, status FROM volunteers WHERE id = ?', [req.params.id]);
+    if (!before) {
+      return res.status(404).json({ message: 'Volunteer not found' });
+    }
+
+    await dbRun(
       'UPDATE volunteers SET status = ? WHERE id = ?',
       [status, req.params.id]
     );
 
-    if (result.changes === 0) {
-      return res.status(404).json({ message: 'Volunteer not found' });
-    }
-
     const volunteer = await dbGet('SELECT * FROM volunteers WHERE id = ?', [req.params.id]);
+
+    await writeAudit(req, {
+      action: 'update',
+      entity: 'volunteers',
+      entityId: Number(req.params.id),
+      before: { status: before.status },
+      after: { status: volunteer.status },
+    });
 
     res.json({
       message: 'Volunteer status updated successfully',
@@ -283,11 +293,19 @@ router.put('/:id', [
 // Delete volunteer (admin)
 router.delete('/:id', [idParam(), runValidation], async (req, res) => {
   try {
-    const result = await dbRun('DELETE FROM volunteers WHERE id = ?', [req.params.id]);
-
-    if (result.changes === 0) {
+    const existing = await dbGet('SELECT * FROM volunteers WHERE id = ?', [req.params.id]);
+    if (!existing) {
       return res.status(404).json({ message: 'Volunteer not found' });
     }
+
+    await dbRun('DELETE FROM volunteers WHERE id = ?', [req.params.id]);
+
+    await writeAudit(req, {
+      action: 'delete',
+      entity: 'volunteers',
+      entityId: Number(req.params.id),
+      before: { email: existing.email, status: existing.status },
+    });
 
     res.json({ message: 'Volunteer deleted successfully' });
   } catch (error) {

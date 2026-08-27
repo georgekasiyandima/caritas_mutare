@@ -325,11 +325,11 @@ const Footer: React.FC = () => {
               <Box sx={{ display: 'flex', gap: 1.25, alignItems: 'center' }}>
                 <EmailIcon fontSize="small" sx={{ color: 'rgba(255,255,255,0.55)' }} />
                 <Link
-                  href="mailto:admin@caritasmutare.org"
+                  href={`mailto:${orgContact.email.primary}`}
                   underline="hover"
                   sx={{ color: 'inherit', fontSize: '0.9rem' }}
                 >
-                  admin@caritasmutare.org
+                  {orgContact.email.primary}
                 </Link>
               </Box>
               <Box sx={{ display: 'flex', gap: 1.25, alignItems: 'flex-start' }}>
