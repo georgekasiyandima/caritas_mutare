@@ -3,9 +3,11 @@
  *
  * Every page on the public site that shows a phone number, email, address
  * or opening hours should import from here — previously the same details
- * lived in 4+ places and had drifted apart (Mai Maria Village vs. "Cnr
- * Jason Moyo & Herbert Chitepo", admin@ vs. egumbeze@).  Changing a number
- * should now only mean editing this file.
+ * lived in 4+ places and had drifted apart. Changing a number should now
+ * only mean editing this file.
+ *
+ * Public enquiries use admin@ only. Named staff mailboxes (egumbeze@,
+ * meal@, tsitsi@) are internal and must not appear on the public site.
  */
 
 export const orgContact = {
@@ -13,7 +15,6 @@ export const orgContact = {
   shortName: 'Caritas Mutare',
   email: {
     primary: 'admin@caritasmutare.org',
-    coordinator: 'egumbeze@caritasmutare.org',
   },
   phones: {
     main: '+263 77 467 1893',
