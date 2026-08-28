@@ -7,6 +7,7 @@ export {
   caritasProjects,
   generalImpactImages,
   partnerLogosForSite,
+  technicalSisterOrgs,
   getProjectBySlug,
   getProjectByRoute,
   getActiveProjects,

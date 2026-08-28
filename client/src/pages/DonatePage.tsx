@@ -103,7 +103,7 @@ const DonatePage: React.FC = () => {
   ];
 
   const currentSymbol = currencies.find(c => c.code === formData.currency)?.symbol ?? '$';
-  const suggestedAmounts = [25, 50, 100, 250, 500, 1000];
+  const suggestedAmounts = [5, 10, 20, 25, 50, 100, 200, 500, 1000];
 
   const impactTiers = [
     {
@@ -121,13 +121,6 @@ const DonatePage: React.FC = () => {
       description: 'Contributes to textbooks, exercise books and basic supplies for pre-school and vulnerable learners we support.',
     },
     {
-      icon: <AgricultureIcon sx={{ fontSize: 32 }} />,
-      color: '#2E7D32',
-      amount: '$150',
-      title: 'Seeds and tools',
-      description: 'Goes toward inputs and training that help smallholder farmers — including persons with disabilities — grow resilient livelihoods.',
-    },
-    {
       icon: <HealthIcon sx={{ fontSize: 32 }} />,
       color: '#C2185B',
       amount: '$100',
@@ -135,9 +128,16 @@ const DonatePage: React.FC = () => {
       description: 'Supports outreach, assistive aids and referrals that keep vulnerable families connected to care.',
     },
     {
+      icon: <AgricultureIcon sx={{ fontSize: 32 }} />,
+      color: '#2E7D32',
+      amount: '$200',
+      title: 'Seeds and tools',
+      description: 'Goes toward inputs and training that help smallholder farmers — including persons with disabilities — grow resilient livelihoods.',
+    },
+    {
       icon: <PeopleIcon sx={{ fontSize: 32 }} />,
       color: '#0D5C63',
-      amount: '$250+',
+      amount: '$500+',
       title: 'Community projects',
       description: 'Helps us co-fund community gardens, water points, training of trainers and long-term resilience work.',
     },
@@ -145,19 +145,21 @@ const DonatePage: React.FC = () => {
 
   const paymentMethods = [
     {
+      icon: <MobileIcon />,
+      name: 'EcoCash',
+      description:
+        'Mobile money to the Caritas Mutare organisational account. After you pledge, our team will send the merchant details and confirm when the gift is received.',
+    },
+    {
       icon: <CardIcon />,
-      name: 'Card (via our team)',
-      description: 'Contact us to arrange a secure card payment.',
+      name: 'Visa and Mastercard',
+      description:
+        'Card payments are taken by our finance team against the organisational account. This page records your pledge — it does not charge a card yet.',
     },
     {
       icon: <BankIcon />,
       name: 'Bank transfer',
-      description: 'Direct deposit — our team will share the account details on request.',
-    },
-    {
-      icon: <MobileIcon />,
-      name: 'Mobile money',
-      description: 'EcoCash, OneMoney, Telecash — supported for local donors.',
+      description: 'Direct deposit — our team will share the account details after we receive your pledge.',
     },
   ];
 
@@ -413,7 +415,7 @@ const DonatePage: React.FC = () => {
                     {suggestedAmounts.map((amount) => {
                       const active = formData.amount === amount.toString();
                       return (
-                        <Grid item xs={4} sm={2} key={amount}>
+                        <Grid item xs={4} sm={4} md={4} key={amount}>
                           <Button
                             fullWidth
                             variant={active ? 'contained' : 'outlined'}
@@ -701,7 +703,11 @@ const DonatePage: React.FC = () => {
         </Container>
       </Box>
 
-      <PartnerLogoStrip title={t('home.partnersTitle')} variant="light" />
+      <PartnerLogoStrip
+        title={t('home.partnersTitle')}
+        sisterTitle={t('home.sisterOrgsTitle')}
+        variant="light"
+      />
 
       <BackToTopButton />
     </Box>

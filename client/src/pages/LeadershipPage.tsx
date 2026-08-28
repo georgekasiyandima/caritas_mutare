@@ -17,7 +17,7 @@ import {
   Handshake as PartnershipIcon,
 } from '@mui/icons-material';
 import BackToTopButton from '../components/BackToTopButton';
-import { partnerLogosForSite } from '../lib/caritasProjects';
+import { partnerLogosForSite, technicalSisterOrgs } from '../lib/caritasProjects';
 import {
   SECTION_BG_ALT,
   pageRoot,
@@ -397,7 +397,7 @@ const LeadershipPage: React.FC = () => {
               <Card
                 elevation={0}
                 sx={{
-                  height: 140,
+                  height: 160,
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',
@@ -408,18 +408,20 @@ const LeadershipPage: React.FC = () => {
                   ...leadCardSx,
                 }}
               >
-                <Box
-                  component="img"
-                  src={partner.logo}
-                  alt={`${partner.name} logo`}
-                  sx={{
-                    height: 48,
-                    maxWidth: '100%',
-                    objectFit: 'contain',
-                    opacity: 0.95,
-                  }}
-                  loading="lazy"
-                />
+                {partner.logo ? (
+                  <Box
+                    component="img"
+                    src={partner.logo}
+                    alt={`${partner.name} logo`}
+                    sx={{
+                    height: 72,
+                      maxWidth: '100%',
+                      objectFit: 'contain',
+                      opacity: 0.95,
+                    }}
+                    loading="lazy"
+                  />
+                ) : null}
                 <Typography
                   variant="caption"
                   sx={{
@@ -436,6 +438,32 @@ const LeadershipPage: React.FC = () => {
             </Grid>
           ))}
         </Grid>
+
+        <Typography
+          variant="subtitle2"
+          sx={{
+            mt: 5,
+            mb: 2,
+            textAlign: 'center',
+            textTransform: 'uppercase',
+            letterSpacing: 1,
+            color: 'text.secondary',
+          }}
+        >
+          Technical partners & sister organisations
+        </Typography>
+        <Box
+          sx={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+            gap: 1,
+          }}
+        >
+          {technicalSisterOrgs.map((name) => (
+            <Chip key={name} label={name} variant="outlined" />
+          ))}
+        </Box>
       </Container>
       </Box>
 

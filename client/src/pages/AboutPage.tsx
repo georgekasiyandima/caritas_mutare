@@ -21,6 +21,7 @@ import { ArrowForward as ArrowForwardIcon, FormatQuote as FormatQuoteIcon } from
 import HeroBanner from '../components/HeroBanner';
 import SEO from '../components/SEO';
 import PartnerLogoStrip from '../components/PartnerLogoStrip';
+import { technicalSisterOrgs } from '../lib/caritasProjects';
 import {
   SECTION_BG_ALT,
   pageRoot,
@@ -79,15 +80,6 @@ const AboutPage: React.FC = () => {
     'Rural Infrastructure Development Agent (RIDA): supporting water supply systems.',
     'Ministry of Youth Empowerment, Development and Vocational Training.',
     'Zimbabwe Republic Police Victim Friendly Unit.',
-  ];
-
-  const sisterOrgs = [
-    'Caritas Zimbabwe National Office',
-    'Youth Alive Zimbabwe (YAZIM)',
-    'The Catholic Commission for Justice and Peace in Zimbabwe',
-    'Mutare Diocese Safeguarding Office',
-    'Mutare Diocese Health Commission',
-    'Mutare Diocese Education Commission',
   ];
 
   return (
@@ -282,6 +274,15 @@ const AboutPage: React.FC = () => {
             </Typography>
           </Box>
 
+          <Box sx={{ mb: 5, mx: { xs: -2, sm: -3 } }}>
+            <PartnerLogoStrip
+              title={t('home.partnersTitle')}
+              sisterTitle={t('home.sisterOrgsTitle')}
+              variant="light"
+              includeSisterOrgs={false}
+            />
+          </Box>
+
           <Grid container spacing={3}>
             <Grid item xs={12} md={7}>
               <Card elevation={0} sx={cardSx}>
@@ -328,7 +329,7 @@ const AboutPage: React.FC = () => {
                     Technical partners & sister organisations
                   </Typography>
                   <List dense>
-                    {sisterOrgs.map((partner) => (
+                    {technicalSisterOrgs.map((partner) => (
                       <ListItem key={partner} sx={{ py: 0.3 }}>
                         <ListItemText primary={partner} />
                       </ListItem>
@@ -356,8 +357,6 @@ const AboutPage: React.FC = () => {
           </Grid>
         </Container>
       </Box>
-
-      <PartnerLogoStrip title={t('home.partnersTitle')} variant="light" />
 
       {/* Closing CTA */}
       <Box sx={closingCtaSectionSx(theme)}>

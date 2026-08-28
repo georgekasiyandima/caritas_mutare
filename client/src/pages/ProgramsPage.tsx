@@ -208,7 +208,11 @@ const ProgramsPage: React.FC = () => {
         </Container>
       </Box>
 
-      <PartnerLogoStrip title={t('home.partnersTitle')} variant="light" />
+      <PartnerLogoStrip
+        title={t('home.partnersTitle')}
+        sisterTitle={t('home.sisterOrgsTitle')}
+        variant="light"
+      />
 
       {/* Closing CTA */}
       <Box sx={closingCtaSectionSx(theme)}>
