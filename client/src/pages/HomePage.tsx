@@ -191,7 +191,12 @@ const HomePage: React.FC = () => {
         />
       )}
 
-      <PartnerLogoStrip title={t('home.partnersTitle')} variant="light" compact />
+      <PartnerLogoStrip
+        title={t('home.partnersTitle')}
+        sisterTitle={t('home.sisterOrgsTitle')}
+        variant="light"
+        compact
+      />
 
       {/* Mission sentence — a plain, confident declaration */}
       <Box sx={{ py: { xs: 5, md: 7 }, bgcolor: 'background.paper' }}>

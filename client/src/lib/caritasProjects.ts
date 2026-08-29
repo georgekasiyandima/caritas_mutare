@@ -332,19 +332,31 @@ export const generalImpactImages: { src: string; alt: string; objectPosition?: s
 ];
 
 /**
- * Partner logos displayed in the public site strip.
+ * Strategic partners shown in the public logo strip.
  *
- * Only include entries whose asset actually ships in client/public/images/.
- * Adding a row here without dropping the corresponding file in place will
- * render as a blank card — PartnerLogoStrip has a runtime fallback that
- * hides broken entries, but prevention is better than cure.
+ * Prefer a file under client/public/images/. PartnerLogoStrip hides a row
+ * if a file 404s.
  */
-export const partnerLogosForSite: { name: string; logoUrl: string }[] = [
+export const partnerLogosForSite: { name: string; logoUrl?: string }[] = [
   { name: 'Caritas Mutare', logoUrl: '/images/logo/caritas-mutare-clear.png' },
+  { name: 'Caritas Zimbabwe National Office', logoUrl: '/images/partners/caritas-zimbabwe.png' },
+  { name: 'CAFOD', logoUrl: '/images/partners/cafod.png' },
+  { name: 'CBM Global', logoUrl: '/images/partners/cbm-global.png' },
+  { name: 'Misereor', logoUrl: '/images/partners/misereor.png' },
   { name: 'CRS', logoUrl: '/images/partners/crs.png' },
   { name: 'Trócaire', logoUrl: '/images/partners/trocaire.png' },
-  { name: 'CCJP Mutare Diocese', logoUrl: '/images/partners/ccjp-mutare.png' },
   { name: 'Zimbabwe Government', logoUrl: '/images/partners/zimbabwe-government.png' },
+];
+
+/** Diocesan and local sister bodies — listed after strategic partners. */
+export const technicalSisterOrgs: string[] = [
+  'CCJP',
+  'Youth Alive Zimbabwe',
+  'DOMCCP',
+  'Diocese of Mutare Education Secretariat',
+  'Diocese of Mutare Health Desk',
+  'Diocese of Mutare Safeguarding Office',
+  'Diocese of Mutare Family and Marriage',
 ];
 
 export function getProjectBySlug(slug: string): CaritasProject | undefined {

@@ -129,7 +129,7 @@ const Footer: React.FC = () => {
     >
       {/* Partner band */}
       <Box sx={{ bgcolor: '#faf9f7', py: 2.5 }}>
-        <PartnerLogoStrip title={t('footer.partnersTitle', 'In partnership with')} variant="light" compact />
+        <PartnerLogoStrip title={t('footer.partnersTitle', 'In partnership with')} variant="light" compact includeSisterOrgs={false} />
       </Box>
 
       <Container maxWidth="lg" sx={{ py: { xs: 5, md: 7 } }}>
