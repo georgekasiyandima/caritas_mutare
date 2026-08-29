@@ -8,10 +8,10 @@
       }
     }
   ],
-  "rewrites": [
+  "routes": [
     {
-      "source": "/api/:path*",
-      "destination": "https://caritas-mutare-api.onrender.com/api/:path*"
+      "src": "/api(?:/(.*))",
+      "dest": "https://caritas-mutare-api.onrender.com/api/$1"
     }
   ]
 }
