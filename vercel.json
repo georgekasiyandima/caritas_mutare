@@ -1,11 +1,17 @@
 {
-    "builds": [
-      {
-        "src": "client/package.json",
-        "use": "@vercel/static-build",
-        "config": {
-          "distDir": "build"
-        }
+  "builds": [
+    {
+      "src": "client/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "build"
       }
-    ]
-  }
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://caritas-mutare-api.onrender.com/api/:path*"
+    }
+  ]
+}
