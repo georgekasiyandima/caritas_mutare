@@ -30,8 +30,9 @@ services:
     envVars:
       - key: NODE_ENV
         value: production
-      # Neon / Supabase / Render Postgres connection string.
-      # Paste the full `postgres://...?sslmode=require` URL in the dashboard.
+      # Neon direct (non-pooler) connection string with sslmode=require.
+      # Do not paste the hostname that contains `-pooler` — Knex migrates
+      # on boot and already pools connections.
       - key: DATABASE_URL
         sync: false
       # Secret used to sign JWTs. Generate once with:  openssl rand -hex 48

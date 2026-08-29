@@ -184,10 +184,12 @@ Passwords are bcrypt with 10 salt rounds.
 
 ### Database
 
-`server/knexfile.js` selects the driver: Postgres when `NODE_ENV=production`
-**and** `DATABASE_URL` is set, otherwise a SQLite file. Note the trap — a
-production deploy without `DATABASE_URL` silently falls back to SQLite on
-ephemeral disk, and the data disappears on restart.
+`server/knexfile.js` selects the driver: Postgres when
+`DATABASE_URL_UNPOOLED` or `DATABASE_URL` is set (it prefers the unpooled
+Neon URL, because Knex migrates on boot), otherwise a SQLite file. Tests
+always use SQLite (`KNEX_ENV=test`). Note the trap — a production deploy
+without `DATABASE_URL` silently falls back to SQLite on ephemeral disk, and
+the data disappears on restart.
 
 Schema lives in `server/migrations/`. Never edit an applied migration; add a
 new one. Current tables: `users`, `news`, `programs`, `donations`,

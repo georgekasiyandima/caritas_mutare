@@ -32,22 +32,52 @@ Decide the first admin username. Suggested: `angela`.
 
 ---
 
-## Part A — Neon (the database) — about 5 minutes
+## Part A — Neon (the database)
 
-1. Open https://neon.tech and **Log in with GitHub** (same GitHub as this
-   repo is fine).
-2. **Create a project**
-   - Name: `caritas-mutare`
-   - Postgres: **16** (or whatever the default is — 16 is fine)
-   - Region: **Europe** or **US East** — either is fine for admin traffic
-3. When the project exists, open **Dashboard** → **Connection details**.
-4. Copy the **connection string**.
-   - Use the one that includes `?sslmode=require`
-   - It starts with `postgres://` or `postgresql://`
-5. Paste it in your password manager as **`CARITAS_DATABASE_URL`**.
+The project **already exists**: `caritas-mutare`
+(`fancy-poetry-02633343`) in org **George** (`org-misty-cake-91921605`).
+Do not create a second project.
 
-You are done with Neon for now. Do not create tables by hand — the API
-runs migrations on boot.
+This app uses **Postgres only**. Leave Neon Auth, Data API, Functions,
+buckets, and the AI Gateway off.
+
+### A1. Connection string from the dashboard (fastest)
+
+1. Open https://console.neon.tech → org George → project **caritas-mutare**.
+2. **Dashboard** → **Connection details**.
+3. Copy the **direct** string (hostname must **not** contain `-pooler`).
+   It should include `?sslmode=require` and start with `postgres://` or
+   `postgresql://`.
+4. Save it in your password manager as **`CARITAS_DATABASE_URL`**.
+5. On your laptop, in `server/.env` (gitignored):
+
+```
+DATABASE_URL=paste-the-direct-neon-string-here
+DATABASE_URL_UNPOOLED=paste-the-same-direct-string-here
+```
+
+Local API and `npm run migrate` will then use Neon. Tests still use SQLite.
+
+### A2. CLI (after you sign in once)
+
+The new `npx neon@latest` installer is currently broken (missing npm
+package). Use **neonctl 4.7.0**. The workspace is already linked in `.neon`.
+
+```bash
+npx neonctl@4.7.0 auth
+npx neonctl@4.7.0 env pull --file server/.env --service postgres
+```
+
+That writes `DATABASE_URL` (pooled) and `DATABASE_URL_UNPOOLED` (direct).
+This API reads the **unpooled** URL first. On Render, paste
+`DATABASE_URL_UNPOOLED` (or the dashboard **direct** string) as
+`DATABASE_URL`.
+
+### A3. Cursor MCP (optional)
+
+This repo already has `.cursor/mcp.json` pointing at Neon, pinned to
+project `fancy-poetry-02633343`. **Restart Cursor**, then approve the
+Neon OAuth prompt the first time a Neon MCP tool runs.
 
 ---
 
@@ -63,7 +93,7 @@ runs migrations on boot.
 
    | Box on screen | What to paste |
    |---------------|----------------|
-   | `DATABASE_URL` | Neon string from Part A |
+   | `DATABASE_URL` | Neon **direct** string from Part A (no `-pooler`) |
    | `JWT_SECRET` | Output of `openssl rand -hex 48` |
    | `CLIENT_URL` | `https://caritas-mutare.vercel.app` |
    | `BOOTSTRAP_ADMIN_USERNAME` | `angela` (or the name you chose) |

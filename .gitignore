@@ -17,6 +17,10 @@ node_modules/
 .env.test.local
 .env.production.local
 
+# Neon CLI workspace link (org/project/branch ids — not the password, but
+# still local-only). Connection strings live in .env.
+.neon
+
 # Database
 
 *.sqlite
