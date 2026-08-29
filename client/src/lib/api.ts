@@ -7,6 +7,8 @@
  *   - Expose a download helper for CSV endpoints that streams the file to the browser.
  */
 
+import { apiUrl } from './apiBase';
+
 export type Query = Record<string, string | number | boolean | null | undefined>;
 
 export class ApiError extends Error {
@@ -21,14 +23,15 @@ export class ApiError extends Error {
 }
 
 function buildUrl(path: string, query?: Query): string {
-  if (!query) return path;
+  const resolved = apiUrl(path);
+  if (!query) return resolved;
   const params = new URLSearchParams();
   Object.entries(query).forEach(([key, value]) => {
     if (value === undefined || value === null || value === '') return;
     params.append(key, String(value));
   });
   const qs = params.toString();
-  return qs ? `${path}?${qs}` : path;
+  return qs ? `${resolved}?${qs}` : resolved;
 }
 
 function authHeaders(): HeadersInit {
