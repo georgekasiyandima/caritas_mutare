@@ -120,6 +120,29 @@ describe('POST /api/volunteers', () => {
     expect(res.status).toBe(201);
     expect(await knex('volunteers').select('id')).toHaveLength(0);
   });
+
+  it('rejects listing volunteers without a token', async () => {
+    const res = await request(app).get('/api/volunteers');
+    expect(res.status).toBe(401);
+  });
+
+  it('lets an admin read a public application from the dashboard list', async () => {
+    await request(app).post('/api/volunteers').send(valid);
+    const token = await loginAsAdmin(app);
+
+    const res = await request(app)
+      .get('/api/volunteers')
+      .set('Authorization', `Bearer ${token}`);
+
+    expect(res.status).toBe(200);
+    expect(res.body.pending_count).toBe(1);
+    expect(res.body.volunteers).toHaveLength(1);
+    expect(res.body.volunteers[0]).toMatchObject({
+      full_name: valid.full_name,
+      email: valid.email,
+      status: 'pending',
+    });
+  });
 });
 
 describe('POST /api/donations', () => {
