@@ -72,6 +72,7 @@ const STATUS_COLORS: Record<string, 'default' | 'primary' | 'success' | 'warning
 const DashboardHome: React.FC = () => {
   const { user } = useAuth();
   const [overview, setOverview] = useState<OverviewResponse | null>(null);
+  const [inbox, setInbox] = useState<{ unread: number; volunteers: number; pledges: number } | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -89,6 +90,31 @@ const DashboardHome: React.FC = () => {
         }
       } finally {
         if (!cancelled) setLoading(false);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const [messages, volunteers, pledges] = await Promise.all([
+          apiGet<{ unread_count: number }>('/api/contact', { page: 1, pageSize: 1 }),
+          apiGet<{ pending_count: number }>('/api/volunteers', { page: 1, limit: 1 }),
+          apiGet<{ pending_count: number }>('/api/donations/admin', { page: 1, limit: 1 }),
+        ]);
+        if (!cancelled) {
+          setInbox({
+            unread: messages.unread_count ?? 0,
+            volunteers: volunteers.pending_count ?? 0,
+            pledges: pledges.pending_count ?? 0,
+          });
+        }
+      } catch (_err) {
+        if (!cancelled) setInbox(null);
       }
     })();
     return () => {
@@ -126,6 +152,43 @@ const DashboardHome: React.FC = () => {
         <Alert severity="error" sx={{ mb: 3 }}>
           {error}
         </Alert>
+      )}
+
+      {inbox && (
+        <Paper variant="outlined" sx={{ p: 2, mb: 3 }}>
+          <Typography variant="subtitle2" sx={{ mb: 1.5, textTransform: 'uppercase', letterSpacing: 0.8, color: 'text.secondary' }}>
+            Waiting on you
+          </Typography>
+          <Grid container spacing={1.5}>
+            {[
+              { label: 'Unread messages', count: inbox.unread, to: '/admin/messages' },
+              { label: 'Volunteer applications', count: inbox.volunteers, to: '/admin/volunteers' },
+              { label: 'Donation pledges', count: inbox.pledges, to: '/admin/pledges' },
+            ].map((item) => (
+              <Grid item xs={12} sm={4} key={item.to}>
+                <Button
+                  component={RouterLink}
+                  to={item.to}
+                  fullWidth
+                  variant="text"
+                  sx={{
+                    justifyContent: 'space-between',
+                    px: 1.5,
+                    py: 1.25,
+                    color: 'text.primary',
+                    border: '1px solid',
+                    borderColor: 'divider',
+                    borderRadius: 1,
+                    textTransform: 'none',
+                  }}
+                >
+                  <Typography variant="body2">{item.label}</Typography>
+                  <Chip size="small" label={item.count} color={item.count > 0 ? 'primary' : 'default'} />
+                </Button>
+              </Grid>
+            ))}
+          </Grid>
+        </Paper>
       )}
 
       {loading ? (

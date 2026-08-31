@@ -80,13 +80,10 @@ const Navbar: React.FC = () => {
   }, [location.pathname]);
 
   const navTextColor = transparent ? 'common.white' : 'text.primary';
-  // On the homepage the navbar sits transparently over a dark hero, where the
-  // maroon-on-transparent artwork is unreadable. Fall back to the solid-plate
-  // version only in that state; everywhere else the clean transparent logo
-  // reads fine against the white navbar.
-  const logoSrc = transparent
-    ? '/images/logo/caritas-mutare-solid.png'
-    : '/images/logo/caritas-mutare-clear.png';
+  // One transparent PNG everywhere. The old "solid" file had a baked-in white
+  // rectangle, which read as a sticker over the homepage hero. A light halo
+  // keeps the maroon/black marks readable on a photograph without a plate.
+  const logoSrc = '/images/logo/caritas-mutare-clear.png';
 
   /** Compact two-state language switch — EN · SH. */
   const LanguageSwitch: React.FC<{ size?: 'small' | 'medium' }> = ({ size = 'small' }) => {
@@ -412,7 +409,9 @@ const Navbar: React.FC = () => {
                 outlineColor: 'primary.main',
                 outlineOffset: 4,
               },
-              filter: transparent ? 'drop-shadow(0 2px 8px rgba(0,0,0,0.4))' : 'none',
+              filter: transparent
+                ? 'drop-shadow(0 0 1px rgba(255,255,255,0.95)) drop-shadow(0 1px 2px rgba(255,255,255,0.85)) drop-shadow(0 2px 8px rgba(0,0,0,0.45))'
+                : 'none',
             }}
           >
             <Box

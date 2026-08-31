@@ -479,18 +479,61 @@ const HomePage: React.FC = () => {
             <Grid container>
             <Grid item xs={12} md={5}>
               <Box
-                component="img"
-                src={marathonEvent.hero.src}
-                alt={marathonEvent.hero.alt}
                 sx={{
-                  width: '100%',
-                  height: { xs: 220, md: '100%' },
+                  position: 'relative',
+                  height: { xs: 240, md: '100%' },
                   minHeight: { md: 280 },
-                  objectFit: 'cover',
-                  objectPosition: marathonEvent.hero.objectPosition,
-                  display: 'block',
+                  overflow: 'hidden',
                 }}
-              />
+              >
+                <Box
+                  component="img"
+                  src={marathonEvent.hero.src}
+                  alt={marathonEvent.hero.alt}
+                  sx={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    objectPosition: marathonEvent.hero.objectPosition,
+                    display: 'block',
+                  }}
+                />
+                <Box
+                  aria-hidden
+                  sx={{
+                    position: 'absolute',
+                    inset: 0,
+                    background:
+                      'linear-gradient(180deg, rgba(0,0,0,0.05) 35%, rgba(0,0,0,0.72) 100%)',
+                  }}
+                />
+                <Box
+                  sx={{
+                    position: 'absolute',
+                    left: 16,
+                    right: 16,
+                    bottom: 16,
+                    color: 'common.white',
+                  }}
+                >
+                  <Typography
+                    variant="overline"
+                    sx={{ fontWeight: 700, letterSpacing: 2, display: 'block', opacity: 0.9 }}
+                  >
+                    {marathonEvent.year} event
+                  </Typography>
+                  <Typography
+                    variant="h5"
+                    component="p"
+                    sx={{ fontFamily: '"Merriweather", Georgia, serif', fontWeight: 700, lineHeight: 1.2 }}
+                  >
+                    {marathonEvent.shortName}
+                  </Typography>
+                  <Typography variant="body2" sx={{ mt: 0.5, opacity: 0.92 }}>
+                    {marathonEvent.distanceKm} km · USD {marathonEvent.entryFeeUsd} · {marathonEvent.cause.title}
+                  </Typography>
+                </Box>
+              </Box>
             </Grid>
             <Grid item xs={12} md={7}>
               <Box sx={{ p: { xs: 3, md: 5 } }}>

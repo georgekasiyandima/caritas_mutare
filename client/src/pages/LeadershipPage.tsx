@@ -53,7 +53,7 @@ const LeadershipPage: React.FC = () => {
       role: "Overall authority",
       description:
         "As the Bishop of the Diocese of Mutare, Bishop Paul Horan provides spiritual guidance and overall authority for Caritas Mutare, ensuring the organization remains rooted in Catholic social teaching and serves communities with compassion and integrity.",
-      image: "/images/leadership/bishop-horan.png",
+      image: "/images/leadership/bishop-horan.jpg",
       category: "bishop",
     },
     {
@@ -277,31 +277,48 @@ const LeadershipPage: React.FC = () => {
                       ...leadCardSx,
                       display: 'flex',
                       flexDirection: { xs: 'column', md: 'row' },
-                      alignItems: 'center',
-                      p: 3,
+                      alignItems: { xs: 'center', md: 'stretch' },
+                      overflow: 'hidden',
+                      p: 0,
                     }}
                   >
-                    <Box sx={{ textAlign: 'center', mr: { md: 3 }, mb: { xs: 2, md: 0 } }}>
+                    <Box
+                      sx={{
+                        width: { xs: '100%', md: 280 },
+                        flexShrink: 0,
+                        bgcolor: 'grey.100',
+                        aspectRatio: { xs: '1 / 1', md: 'auto' },
+                        minHeight: { md: 280 },
+                      }}
+                    >
                       {bishop.image ? (
-                        <Avatar
+                        <Box
+                          component="img"
                           src={bishop.image}
                           alt={bishop.name}
-                          sx={{ width: 120, height: 120, mx: 'auto', mb: 2 }}
+                          sx={{
+                            width: '100%',
+                            height: '100%',
+                            objectFit: 'contain',
+                            objectPosition: 'center top',
+                            display: 'block',
+                            bgcolor: 'grey.300',
+                          }}
                         />
                       ) : (
-                        <Box sx={{ mb: 2 }}>{getCategoryIcon(bishop.category)}</Box>
+                        <Box sx={{ p: 3, textAlign: 'center' }}>{getCategoryIcon(bishop.category)}</Box>
                       )}
+                    </Box>
+                    <Box sx={{ p: 3, textAlign: { xs: 'center', md: 'left' }, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
                       <Chip
                         label={bishop.position}
                         color={getCategoryColor(bishop.category) as any}
-                        sx={{ mb: 1 }}
+                        sx={{ mb: 1.5, alignSelf: { xs: 'center', md: 'flex-start' } }}
                       />
-                    </Box>
-                    <Box sx={{ textAlign: { xs: 'center', md: 'left' } }}>
                       <Typography variant="h5" component="h3" gutterBottom sx={{ fontWeight: 'bold' }}>
                         {bishop.name}
                       </Typography>
-                      <Typography variant="body1" color="text.secondary">
+                      <Typography variant="body1" color="text.secondary" sx={{ lineHeight: 1.75 }}>
                         {bishop.description}
                       </Typography>
                     </Box>

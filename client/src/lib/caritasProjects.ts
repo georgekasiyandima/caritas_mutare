@@ -332,13 +332,11 @@ export const generalImpactImages: { src: string; alt: string; objectPosition?: s
 ];
 
 /**
- * Strategic partners shown in the public logo strip.
- *
- * Prefer a file under client/public/images/. PartnerLogoStrip hides a row
- * if a file 404s.
+ * External strategic partners shown in the public logo strip.
+ * Caritas Mutare is the host, not a partner of itself — the header already
+ * carries our mark. PartnerLogoStrip hides a row if a file 404s.
  */
 export const partnerLogosForSite: { name: string; logoUrl?: string }[] = [
-  { name: 'Caritas Mutare', logoUrl: '/images/logo/caritas-mutare-clear.png' },
   { name: 'Caritas Zimbabwe National Office', logoUrl: '/images/partners/caritas-zimbabwe.png' },
   { name: 'CAFOD', logoUrl: '/images/partners/cafod.png' },
   { name: 'CBM Global', logoUrl: '/images/partners/cbm-global.png' },

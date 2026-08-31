@@ -23,10 +23,18 @@ rendering, so "the page is not rendering" is almost always one of: the route
 isn't registered in `App.tsx`, the build didn't deploy, or the host isn't
 falling back to `index.html` for deep links.
 
-The client calls the API using **relative paths** (`/api/...`). Locally that
-works because `client/package.json` sets `"proxy": "http://localhost:5000"`.
-In production it depends on a Vercel rewrite — see the deployment section,
-because this is currently broken.
+The client talks to the API through `lib/apiBase.ts` (`apiUrl()`).
+
+- **Local:** `REACT_APP_API_URL` is empty, so fetches stay same-origin and CRA
+  proxies `/api` to `http://localhost:5000` (`client/package.json` `"proxy"`).
+- **Production:** `client/.env.production` bakes in
+  `https://caritas-mutare-api.onrender.com`. Vercel does **not** reliably
+  proxy `/api` with this project's legacy `builds` config, so the site must
+  call Render directly. CORS allows `CLIENT_URL`
+  (`https://caritas-mutare.vercel.app`) and, when set, Vercel preview origins.
+
+Do not add new raw `fetch('/api/...')` calls. Use `apiGet` / `apiPost` or wrap
+the path with `apiUrl()`.
 
 ---
 
@@ -107,8 +115,9 @@ Two components currently violate this and are listed in the issues register.
 attaches the bearer token from `localStorage` and converts non-2xx responses
 into thrown `ApiError`s.
 
-**Use these helpers.** Some older code (`AuthContext`, the news pages) calls
-raw `fetch` and therefore bypasses the shared error handling.
+**Use these helpers.** Some older code (`AuthContext`, the news pages) still
+calls raw `fetch`, but those paths now go through `apiUrl()` so production
+reaches Render.
 
 Server state has no single approach yet: React Query is configured and used on
 three pages, while admin pages use `useState` + `useEffect`. React Query is the
@@ -216,20 +225,14 @@ Verified against the code, worst first. Nothing here is fixed.
 
 ### Production-breaking
 
-**A. The deployed frontend cannot reach the API.** `vercel.json` has a `builds`
-block but **no `rewrites` block**, so `/api/*` never proxies to Render.
-Requesting `https://caritas-mutare.vercel.app/api/health` returns
-`text/html` — the React shell — instead of JSON. Every API-backed feature is
-broken in production: staff login, contact form, volunteer applications,
-donation pledges, news. `docs/DEPLOYMENT.md` §3a documents the exact rewrite
-that was never added.
+**~~A. The deployed frontend cannot reach the API.~~ FIXED (PR #17).**
+Vercel still serves SPA HTML for `/api/*`. Production builds now call Render
+directly via `REACT_APP_API_URL`. Confirm a Vercel deploy of `main` after #17
+before treating login as done on a given URL.
 
-**B. The API does not answer at the documented URL.**
-`https://caritas-mutare-api.onrender.com` returns a plain-text `Not Found` at
-every path including `/`. That is Render's edge, not our Express 404 (which
-returns JSON `{"message":"Route not found"}`), so no service is running at that
-hostname. Either the Render service was never created, or it lives at a
-different URL that needs to go into `vercel.json` and the docs.
+**~~B. The API does not answer at the documented URL.~~ FIXED.**
+`https://caritas-mutare-api.onrender.com/api/health` returns JSON
+`{"status":"OK",...}`. Render cold-starts can 502 for a few seconds; retry.
 
 **~~C. Hand-written SQL is SQLite-only and will throw on Postgres.~~ FIXED.**
 Double-quoted literals (which Postgres reads as *identifiers*) and the SQLite
@@ -256,9 +259,10 @@ totals with no auth (`donations.js`). Confirm that is intended.
 
 ### Maintainability
 
-**G. No tests anywhere.** Both `package.json` files declare test tooling
-(`jest`, `@testing-library/*`) and neither has a single test file. This is the
-biggest long-term risk given the site is going live.
+**G. Client has no tests.** The API has Jest + Supertest integration tests
+(`server/tests/`, `cd server && npm test`). There are no React tests. See
+`docs/TESTING.md`. Do not add a client testing stack this close to go-live
+unless a UI bug keeps recurring; cover the contract on the server instead.
 
 **~~H. Missing `:id` validation~~ FIXED.** `middleware/validate.js` now
 provides `idParam()` and `runValidation`, applied across `content.js`,
