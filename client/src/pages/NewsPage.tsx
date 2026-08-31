@@ -16,6 +16,7 @@ import {
   SECTION_BG_ALT,
   pageRoot,
 } from '../lib/sitePageLayout';
+import { apiUrl } from '../lib/apiBase';
 
 interface NewsArticle {
   id: number | string;
@@ -32,7 +33,7 @@ const NewsPage: React.FC = () => {
   const navigate = useNavigate();
 
   const { data: newsData, isLoading, error } = useQuery('news', async () => {
-    const response = await fetch('/api/news?limit=24&page=1');
+    const response = await fetch(apiUrl('/api/news?limit=24&page=1'));
     return response.json();
   });
 

@@ -15,6 +15,7 @@ import {
   pageRoot,
   outlineCard,
 } from '../lib/sitePageLayout';
+import { apiUrl } from '../lib/apiBase';
 
 interface GalleryItem {
   src: string;
@@ -27,7 +28,7 @@ const NewsDetailPage: React.FC = () => {
   const [copied, setCopied] = React.useState(false);
 
   const { data, isLoading, error } = useQuery(['news', id], async () => {
-    const response = await fetch(`/api/news/${id}`);
+    const response = await fetch(apiUrl(`/api/news/${id}`));
     return response.json();
   });
 

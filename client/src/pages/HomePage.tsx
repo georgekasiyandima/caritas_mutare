@@ -35,6 +35,7 @@ import type { SxProps, Theme } from '@mui/material';
 import { getActiveProjects, generalImpactImages } from '../lib/caritasProjects';
 import { SECTION_BG_ALT, outlineCard } from '../lib/sitePageLayout';
 import { marathonEvent } from '../lib/marathonEvent';
+import { apiUrl } from '../lib/apiBase';
 
 const thematicIconSx = { fontSize: 32, color: 'info.main' } as const;
 const marathonStripSx: SxProps<Theme> = [outlineCard, { overflow: 'hidden' }] as SxProps<Theme>;
@@ -55,7 +56,7 @@ const HomePage: React.FC = () => {
   const { data: newsData } = useQuery(
     'latestNews',
     async () => {
-      const response = await fetch('/api/news/featured/latest?limit=3');
+      const response = await fetch(apiUrl('/api/news/featured/latest?limit=3'));
       return response.json();
     },
     {
