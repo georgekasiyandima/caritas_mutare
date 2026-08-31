@@ -37,6 +37,7 @@ import {
 } from '../lib/sitePageLayout';
 import { orgContact } from '../lib/organisation';
 import { apiPost, ApiError } from '../lib/api';
+import { Link as RouterLink } from 'react-router-dom';
 
 const volCardSx = { ...outlineCard, ...outlineCardHover };
 
@@ -166,44 +167,98 @@ const VolunteerPage: React.FC = () => {
   if (submitStatus === 'success') {
     return (
       <Box sx={pageRoot}>
-        <Container maxWidth="lg" sx={{ py: { xs: 5, md: 7 } }}>
-          <Card elevation={0} sx={{ ...outlineCard, overflow: 'hidden', maxWidth: 640, mx: 'auto' }}>
-            <Box sx={{ ...formCardHeader, bgcolor: 'rgba(46, 125, 50, 0.08)' }}>
-              <Avatar sx={{ bgcolor: 'rgba(46, 125, 50, 0.15)', width: 72, height: 72, mx: 'auto', mb: 2, color: 'success.dark' }}>
-                <VolunteerIcon sx={{ fontSize: 36 }} />
+        <SEO
+          title={t('volunteer.seo.title', 'Volunteer with Caritas Mutare')}
+          description={t(
+            'volunteer.seo.description',
+            'Join our mission to serve communities across the Diocese of Mutare with compassion and dedication.'
+          )}
+          canonicalPath="/volunteer"
+        />
+        <Container maxWidth="sm" sx={{ pt: { xs: 14, md: 16 }, pb: { xs: 8, md: 10 } }}>
+          <Card elevation={0} sx={{ ...outlineCard, textAlign: 'center', overflow: 'hidden' }}>
+            <Box sx={{ bgcolor: 'rgba(46, 125, 50, 0.08)', py: { xs: 3.5, md: 4 }, px: 3 }}>
+              <Avatar
+                sx={{
+                  bgcolor: 'success.main',
+                  color: 'common.white',
+                  width: 64,
+                  height: 64,
+                  mx: 'auto',
+                  mb: 1.5,
+                }}
+              >
+                <VolunteerIcon sx={{ fontSize: 32 }} />
               </Avatar>
-              <Typography variant="h4" sx={{ fontFamily: '"Merriweather", Georgia, serif', fontWeight: 700, mb: 1 }}>
+              <Typography
+                variant="h4"
+                component="h1"
+                sx={{
+                  fontFamily: '"Merriweather", Georgia, serif',
+                  fontWeight: 700,
+                  fontSize: { xs: '1.5rem', md: '1.75rem' },
+                  lineHeight: 1.3,
+                  mb: 1,
+                }}
+              >
                 Thank you for your application
               </Typography>
-              <Typography variant="body2" color="text.secondary">
+              <Typography variant="body2" color="text.secondary" sx={{ maxWidth: 400, mx: 'auto' }}>
                 We appreciate your interest in volunteering with Caritas Mutare.
               </Typography>
             </Box>
-            <CardContent sx={{ p: 4, textAlign: 'center' }}>
-              <Typography variant="body1" sx={{ mb: 3, fontSize: '1.1rem' }}>
-                Your volunteer application has been received successfully. Our team will review your application and contact you within 2-3 business days to discuss next steps.
-            </Typography>
-              <Typography variant="body2" color="text.secondary" sx={{ mb: 4 }}>
-                In the meantime, feel free to explore our projects and learn more about our community impact.
-            </Typography>
-              <Button
-                variant="contained"
-                size="large"
-                onClick={() => setSubmitStatus('idle')}
+            <CardContent sx={{ px: { xs: 3, md: 4 }, py: { xs: 3, md: 3.5 } }}>
+              <Typography
+                variant="body1"
+                sx={{ mb: 2, lineHeight: 1.75, maxWidth: 440, mx: 'auto' }}
+              >
+                Your volunteer application has been received successfully. Our team will review it and
+                contact you within 2–3 business days to discuss next steps.
+              </Typography>
+              <Typography
+                variant="body2"
+                color="text.secondary"
+                sx={{ mb: 3, lineHeight: 1.7, maxWidth: 400, mx: 'auto' }}
+              >
+                In the meantime, feel free to explore our projects and learn more about our community
+                impact.
+              </Typography>
+              <Box
                 sx={{
-                  textTransform: 'none',
-                  px: 4,
-                  py: 1.5,
-                  borderRadius: 3,
-                  fontSize: '1.1rem',
-                  fontWeight: 600,
+                  display: 'flex',
+                  flexDirection: { xs: 'column', sm: 'row' },
+                  gap: 1.5,
+                  justifyContent: 'center',
+                  alignItems: 'center',
                 }}
               >
-                Submit Another Application
-              </Button>
-          </CardContent>
-        </Card>
-      </Container>
+                <Button
+                  variant="contained"
+                  size="large"
+                  component={RouterLink}
+                  to="/programs"
+                  sx={{
+                    textTransform: 'none',
+                    px: 3,
+                    py: 1.25,
+                    borderRadius: 999,
+                    fontWeight: 700,
+                  }}
+                >
+                  Explore projects
+                </Button>
+                <Button
+                  variant="text"
+                  size="large"
+                  onClick={() => setSubmitStatus('idle')}
+                  sx={{ textTransform: 'none', fontWeight: 600, px: 2 }}
+                >
+                  Submit another application
+                </Button>
+              </Box>
+            </CardContent>
+          </Card>
+        </Container>
         <BackToTopButton />
       </Box>
     );
