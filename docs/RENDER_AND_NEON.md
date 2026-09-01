@@ -190,10 +190,66 @@ Manual create (same result):
 
 ---
 
+## Part C — Move the API off Free (do this before any public push)
+
+The database stays on **Neon**. We are only changing the **compute plan** of
+the existing web service `caritas-mutare-api`. Same URL, same env vars, same
+data. Do **not** create a second service. Do **not** change `DATABASE_URL`.
+
+**Important:** adding a credit card, or switching the *workspace* from Hobby
+to Pro, does **not** stop sleep. You must change this **service’s** plan.
+
+### C1. Payment method (once per Render account)
+
+1. Open https://dashboard.render.com
+2. Account / workspace → **Billing** (or **Payment methods**)
+3. Add a card. Starter is about **USD 7 per month**, billed to the second
+   (if you turn it off mid-month you only pay for days used).
+
+### C2. Upgrade the live service
+
+1. Open the service **`caritas-mutare-api`** (not the Blueprint page).
+2. Left nav: **Compute** (sometimes under **Settings** → **Compute** /
+   **Instance type**).
+3. Under **Compute**, click **Edit**.
+4. Choose **Starter** (0.5 CPU, 512 MB). On newer screens the plan id is
+   `0.5c-512mb` — that is the same thing. Do **not** pick Standard ($25)
+   unless we later need more RAM.
+5. **Save**. Render starts a deploy. Wait until it is **Live** (a few minutes).
+   Brief blip is possible; it is not a migration.
+
+### C3. Confirm it no longer sleeps
+
+Wait until the deploy is green, then:
+
+```bash
+curl https://caritas-mutare-api.onrender.com/api/health
+```
+
+You want JSON: `{"status":"OK","environment":"production",...}` in a couple of
+seconds, not a 502 HTML page.
+
+Optional: wait 20 minutes with no traffic, then curl again. On Starter it
+should still answer immediately. On Free it would spin up slowly.
+
+Then on https://caritas-mutare.vercel.app sign in and submit a test contact
+(or open Volunteers). If that works, the public site is still talking to the
+same API.
+
+### C4. After it works
+
+- Leave env vars as they are (`DATABASE_URL`, `JWT_SECRET`, `CLIENT_URL`).
+- If `BOOTSTRAP_ADMIN_*` are still set, delete those three after you have
+  changed the staff password — they only matter when the users table is empty.
+- `render.yaml` in this repo is set to `plan: starter` so a later Blueprint
+  sync does not put the service back on Free.
+
+---
+
 ## What this does *not* do
 
 - It does **not** change www.caritasmutare.org (that is Utande, later).
 - It does **not** send email yet.
-- Free Render **sleeps after ~15 minutes idle**. The first request after
-  sleep can take 30–60 seconds. That is normal. If health fails forever,
-  it is not sleep — it is a boot error in Logs.
+- It does **not** move the database. Neon stays. Render is only the API
+  process. After Starter, the API stays awake; Neon may still scale compute
+  down when idle, which is normal and cheaper.

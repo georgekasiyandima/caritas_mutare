@@ -7,8 +7,8 @@
 #
 # What it does:
 #   - Creates a Node web service that runs the Express API from ./server
-#   - Binds it to Render's free tier (sleeps after 15 min of inactivity,
-#     fine for admin-only traffic while we're getting started).
+#   - Binds it to a paid always-on plan (Starter / 0.5c-512mb, ~USD 7/month).
+#     Do not use Free for public traffic: it sleeps after 15 min idle.
 #   - Declares every environment variable the API expects. Values marked
 #     `sync: false` must be entered manually in the Render dashboard because
 #     they are secrets or depend on resources outside this blueprint (e.g.
@@ -21,7 +21,7 @@ services:
   - type: web
     name: caritas-mutare-api
     runtime: node
-    plan: free
+    plan: starter
     rootDir: server
     buildCommand: npm install
     startCommand: node index.js
