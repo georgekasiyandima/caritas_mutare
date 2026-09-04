@@ -119,7 +119,7 @@ const HomePage: React.FC = () => {
         title={t('seo.home.title', 'Serving communities with dignity and hope')}
         description={t(
           'seo.home.description',
-          'Caritas Mutare is the development and humanitarian arm of the Catholic Diocese of Mutare, Zimbabwe. We work alongside families and parishes to deliver food security, livelihoods, inclusion, and emergency response.'
+          'Caritas Mutare is the development and humanitarian arm of the Catholic Diocese of Mutare, Zimbabwe — delivering food, livelihoods, inclusion, WASH and emergency response rooted in Catholic Social Teaching.'
         )}
         image={heroImage?.src}
         canonicalPath="/"
@@ -132,10 +132,10 @@ const HomePage: React.FC = () => {
           imageAlt={heroImage.alt}
           imagePosition={heroImage.objectPosition}
           eyebrow={t('home.hero.eyebrow', 'Caritas Zimbabwe Roman Catholic Diocese of Mutare')}
-          title={t('home.hero.title', 'Restoring dignity. One family, one community at a time.')}
+          title={t('home.hero.title', 'Charity for People, Care for Creation, Hope for Tomorrow')}
           subtitle={t(
             'home.hero.subtitle',
-            'Development arm of the Catholic Church and humanitarian response. For over 50 years, we have walked alongside families in eastern Zimbabwe — delivering food, livelihoods, inclusion and emergency response rooted in Catholic social teaching.'
+            'Zimbabwe — delivering food, livelihoods, inclusion, WASH and emergency response rooted in Catholic Social Teaching.'
           )}
           primaryCta={{
             label: t('home.hero.ctaPrimary', 'Support our work'),

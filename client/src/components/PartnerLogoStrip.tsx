@@ -7,7 +7,7 @@ interface PartnerLogoStripProps {
   sisterTitle?: string;
   variant?: 'light' | 'dark';
   compact?: boolean;
-  /** Footer stays logos-only; public pages also list sister organisations. */
+  /** Footer stays logos-only; public pages also list technical partners. */
   includeSisterOrgs?: boolean;
 }
 
@@ -18,7 +18,7 @@ interface PartnerLogoStripProps {
  */
 const PartnerLogoStrip: React.FC<PartnerLogoStripProps> = ({
   title = 'Supported by',
-  sisterTitle = 'Technical partners & sister organisations',
+  sisterTitle = 'Technical partners',
   variant = 'light',
   compact = false,
   includeSisterOrgs = true,

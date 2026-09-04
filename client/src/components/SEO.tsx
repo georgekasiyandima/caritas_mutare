@@ -12,7 +12,7 @@ export interface SEOProps {
 
 const SITE_NAME = 'Caritas Mutare';
 const DEFAULT_DESCRIPTION =
-  'Caritas Mutare is the development and humanitarian arm of the Catholic Diocese of Mutare, Zimbabwe — serving communities with dignity, solidarity and practical support.';
+  'Caritas Mutare is the development and humanitarian arm of the Catholic Diocese of Mutare, Zimbabwe — delivering food, livelihoods, inclusion, WASH and emergency response rooted in Catholic Social Teaching.';
 const DEFAULT_IMAGE = '/images/logo/caritas-mutare-clear.png';
 
 function absoluteUrl(path?: string): string | undefined {

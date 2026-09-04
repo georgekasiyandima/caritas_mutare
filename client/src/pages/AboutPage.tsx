@@ -86,7 +86,7 @@ const AboutPage: React.FC = () => {
     <Box sx={pageRoot}>
       <SEO
         title="About Caritas Mutare"
-        description="Rooted in Catholic social teaching, Caritas Mutare accompanies vulnerable communities towards dignity, resilience and sustainable livelihoods across the Diocese of Mutare."
+        description="Rooted in Catholic Social Teaching, Caritas Mutare accompanies vulnerable communities towards dignity, resilience and sustainable livelihoods across the Diocese of Mutare."
         image={heroImageSource?.src}
         canonicalPath="/about"
       />
@@ -100,7 +100,7 @@ const AboutPage: React.FC = () => {
           overlay={0.6}
           eyebrow="Who we are"
           title="About Caritas Mutare"
-          subtitle="Rooted in Catholic social teaching, we accompany vulnerable communities towards dignity, resilience and sustainable livelihoods across the Diocese of Mutare."
+          subtitle="Rooted in Catholic Social Teaching, we accompany vulnerable communities towards dignity, resilience and sustainable livelihoods across the Diocese of Mutare."
           primaryCta={{
             label: 'Our projects',
             onClick: () => navigate('/programs'),
@@ -146,7 +146,7 @@ const AboutPage: React.FC = () => {
                 fontSize: { xs: '1.25rem', md: '1.55rem' },
               }}
             >
-              Guided by the Social Teachings of the Roman Catholic Church, Caritas Zimbabwe Roman Catholic Diocese of Mutare
+              Guided by Catholic Social Teaching, Caritas Zimbabwe Roman Catholic Diocese of Mutare
               works <Box component="span" sx={{ color: 'primary.main', fontWeight: 700, fontStyle: 'normal' }}>
                 to promote food security, social protection, environmental management, water and sanitation
               </Box> for the vulnerable — men, women, boys and girls, inclusive of persons with disabilities — in a
@@ -202,7 +202,7 @@ const AboutPage: React.FC = () => {
                     Our values
                   </Typography>
                   <Typography variant="body2" color="text.secondary" sx={{ mt: 1, mb: 2 }}>
-                    Catholic social teachings are the foundation of our work. The values at the heart of that teaching guide us every day.
+                    Catholic Social Teaching is the foundation of our work. The values at the heart of that teaching guide us every day.
                   </Typography>
                   <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.75 }}>
                     {values.map((value) => (
@@ -269,7 +269,7 @@ const AboutPage: React.FC = () => {
             </Typography>
             <Typography variant="body1" color="text.secondary" sx={{ lineHeight: 1.75 }}>
               Caritas Mutare implements its projects through strong partnerships with government line ministries,
-              sister organisations and local community structures. Coordination keeps our work accountable, locally
+              technical partners and local community structures. Coordination keeps our work accountable, locally
               led, and aligned with national priorities.
             </Typography>
           </Box>
@@ -326,7 +326,7 @@ const AboutPage: React.FC = () => {
               <Card elevation={0} sx={{ ...cardSx, mb: 3 }}>
                 <CardContent sx={{ p: 3 }}>
                   <Typography variant="h6" gutterBottom sx={{ fontFamily: '"Merriweather", Georgia, serif', fontWeight: 700 }}>
-                    Technical partners & sister organisations
+                    Technical partners
                   </Typography>
                   <List dense>
                     {technicalSisterOrgs.map((partner) => (

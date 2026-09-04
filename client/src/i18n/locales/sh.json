@@ -15,7 +15,7 @@
   "seo": {
     "home": {
       "title": "Kushandira nharaunda nezvikudzo netariro",
-      "description": "Caritas Mutare ndiyo sangano rekusimudzira nerubatsiro reChechi yeCatholic, Diocese yeMutare, Zimbabwe. Tinoshanda nemhuri nemaparishi kupa chikafu, hupenyu, kuunganidzwa, uye rubatsiro rwekukurumidza."
+      "description": "Caritas Mutare ndiyo sangano rekusimudzira nerubatsiro reChechi yeCatholic, Diocese yeMutare, Zimbabwe — tichipa chikafu, hupenyu, kuunganidzwa, WASH nerubatsiro rwekukurumidza zvakamira paCatholic Social Teaching."
     }
   },
   "stickyDonate": {
@@ -34,11 +34,11 @@
   },
   "home": {
     "partnersTitle": "Vashandi vakakosha",
-    "sisterOrgsTitle": "Vashandi vehunyanzvi nemasangano ehama",
+    "sisterOrgsTitle": "Vashandi vehunyanzvi",
     "hero": {
       "eyebrow": "Caritas Zimbabwe Roman Catholic Diocese yeMutare",
-      "title": "Kudzoredza chikudzo. Mhuri imwe, nharaunda imwe panguva.",
-      "subtitle": "Ruoko rwekusimudzira rweChechi yeCatholic uye mhinduro yerubatsiro rwekukurumidza. Kwemakore anopfuura makumi mashanu, takafamba nemhuri dzekumabvazuva kweZimbabwe — tichipa chikafu, hupenyu, kuunganidzwa nerubatsiro rwekukurumidza zvakamira padzidziso yeCatholic yenharaunda.",
+      "title": "Charity for People, Care for Creation, Hope for Tomorrow",
+      "subtitle": "Zimbabwe — tichipa chikafu, hupenyu, kuunganidzwa, WASH nerubatsiro rwekukurumidza zvakamira paCatholic Social Teaching.",
       "ctaPrimary": "Tsigira basa redu",
       "ctaSecondary": "Ona zvatinoita"
     },
@@ -71,7 +71,7 @@
     "thematic": {
       "overline": "Tinoshandira kupi",
       "title": "Zvinangwa zvebasa",
-      "intro": "Zvirongwa zvedu zvinotevera dzidziso yeCatholic yenharaunda: kukudzwa, kubatana, uye kuchengetedza avo vari pamakumbo — kusanganisira vanhu vane kukanganiswa.",
+      "intro": "Zvirongwa zvedu zvinotevera Catholic Social Teaching: kukudzwa, kubatana, uye kuchengetedza varombo — kusanganisira vanhu vane disabilities.",
       "cta": "Verenga chinangwa nemhunhu hwedu",
       "items": {
         "food": {
@@ -88,7 +88,7 @@
         },
         "community": {
           "title": "Nharaunda nezvikwata",
-          "blurb": "Zvivakwa, kubatana nediocese nezvikwata zvepedyo."
+          "blurb": "Zvivakwa, kubatana neDiocese nezvikwata zvepedyo."
         }
       }
     },
@@ -150,7 +150,7 @@
     "vision": "Chiratidzo Chedu",
     "visionText": "Nharaunda yakarurama uye ine tsitsi umo munhu wese anogona kurarama nezvikudzo uye kusvika pachikwaniso chavo chese.",
     "values": "Hunhu Hwedu",
-    "valuesText": "Tinotungamirwa nedzidziso yeCatholic yenharaunda, tichishanda nemunharaunda kugadzira shanduko isingaperi kuburikidza nekubatana, kuzvimirira, uye chinhu chakanaka chese."
+    "valuesText": "Tinotungamirwa neCatholic Social Teaching, tichishanda nemunharaunda kugadzira shanduko isingaperi kuburikidza nekubatana, kuzvimirira, uye chinhu chakanaka chese."
   },
   "programs": {
     "title": "Zvirongwa Zvedu",
@@ -234,7 +234,7 @@
     }
   },
   "footer": {
-    "description": "Sangano rekusimudzira nerubatsiro reDiocese yeMutare — richishandira nharaunda dzekumabvazuva kweZimbabwe nezvikudzo, kubatana uye rubatsiro runobatika.",
+    "description": "Sangano rekusimudzira nerubatsiro reDiocese yeMutare, Zimbabwe — tichipa chikafu, hupenyu, kuunganidzwa, WASH nerubatsiro rwekukurumidza zvakamira paCatholic Social Teaching.",
     "partnersTitle": "Tiri kushanda pamwe na",
     "explore": "Ongorora",
     "engage": "Batana nesu",

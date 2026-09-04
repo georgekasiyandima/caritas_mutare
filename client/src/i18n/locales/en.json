@@ -15,7 +15,7 @@
   "seo": {
     "home": {
       "title": "Serving communities with dignity and hope",
-      "description": "Caritas Mutare is the development and humanitarian arm of the Catholic Diocese of Mutare, Zimbabwe. We work alongside families and parishes to deliver food security, livelihoods, inclusion, and emergency response."
+      "description": "Caritas Mutare is the development and humanitarian arm of the Catholic Diocese of Mutare, Zimbabwe — delivering food, livelihoods, inclusion, WASH and emergency response rooted in Catholic Social Teaching."
     }
   },
   "stickyDonate": {
@@ -34,11 +34,11 @@
   },
   "home": {
     "partnersTitle": "Strategic partners",
-    "sisterOrgsTitle": "Technical partners & sister organisations",
+    "sisterOrgsTitle": "Technical partners",
     "hero": {
       "eyebrow": "Caritas Zimbabwe Roman Catholic Diocese of Mutare",
-      "title": "Restoring dignity. One family, one community at a time.",
-      "subtitle": "Development arm of the Catholic Church and humanitarian response. For over 50 years, we have walked alongside families in eastern Zimbabwe — delivering food, livelihoods, inclusion and emergency response rooted in Catholic social teaching.",
+      "title": "Charity for People, Care for Creation, Hope for Tomorrow",
+      "subtitle": "Zimbabwe — delivering food, livelihoods, inclusion, WASH and emergency response rooted in Catholic Social Teaching.",
       "ctaPrimary": "Support our work",
       "ctaSecondary": "See what we do"
     },
@@ -71,7 +71,7 @@
     "thematic": {
       "overline": "Where we work",
       "title": "Thematic focus",
-      "intro": "Our programmes follow Catholic social teaching: dignity, solidarity, and care for those on the margins — including persons with disabilities.",
+      "intro": "Our programmes follow Catholic Social Teaching: dignity, solidarity, and care for the poor — including persons with disabilities.",
       "cta": "Read our mission & values",
       "items": {
         "food": {
@@ -88,7 +88,7 @@
         },
         "community": {
           "title": "Community & institutions",
-          "blurb": "Infrastructure, coordination with diocese and local structures."
+          "blurb": "Infrastructure, coordination with the Diocese and local structures."
         }
       }
     },
@@ -99,7 +99,7 @@
       "category": "Programme"
     },
     "news": {
-      "intro": "Updates from the field and the diocese.",
+      "intro": "Updates from the field and the Diocese.",
       "minRead": "{{count}} min read",
       "viewAll": "View all news",
       "overline": "From the field",
@@ -107,7 +107,7 @@
     },
     "impact": {
       "title": "Our impact",
-      "intro": "Glimpses of community engagement and project work across the diocese — the same mission you support when you partner with Caritas."
+      "intro": "Glimpses of community engagement and project work across the Diocese — the same mission you support when you partner with Caritas."
     },
     "closingCta": {
       "overline": "Walk with us",
@@ -150,7 +150,7 @@
   "vision": "Our Vision",
   "visionText": "A just and compassionate society where every person can live with dignity and reach their full potential.",
   "values": "Our Values",
-  "valuesText": "We are guided by Catholic social teaching, working with communities to create lasting change through solidarity, subsidiarity, and the common good."
+  "valuesText": "We are guided by Catholic Social Teaching, working with communities to create lasting change through solidarity, subsidiarity, and the common good."
   },
   "programs": {
   "title": "Our Projects",
@@ -234,7 +234,7 @@
     }
   },
   "footer": {
-    "description": "The development and humanitarian arm of the Catholic Diocese of Mutare — serving communities across eastern Zimbabwe with dignity, solidarity and practical support.",
+    "description": "The development and humanitarian arm of the Catholic Diocese of Mutare, Zimbabwe — delivering food, livelihoods, inclusion, WASH and emergency response rooted in Catholic Social Teaching.",
     "partnersTitle": "In partnership with",
     "explore": "Explore",
     "engage": "Get involved",

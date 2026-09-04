@@ -52,7 +52,7 @@ const LeadershipPage: React.FC = () => {
       position: "Bishop of the Diocese of Mutare",
       role: "Overall authority",
       description:
-        "As the Bishop of the Diocese of Mutare, Bishop Paul Horan provides spiritual guidance and overall authority for Caritas Mutare, ensuring the organization remains rooted in Catholic social teaching and serves communities with compassion and integrity.",
+        "As the Bishop of the Diocese of Mutare, Bishop Paul Horan provides spiritual guidance and overall authority for Caritas Mutare, ensuring the organization remains rooted in Catholic Social Teaching and serves communities with compassion and integrity.",
       image: "/images/leadership/bishop-horan.jpg",
       category: "bishop",
     },
@@ -467,7 +467,7 @@ const LeadershipPage: React.FC = () => {
             color: 'text.secondary',
           }}
         >
-          Technical partners & sister organisations
+          Technical partners
         </Typography>
         <Box
           sx={{

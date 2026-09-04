@@ -15,7 +15,7 @@ export const mockNewsArticles: NewsArticle[] = [
     id: 1,
     title_en: "Caritas Mutare Launches New Education Initiative",
     title_sh: "Caritas Mutare Yatanga Chirongwa Chitsva Chedzidzo",
-    excerpt_en: "A new program to support primary education in rural communities across the diocese.",
+    excerpt_en: "A new program to support primary education in rural communities across the Diocese.",
     excerpt_sh: "Chirongwa chitsva chekutsigira dzidzo yeprimary munharaunda dzekumaruwa mudiyocese.",
     content_en: "Full article content will be provided by the organization...",
     content_sh: "Zviri mukati zvechinyorwa zvichapihwa nesangano...",
@@ -62,7 +62,7 @@ export const mockPrograms: Program[] = [
     key: "education",
     title_en: "Education & Training",
     title_sh: "Dzidzo neKudzidzisa",
-    description_en: "Providing access to quality education and vocational training for children and adults across the diocese.",
+    description_en: "Providing access to quality education and vocational training for children and adults across the Diocese.",
     description_sh: "Kupa mukana wekuwana dzidzo yemhando yepamusoro uye kudzidziswa kwehunyanzvi kuvana nevakuru mudiyocese yese.",
     icon: "School",
     color: "primary.main",
@@ -246,7 +246,7 @@ export const mockTeamMembers: TeamMember[] = [
     id: 2,
     name: "Sr. Mary Johnson",
     position: "Program Coordinator",
-    bio: "Coordinating education and healthcare programs across the diocese.",
+    bio: "Coordinating education and healthcare programs across the Diocese.",
     image: "/images/team/coordinator.jpg",
     email: "coordinator@caritasmutare.org"
   }

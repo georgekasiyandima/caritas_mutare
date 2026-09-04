@@ -346,15 +346,15 @@ export const partnerLogosForSite: { name: string; logoUrl?: string }[] = [
   { name: 'Zimbabwe Government', logoUrl: '/images/partners/zimbabwe-government.png' },
 ];
 
-/** Diocesan and local sister bodies — listed after strategic partners. */
+/** Diocesan desks and local sister bodies — listed after strategic partners. */
 export const technicalSisterOrgs: string[] = [
   'CCJP',
   'Youth Alive Zimbabwe',
   'DOMCCP',
-  'Diocese of Mutare Education Secretariat',
-  'Diocese of Mutare Health Desk',
-  'Diocese of Mutare Safeguarding Office',
-  'Diocese of Mutare Family and Marriage',
+  'RCDOM Safeguarding Office',
+  'RCDOM Health Desk',
+  'RCDOM Family and Marriage',
+  'RCDOM Education Secretariat',
 ];
 
 export function getProjectBySlug(slug: string): CaritasProject | undefined {

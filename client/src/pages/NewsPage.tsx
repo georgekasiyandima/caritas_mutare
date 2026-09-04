@@ -65,7 +65,7 @@ const NewsPage: React.FC = () => {
         overlay={0.55}
         eyebrow={t('news.hero.eyebrow', 'Stories & updates')}
         title={t('news.title')}
-        subtitle={t('news.hero.subtitle', 'Stories from the field, the diocese, and our programmes.')}
+        subtitle={t('news.hero.subtitle', 'Stories from the field, the Diocese, and our programmes.')}
       />
 
       <Box sx={{ bgcolor: SECTION_BG_ALT, py: { xs: 5, md: 7 }, minHeight: 400 }}>
