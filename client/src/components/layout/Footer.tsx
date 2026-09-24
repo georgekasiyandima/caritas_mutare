@@ -370,6 +370,14 @@ const Footer: React.FC = () => {
           <Stack direction="row" spacing={2.5} alignItems="center">
             <Link
               component={RouterLink}
+              to="/privacy"
+              underline="hover"
+              sx={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.8rem' }}
+            >
+              {t('nav.privacy', 'Privacy')}
+            </Link>
+            <Link
+              component={RouterLink}
               to="/admin/login"
               underline="none"
               sx={{

@@ -10,7 +10,8 @@
   "volunteer": "Volunteer",
   "contact": "Contact",
   "admin": "Admin",
-  "staffSignIn": "Staff sign-in"
+  "staffSignIn": "Staff sign-in",
+  "privacy": "Privacy"
   },
   "seo": {
     "home": {
@@ -245,6 +246,26 @@
     "copyright": "© Caritas Zimbabwe Roman Catholic Diocese of Mutare. All rights reserved.",
     "copyrightSuffix": "All rights reserved.",
     "poweredBy": "Powered by faith, hope, and love"
+  },
+  "privacy": {
+    "noticeAria": "Privacy notice",
+    "notice": "We do not use advertising cookies. This site remembers your language on this device. Staff sign-in is stored only if you sign in.",
+    "learnMore": "Learn more",
+    "ok": "OK",
+    "overline": "Your information",
+    "title": "Privacy",
+    "lead": "This site is built to serve the Diocese of Mutare, not to track visitors. Below is what we store, and why.",
+    "cookiesTitle": "Cookies and stored data",
+    "cookiesBody": "We do not use advertising, analytics, or social-media tracking cookies. The public site does not set a cookie to follow you around the web.",
+    "deviceBody": "Your language choice (English or Shona) is saved on this device so the site opens in the language you last used. If you sign in as staff, a sign-in token is saved on that device until you sign out. Both sit in the browser’s own storage, not in a marketing cookie.",
+    "formsTitle": "Contact, volunteer and donate forms",
+    "formsBody": "When you send a message, volunteer application, or donation pledge, we keep what you typed so the office can reply. We do not sell this information. Staff see it in the portal. Public enquiries are handled at",
+    "questionsTitle": "Questions",
+    "questionsBody": "Write to the same address if you want a record updated or removed. We will treat that as an office request, not a marketing opt-out — we are not running ads.",
+    "seo": {
+      "title": "Privacy",
+      "description": "How Caritas Mutare uses information on this website. We do not use advertising cookies."
+    }
   },
   "common": {
     "loading": "Loading...",

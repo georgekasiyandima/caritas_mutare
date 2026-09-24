@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
@@ -6,7 +6,6 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { HelmetProvider } from 'react-helmet-async';
 import App from './App';
-import LoadingSpinner from './components/LoadingSpinner';
 import './i18n/i18n.ts';
 
 // Create a client
@@ -105,9 +104,7 @@ root.render(
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <BrowserRouter>
-            <Suspense fallback={<LoadingSpinner />}>
-              <App />
-            </Suspense>
+            <App />
           </BrowserRouter>
         </ThemeProvider>
       </QueryClientProvider>

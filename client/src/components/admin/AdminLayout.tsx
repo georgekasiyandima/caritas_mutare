@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { Suspense, useEffect, useMemo, useState } from 'react';
 import { Link as RouterLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import {
   AppBar,
@@ -36,6 +36,7 @@ import {
 } from '@mui/icons-material';
 import { useAuth } from '../../contexts/AuthContext';
 import { useToast } from '../../contexts/ToastContext';
+import LoadingSpinner from '../LoadingSpinner';
 
 const DRAWER_WIDTH = 260;
 
@@ -282,7 +283,9 @@ const AdminLayout: React.FC = () => {
           pb: 6,
         }}
       >
-        <Outlet />
+        <Suspense fallback={<LoadingSpinner />}>
+          <Outlet />
+        </Suspense>
       </Box>
     </Box>
   );

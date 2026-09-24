@@ -8,9 +8,9 @@ import { AuthProvider } from './contexts/AuthContext';
 import { ToastProvider } from './contexts/ToastContext';
 import ErrorBoundary from './components/ErrorBoundary';
 import LoadingSpinner from './components/LoadingSpinner';
+import HomePage from './pages/HomePage';
 
-// Lazy-loaded route pages
-const HomePage = lazy(() => import('./pages/HomePage'));
+// Other routes stay lazy so the first visit does not download every page.
 const AboutPage = lazy(() => import('./pages/AboutPage'));
 const ProgramsPage = lazy(() => import('./pages/ProgramsPage'));
 const NewsPage = lazy(() => import('./pages/NewsPage'));
@@ -19,6 +19,7 @@ const DonatePage = lazy(() => import('./pages/DonatePage'));
 const MarathonPage = lazy(() => import('./pages/MarathonPage'));
 const VolunteerPage = lazy(() => import('./pages/VolunteerPage'));
 const ContactPage = lazy(() => import('./pages/ContactPage'));
+const PrivacyPage = lazy(() => import('./pages/PrivacyPage'));
 const LeadershipPage = lazy(() => import('./pages/LeadershipPage'));
 const ProgrammeDetailPage = lazy(() => import('./pages/ProgrammeDetailPage'));
 const AdminLoginPage = lazy(() => import('./pages/admin/AdminLoginPage'));
@@ -39,7 +40,6 @@ function App() {
     <ErrorBoundary>
       <ToastProvider>
         <AuthProvider>
-          <Suspense fallback={<LoadingSpinner />}>
             <Routes>
               {/* Public site – layout declared by the route tree */}
               <Route element={<PublicLayout />}>
@@ -54,11 +54,19 @@ function App() {
                 <Route path="/donate" element={<DonatePage />} />
                 <Route path="/volunteer" element={<VolunteerPage />} />
                 <Route path="/contact" element={<ContactPage />} />
+                <Route path="/privacy" element={<PrivacyPage />} />
                 <Route path="*" element={<NotFoundPage />} />
               </Route>
 
               {/* Login is a special full-screen page – no public or admin chrome */}
-              <Route path="/admin/login" element={<AdminLoginPage />} />
+              <Route
+                path="/admin/login"
+                element={
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <AdminLoginPage />
+                  </Suspense>
+                }
+              />
 
               {/* Admin area */}
               <Route element={<ProtectedRoute />}>
@@ -78,7 +86,6 @@ function App() {
                 </Route>
               </Route>
             </Routes>
-          </Suspense>
         </AuthProvider>
       </ToastProvider>
     </ErrorBoundary>

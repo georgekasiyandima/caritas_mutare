@@ -30,6 +30,12 @@ i18n
       order: ['localStorage', 'navigator', 'htmlTag'],
       caches: ['localStorage'],
     },
+
+    // Bundled translations are ready on import. Do not suspend the whole
+    // tree (that is the full-page "Loading Caritas Mutare…" spinner).
+    react: {
+      useSuspense: false,
+    },
   });
 
 export default i18n;

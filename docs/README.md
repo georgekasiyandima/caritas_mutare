@@ -14,5 +14,7 @@ documentation for the Caritas Mutare web application.
 | **[ANGELA_EMAIL_BRIEF.md](ANGELA_EMAIL_BRIEF.md)** | Plain-language briefing for Angela on email, the domain, and mailbox decisions. Share this with Caritas. |
 | **[ANGELA_GO_LIVE_WITHOUT_UTANDE.md](ANGELA_GO_LIVE_WITHOUT_UTANDE.md)** | How we can go live on Vercel without waiting on Utande. Share this with Caritas. |
 | **[ANGELA_BRIEFING.md](ANGELA_BRIEFING.md)** | Letter to Angela (April 2026 preview). Update before resending — some facts have moved on. |
+| **[ANGELA_WEEKLY_2026-08-31.md](ANGELA_WEEKLY_2026-08-31.md)** | Weekly note (31 Aug 2026). Facts have moved on — www is live. |
+| **[CARITAS_OPS_BRIEFING_2026-09-14.md](CARITAS_OPS_BRIEFING_2026-09-14.md)** | **George’s letter** to Angela / Mrs Muradzikwa: always-on hosting, staff portal, training, credentials, support. Send in his name. |
 
 These docs are the single source of truth for how we build and maintain the platform. Update them when we change direction or add new conventions.

@@ -10,7 +10,8 @@
     "volunteer": "Zvipira",
     "contact": "Taura Nesu",
     "admin": "Admin",
-    "staffSignIn": "Kupinda kwevashandi"
+    "staffSignIn": "Kupinda kwevashandi",
+    "privacy": "Kuvanzika"
   },
   "seo": {
     "home": {
@@ -245,6 +246,26 @@
     "copyright": "© Caritas Mutare. Kodzero dzese dzakachengetedzwa.",
     "copyrightSuffix": "Kodzero dzese dzakachengetedzwa.",
     "poweredBy": "Zvinofambiswa nekutenda, tariro, uye rudo"
+  },
+  "privacy": {
+    "noticeAria": "Chiziviso chekuvanzika",
+    "notice": "Hatishandisi macookie ekushambadzira. Iyi saiti inorangarira mutauro wako pamudziyo uno. Kupinda kwevashandi kunochengetwa chete kana wapinda.",
+    "learnMore": "Dzidza zvimwe",
+    "ok": "Zvakanaka",
+    "overline": "Ruzivo rwako",
+    "title": "Kuvanzika",
+    "lead": "Iyi saiti yakavakirwa kushandira Diocese yeMutare, kwete kutevera vashanyi. Pazasi pane zvatinochega, uye nei.",
+    "cookiesTitle": "Macookie neruzivo rwakachengetwa",
+    "cookiesBody": "Hatishandisi macookie ekushambadzira, ekuongorora, kana esocial media. Saiti yeruzhinji haise cookie inokutevera pawebhu.",
+    "deviceBody": "Sarudzo yako yemutauro (Chirungu kana ChiShona) inochengetwa pamudziyo uno kuti saiti ivhure mumutauro wawakapedzisira kushandisa. Kana wapinda sevashandi, chiratidzo chekupinda chinochengetwa pamudziyo iwoyo kusvika wabuda. Zvese zviri mu browser, kwete mucookie yekushambadzira.",
+    "formsTitle": "Fomu dzekutaura, kuzvipira nekupa",
+    "formsBody": "Kana watumira shoko, chikumbiro chekuzvipira, kana pledge yekupa, tinochengeta zvakanyorwa kuti hofisi ipindure. Hatitengesi ruzivo urwu. Vashandi vanozviona muportal. Mibvunzo yeruzhinji inobatwa pa",
+    "questionsTitle": "Mibvunzo",
+    "questionsBody": "Nyora kune kero imwechete kana uchida kuti rekodhi igadziriswe kana kubviswa. Tichazvibata sechikumbiro chehofisi, kwete kubuda mukushambadzira — hatisi kuita ads.",
+    "seo": {
+      "title": "Kuvanzika",
+      "description": "Mashandisirwo eCaritas Mutare eruzivo pasaiti ino. Hatishandisi macookie ekushambadzira."
+    }
   },
   "common": {
     "loading": "Tiri kurodha...",
