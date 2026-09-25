@@ -12,15 +12,15 @@ import {
   useTheme,
 } from '@mui/material';
 import {
-  DirectionsRun as RunIcon,
-  Email as EmailIcon,
-  Phone as PhoneIcon,
-  Restaurant as KitchenIcon,
-  Route as RouteIcon,
-  Event as EventIcon,
-  Payments as PaymentsIcon,
+  DirectionsRunOutlined as RunIcon,
+  EmailOutlined as EmailIcon,
+  PhoneOutlined as PhoneIcon,
+  RestaurantOutlined as KitchenIcon,
+  RouteOutlined as RouteIcon,
+  EventOutlined as EventIcon,
+  PaymentsOutlined as PaymentsIcon,
   WhatsApp as WhatsAppIcon,
-  ArrowForward as ArrowForwardIcon,
+  ArrowForwardOutlined as ArrowForwardIcon,
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import BackToTopButton from '../components/BackToTopButton';
@@ -33,6 +33,7 @@ import {
   outlineCardHover,
   closingCtaSectionSx,
   SECTION_BG_ALT,
+  iconFeatureSx,
 } from '../lib/sitePageLayout';
 import { orgContact } from '../lib/organisation';
 import { marathonEvent, type MarathonImage } from '../lib/marathonEvent';
@@ -68,19 +69,19 @@ function mailtoRegisterUrl() {
 
 const FACTS = [
   {
-    icon: <RunIcon sx={{ fontSize: 32 }} />,
+    icon: <RunIcon sx={iconFeatureSx} />,
     value: `${marathonEvent.distanceKm} km`,
     label: 'Half marathon',
     color: '#7D0000',
   },
   {
-    icon: <PaymentsIcon sx={{ fontSize: 32 }} />,
+    icon: <PaymentsIcon sx={iconFeatureSx} />,
     value: `USD ${marathonEvent.entryFeeUsd}`,
     label: 'Entry fee',
     color: '#0D5C63',
   },
   {
-    icon: <KitchenIcon sx={{ fontSize: 32 }} />,
+    icon: <KitchenIcon sx={iconFeatureSx} />,
     value: marathonEvent.cause.title,
     label: 'Where your entry goes',
     color: '#B7410E',

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Box, IconButton, useTheme, useMediaQuery } from '@mui/material';
-import { ArrowBack } from '@mui/icons-material';
+import { ArrowBackOutlined as ArrowBack } from '@mui/icons-material';
 
 export interface CarouselImage {
   src: string;

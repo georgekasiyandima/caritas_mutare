@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Container, Stack, Typography, Button, Chip } from '@mui/material';
-import { ArrowForward as ArrowForwardIcon } from '@mui/icons-material';
+import { ArrowForwardOutlined as ArrowForwardIcon } from '@mui/icons-material';
 
 export interface HeroCTA {
   label: string;

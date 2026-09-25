@@ -11,12 +11,12 @@ import {
   useTheme,
 } from '@mui/material';
 import {
-  ArrowForward as ArrowForwardIcon,
+  ArrowForwardOutlined as ArrowForwardIcon,
   RestaurantOutlined,
   VolunteerActivismOutlined,
   Diversity3Outlined,
   GroupsOutlined,
-  FormatQuote as FormatQuoteIcon,
+  FormatQuoteOutlined as FormatQuoteIcon,
 } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -33,11 +33,11 @@ import SEO from '../components/SEO';
 import { useQuery } from 'react-query';
 import type { SxProps, Theme } from '@mui/material';
 import { getActiveProjects, generalImpactImages } from '../lib/caritasProjects';
-import { SECTION_BG_ALT, outlineCard } from '../lib/sitePageLayout';
+import { SECTION_BG_ALT, outlineCard, iconFeatureSx } from '../lib/sitePageLayout';
 import { marathonEvent } from '../lib/marathonEvent';
 import { apiUrl } from '../lib/apiBase';
 
-const thematicIconSx = { fontSize: 32, color: 'info.main' } as const;
+const thematicIconSx = { ...iconFeatureSx, color: 'info.main' } as const;
 const marathonStripSx: SxProps<Theme> = [outlineCard, { overflow: 'hidden' }] as SxProps<Theme>;
 const THEMATIC_KEYS = ['food', 'humanitarian', 'disability', 'community'] as const;
 

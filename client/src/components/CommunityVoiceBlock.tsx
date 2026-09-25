@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Container, Grid, Typography, Stack } from '@mui/material';
-import { FormatQuote as QuoteIcon } from '@mui/icons-material';
+import { FormatQuoteOutlined as QuoteIcon } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
 
 export interface CommunityVoiceProps {

@@ -14,16 +14,16 @@ import {
   Avatar,
 } from '@mui/material';
 import {
-  VolunteerActivism as VolunteerIcon,
-  People as PeopleIcon,
-  School as SchoolIcon,
-  LocalHospital as HealthIcon,
-  Agriculture as AgricultureIcon,
-  Work as WorkIcon,
-  Schedule as ScheduleIcon,
-  Email as EmailIcon,
-  Phone as PhoneIcon,
-  LocationOn as LocationIcon,
+  VolunteerActivismOutlined as VolunteerIcon,
+  PeopleOutlined as PeopleIcon,
+  SchoolOutlined as SchoolIcon,
+  LocalHospitalOutlined as HealthIcon,
+  AgricultureOutlined as AgricultureIcon,
+  WorkOutline as WorkIcon,
+  ScheduleOutlined as ScheduleIcon,
+  EmailOutlined as EmailIcon,
+  PhoneOutlined as PhoneIcon,
+  LocationOnOutlined as LocationIcon,
 } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
 import BackToTopButton from '../components/BackToTopButton';
@@ -34,6 +34,8 @@ import {
   outlineCard,
   outlineCardHover,
   formCardHeader,
+  iconChromeSx,
+  iconFeatureSx,
 } from '../lib/sitePageLayout';
 import { orgContact } from '../lib/organisation';
 import { apiPost, ApiError } from '../lib/api';
@@ -78,42 +80,42 @@ const VolunteerPage: React.FC = () => {
 
   const volunteerOpportunities = [
     {
-      icon: <SchoolIcon sx={{ fontSize: 40, color: 'primary.main' }} />,
+      icon: <SchoolIcon sx={{ ...iconFeatureSx, color: 'primary.main' }} />,
       title: 'Education Projects',
       description: 'Help with tutoring, literacy projects, and educational workshops for children and adults.',
       skills: ['Teaching', 'Mentoring', 'Communication'],
       timeCommitment: '2-4 hours/week'
     },
     {
-      icon: <HealthIcon sx={{ fontSize: 40, color: 'error.main' }} />,
+      icon: <HealthIcon sx={{ ...iconFeatureSx, color: 'error.main' }} />,
       title: 'Healthcare Support',
       description: 'Assist with health campaigns, medical outreach, and community health education.',
       skills: ['Healthcare', 'First Aid', 'Health Education'],
       timeCommitment: '4-8 hours/week'
     },
     {
-      icon: <AgricultureIcon sx={{ fontSize: 40, color: 'success.main' }} />,
+      icon: <AgricultureIcon sx={{ ...iconFeatureSx, color: 'success.main' }} />,
       title: 'Agricultural Projects',
       description: 'Support farming initiatives, food security projects, and sustainable agriculture.',
       skills: ['Farming', 'Gardening', 'Sustainability'],
       timeCommitment: '3-6 hours/week'
     },
     {
-      icon: <PeopleIcon sx={{ fontSize: 40, color: 'warning.main' }} />,
+      icon: <PeopleIcon sx={{ ...iconFeatureSx, color: 'warning.main' }} />,
       title: 'Community Outreach',
       description: 'Engage with community members, organize events, and support social projects.',
       skills: ['Community Engagement', 'Event Planning', 'Social Work'],
       timeCommitment: '2-5 hours/week'
     },
     {
-      icon: <WorkIcon sx={{ fontSize: 40, color: 'info.main' }} />,
+      icon: <WorkIcon sx={{ ...iconFeatureSx, color: 'info.main' }} />,
       title: 'Administrative Support',
       description: 'Help with office tasks, data entry, communications, and program coordination.',
       skills: ['Administration', 'Data Entry', 'Communication'],
       timeCommitment: '3-6 hours/week'
     },
     {
-      icon: <VolunteerIcon sx={{ fontSize: 40, color: 'secondary.main' }} />,
+      icon: <VolunteerIcon sx={{ ...iconFeatureSx, color: 'secondary.main' }} />,
       title: 'Soup Kitchen',
       description: 'Prepare and serve meals, organize food distribution, and support vulnerable families.',
       skills: ['Food Service', 'Organization', 'Compassion'],
@@ -188,7 +190,7 @@ const VolunteerPage: React.FC = () => {
                   mb: 1.5,
                 }}
               >
-                <VolunteerIcon sx={{ fontSize: 32 }} />
+                <VolunteerIcon sx={iconFeatureSx} />
               </Avatar>
               <Typography
                 variant="h4"
@@ -341,7 +343,7 @@ const VolunteerPage: React.FC = () => {
                         </Box>
                       </Box>
                       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 'auto' }}>
-                        <ScheduleIcon sx={{ fontSize: 16, color: 'text.secondary' }} />
+                        <ScheduleIcon sx={{ ...iconChromeSx, color: 'text.secondary' }} />
                         <Typography variant="body2" color="text.secondary">
                           {opportunity.timeCommitment}
       </Typography>
@@ -363,7 +365,7 @@ const VolunteerPage: React.FC = () => {
             }}>
               <Box sx={formCardHeader}>
                 <Avatar sx={{ bgcolor: 'rgba(13, 92, 99, 0.12)', width: 56, height: 56, mx: 'auto', mb: 2, color: 'info.dark' }}>
-                  <VolunteerIcon sx={{ fontSize: 28 }} />
+                  <VolunteerIcon sx={iconFeatureSx} />
                 </Avatar>
                 <Typography variant="h5" sx={{ fontFamily: '"Merriweather", Georgia, serif', fontWeight: 700, mb: 0.5 }}>
                   Join our team

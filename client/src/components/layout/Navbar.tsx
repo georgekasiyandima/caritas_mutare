@@ -20,8 +20,8 @@ import {
 import {
   Menu as MenuIcon,
   Close as CloseIcon,
-  ArrowForward as ArrowForwardIcon,
-  ArrowBack as ArrowBackIcon,
+  ArrowForwardOutlined as ArrowForwardIcon,
+  ArrowBackOutlined as ArrowBackIcon,
   FavoriteBorder as HeartIcon,
   AdminPanelSettingsOutlined as AdminIcon,
 } from '@mui/icons-material';

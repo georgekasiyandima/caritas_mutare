@@ -3,6 +3,22 @@ import type { SxProps, Theme } from '@mui/material/styles';
 /** Matches homepage alternate section wash */
 export const SECTION_BG_ALT = '#f3f1ed';
 
+/**
+ * Public-site icon sizes. Do not invent a fourth.
+ * Chrome: rails, footer, dense captions.
+ * Body: nav, buttons, list rows (MUI IconButton default).
+ * Feature: thematic cards and page marks.
+ */
+export const ICON_SIZE = {
+  chrome: 20,
+  body: 24,
+  feature: 32,
+} as const;
+
+export const iconChromeSx = { fontSize: ICON_SIZE.chrome } as const;
+export const iconBodySx = { fontSize: ICON_SIZE.body } as const;
+export const iconFeatureSx = { fontSize: ICON_SIZE.feature } as const;
+
 export const pageRoot: SxProps<Theme> = {
   minHeight: '100vh',
   bgcolor: 'background.default',

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Box, IconButton, Tooltip, useMediaQuery, useTheme } from '@mui/material';
-import { Facebook, Instagram, Email } from '@mui/icons-material';
+import { Facebook, Instagram, EmailOutlined as Email } from '@mui/icons-material';
+import { iconChromeSx } from '../lib/sitePageLayout';
 import { mockContactInfo } from '../data/mockData';
 
 const SocialRail: React.FC = () => {
@@ -12,7 +13,7 @@ const SocialRail: React.FC = () => {
       key: 'facebook',
       label: 'Facebook',
       href: mockContactInfo.social_media.facebook,
-      icon: <Facebook sx={{ fontSize: 20 }} />,
+      icon: <Facebook sx={iconChromeSx} />,
     },
     {
       key: 'twitter',
@@ -41,13 +42,13 @@ const SocialRail: React.FC = () => {
       key: 'instagram',
       label: 'Instagram',
       href: mockContactInfo.social_media.instagram,
-      icon: <Instagram sx={{ fontSize: 20 }} />,
+      icon: <Instagram sx={iconChromeSx} />,
     },
     {
       key: 'email',
       label: 'Email',
       href: `mailto:${mockContactInfo.email.general}`,
-      icon: <Email sx={{ fontSize: 20 }} />,
+      icon: <Email sx={iconChromeSx} />,
     },
     {
       key: 'youtube',

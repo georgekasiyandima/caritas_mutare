@@ -1,7 +1,8 @@
 import React from 'react';
 import { Button, Box, Avatar, Typography, useTheme } from '@mui/material';
-import { Home as HomeIcon } from '@mui/icons-material';
+import { HomeOutlined as HomeIcon } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
+import { iconBodySx } from '../lib/sitePageLayout';
 
 interface ReturnHomeButtonProps {
   variant?: 'floating' | 'inline' | 'compact';
@@ -58,7 +59,7 @@ const ReturnHomeButton: React.FC<ReturnHomeButtonProps> = ({
       }}
       aria-label="Return to home"
     >
-      <HomeIcon sx={{ fontSize: 24 }} />
+      <HomeIcon sx={iconBodySx} />
     </Button>
   );
 

@@ -11,7 +11,7 @@ import {
   Stack,
 } from '@mui/material';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowBack as ArrowBackIcon, ArrowForward as ArrowForwardIcon } from '@mui/icons-material';
+import { ArrowBackOutlined as ArrowBackIcon, ArrowForwardOutlined as ArrowForwardIcon } from '@mui/icons-material';
 import BackToTopButton from '../components/BackToTopButton';
 import HeroBanner from '../components/HeroBanner';
 import SEO from '../components/SEO';

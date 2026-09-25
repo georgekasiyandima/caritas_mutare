@@ -10,10 +10,10 @@ import {
   Stack,
 } from '@mui/material';
 import {
-  Construction as ConstructionIcon,
-  Schedule as ScheduleIcon,
-  NotificationsActive as NotificationIcon,
-  ArrowBack as ArrowBackIcon,
+  ConstructionOutlined as ConstructionIcon,
+  ScheduleOutlined as ScheduleIcon,
+  NotificationsNone as NotificationIcon,
+  ArrowBackOutlined as ArrowBackIcon,
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Container, Grid, Stack, Typography, Button, LinearProgress } from '@mui/material';
 import {
-  ArrowForward as ArrowIcon,
+  ArrowForwardOutlined as ArrowIcon,
   CheckCircleOutline as CheckIcon,
   AccountBalanceWalletOutlined as WalletIcon,
   ReceiptLongOutlined as ReceiptIcon,

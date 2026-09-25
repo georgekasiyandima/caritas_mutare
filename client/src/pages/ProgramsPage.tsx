@@ -15,7 +15,7 @@ import {
   Chip,
   useTheme,
 } from '@mui/material';
-import { ArrowForward as ArrowForwardIcon } from '@mui/icons-material';
+import { ArrowForwardOutlined as ArrowForwardIcon } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import BackToTopButton from '../components/BackToTopButton';

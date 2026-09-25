@@ -15,11 +15,11 @@ import {
   Instagram as InstagramIcon,
   YouTube as YouTubeIcon,
   WhatsApp as WhatsAppIcon,
-  Email as EmailIcon,
-  Phone as PhoneIcon,
-  LocationOn as LocationIcon,
-  Schedule as ScheduleIcon,
-  ArrowForward as ArrowForwardIcon,
+  EmailOutlined as EmailIcon,
+  PhoneOutlined as PhoneIcon,
+  LocationOnOutlined as LocationIcon,
+  ScheduleOutlined as ScheduleIcon,
+  ArrowForwardOutlined as ArrowForwardIcon,
 } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';

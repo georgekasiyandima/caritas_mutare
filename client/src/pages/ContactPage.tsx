@@ -16,12 +16,12 @@ import {
   Avatar,
 } from '@mui/material';
 import {
-  LocationOn as LocationIcon,
-  Phone as PhoneIcon,
-  Email as EmailIcon,
-  Map as MapIcon,
-  Schedule as ScheduleIcon,
-  OpenInNew as OpenInNewIcon,
+  LocationOnOutlined as LocationIcon,
+  PhoneOutlined as PhoneIcon,
+  EmailOutlined as EmailIcon,
+  MapOutlined as MapIcon,
+  ScheduleOutlined as ScheduleIcon,
+  OpenInNewOutlined as OpenInNewIcon,
 } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
 import BackToTopButton from '../components/BackToTopButton';
@@ -34,6 +34,7 @@ import {
   outlineCard,
   outlineCardHover,
   formCardHeader,
+  iconChromeSx,
 } from '../lib/sitePageLayout';
 import { orgContact } from '../lib/organisation';
 import { apiPost, ApiError } from '../lib/api';
@@ -286,7 +287,7 @@ const ContactPage: React.FC = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                     size="small"
-                    endIcon={<OpenInNewIcon sx={{ fontSize: 14 }} />}
+                    endIcon={<OpenInNewIcon sx={iconChromeSx} />}
                     sx={{ textTransform: 'none', fontWeight: 600, color: 'primary.main' }}
                   >
                     Directions

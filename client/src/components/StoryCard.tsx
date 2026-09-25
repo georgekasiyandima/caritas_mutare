@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Card, CardActionArea, Chip, Stack, Typography } from '@mui/material';
-import { ArrowForward as ArrowIcon } from '@mui/icons-material';
+import { ArrowForwardOutlined as ArrowIcon } from '@mui/icons-material';
 
 export type StoryCardAspect = '4/3' | '16/9' | '16/10' | '1/1';
 

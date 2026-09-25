@@ -18,10 +18,11 @@ import {
 import {
   WhatsApp as WhatsAppIcon,
   Close as CloseIcon,
-  Send as SendIcon,
-  Phone as PhoneIcon,
-  Message as MessageIcon,
+  SendOutlined as SendIcon,
+  PhoneOutlined as PhoneIcon,
+  MessageOutlined as MessageIcon,
 } from '@mui/icons-material';
+import { iconFeatureSx } from '../lib/sitePageLayout';
 
 interface WhatsAppWidgetProps {
   phoneNumber?: string;
@@ -148,7 +149,7 @@ const WhatsAppWidget: React.FC<WhatsAppWidgetProps> = ({
                 backgroundColor: 'primary.main',
               }}
             >
-              <WhatsAppIcon sx={{ fontSize: 40 }} />
+              <WhatsAppIcon sx={iconFeatureSx} />
             </Avatar>
             <Typography variant="h6" gutterBottom>
               Get in Touch with Us

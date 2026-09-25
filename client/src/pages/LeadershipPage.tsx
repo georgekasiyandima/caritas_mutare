@@ -12,9 +12,9 @@ import {
   Stack,
 } from '@mui/material';
 import {
-  Person as PersonIcon,
-  Church as ChurchIcon,
-  Handshake as PartnershipIcon,
+  PersonOutlined as PersonIcon,
+  ChurchOutlined as ChurchIcon,
+  HandshakeOutlined as PartnershipIcon,
 } from '@mui/icons-material';
 import BackToTopButton from '../components/BackToTopButton';
 import { partnerLogosForSite, technicalSisterOrgs } from '../lib/caritasProjects';
@@ -28,6 +28,7 @@ import {
   outlineCard,
   outlineCardHover,
   sectionVerticalPadding,
+  iconFeatureSx,
 } from '../lib/sitePageLayout';
 
 const leadCardSx = { ...outlineCard, ...outlineCardHover };
@@ -132,15 +133,15 @@ const LeadershipPage: React.FC = () => {
   const getCategoryIcon = (category: string) => {
     switch (category) {
       case 'director':
-        return <PersonIcon sx={{ fontSize: 40, color: 'primary.main' }} />;
+        return <PersonIcon sx={{ ...iconFeatureSx, color: 'primary.main' }} />;
       case 'bishop':
-        return <ChurchIcon sx={{ fontSize: 40, color: 'primary.main' }} />;
+        return <ChurchIcon sx={{ ...iconFeatureSx, color: 'primary.main' }} />;
       case 'management':
-        return <PersonIcon sx={{ fontSize: 40, color: 'primary.main' }} />;
+        return <PersonIcon sx={{ ...iconFeatureSx, color: 'primary.main' }} />;
       case 'partner':
-        return <PartnershipIcon sx={{ fontSize: 40, color: 'primary.main' }} />;
+        return <PartnershipIcon sx={{ ...iconFeatureSx, color: 'primary.main' }} />;
       default:
-        return <PersonIcon sx={{ fontSize: 40, color: 'primary.main' }} />;
+        return <PersonIcon sx={{ ...iconFeatureSx, color: 'primary.main' }} />;
     }
   };
 

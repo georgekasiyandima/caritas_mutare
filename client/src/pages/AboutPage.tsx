@@ -17,7 +17,7 @@ import {
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { ArrowForward as ArrowForwardIcon, FormatQuote as FormatQuoteIcon } from '@mui/icons-material';
+import { ArrowForwardOutlined as ArrowForwardIcon, FormatQuoteOutlined as FormatQuoteIcon } from '@mui/icons-material';
 import HeroBanner from '../components/HeroBanner';
 import SEO from '../components/SEO';
 import PartnerLogoStrip from '../components/PartnerLogoStrip';

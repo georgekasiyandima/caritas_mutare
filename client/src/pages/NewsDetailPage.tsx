@@ -3,10 +3,10 @@ import { Container, Typography, Box, CircularProgress, Grid, Button, Stack, Divi
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import {
-  ArrowBack as ArrowBackIcon,
-  Favorite as HeartIcon,
-  Share as ShareIcon,
-  ContentCopy as CopyIcon,
+  ArrowBackOutlined as ArrowBackIcon,
+  FavoriteBorder as HeartIcon,
+  ShareOutlined as ShareIcon,
+  ContentCopyOutlined as CopyIcon,
 } from '@mui/icons-material';
 import HeroBanner from '../components/HeroBanner';
 import SEO from '../components/SEO';

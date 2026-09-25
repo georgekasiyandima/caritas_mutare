@@ -21,21 +21,21 @@ import {
   Avatar,
 } from '@mui/material';
 import {
-  Favorite as HeartIcon,
-  Security as SecurityIcon,
-  School as SchoolIcon,
-  LocalHospital as HealthIcon,
-  Agriculture as AgricultureIcon,
-  People as PeopleIcon,
-  Restaurant as RestaurantIcon,
-  CreditCard as CardIcon,
-  AccountBalance as BankIcon,
-  PhoneAndroid as MobileIcon,
-  Verified as VerifiedIcon,
-  Email as EmailIcon,
-  Phone as PhoneIcon,
-  LocationOn as LocationIcon,
-  ReceiptLong as ReceiptIcon,
+  FavoriteBorder as HeartIcon,
+  SecurityOutlined as SecurityIcon,
+  SchoolOutlined as SchoolIcon,
+  LocalHospitalOutlined as HealthIcon,
+  AgricultureOutlined as AgricultureIcon,
+  PeopleOutlined as PeopleIcon,
+  RestaurantOutlined as RestaurantIcon,
+  CreditCardOutlined as CardIcon,
+  AccountBalanceOutlined as BankIcon,
+  PhoneAndroidOutlined as MobileIcon,
+  VerifiedOutlined as VerifiedIcon,
+  EmailOutlined as EmailIcon,
+  PhoneOutlined as PhoneIcon,
+  LocationOnOutlined as LocationIcon,
+  ReceiptLongOutlined as ReceiptIcon,
   LockOutlined as LockIcon,
 } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
@@ -47,6 +47,8 @@ import PartnerLogoStrip from '../components/PartnerLogoStrip';
 import { generalImpactImages } from '../lib/caritasProjects';
 import type { SxProps, Theme } from '@mui/material';
 import {
+  iconChromeSx,
+  iconFeatureSx,
   pageRoot,
   outlineCard,
   outlineCardHover,
@@ -107,35 +109,35 @@ const DonatePage: React.FC = () => {
 
   const impactTiers = [
     {
-      icon: <RestaurantIcon sx={{ fontSize: 32 }} />,
+      icon: <RestaurantIcon sx={iconFeatureSx} />,
       color: '#B7410E',
       amount: '$25',
       title: 'A shared meal',
       description: 'Helps supply ingredients and fuel for a Soup Kitchen service, feeding those who come through the door that day.',
     },
     {
-      icon: <SchoolIcon sx={{ fontSize: 32 }} />,
+      icon: <SchoolIcon sx={iconFeatureSx} />,
       color: '#2A6CC9',
       amount: '$50',
       title: 'Learning materials',
       description: 'Contributes to textbooks, exercise books and basic supplies for pre-school and vulnerable learners we support.',
     },
     {
-      icon: <HealthIcon sx={{ fontSize: 32 }} />,
+      icon: <HealthIcon sx={iconFeatureSx} />,
       color: '#C2185B',
       amount: '$100',
       title: 'Reach & inclusion',
       description: 'Supports outreach, assistive aids and referrals that keep vulnerable families connected to care.',
     },
     {
-      icon: <AgricultureIcon sx={{ fontSize: 32 }} />,
+      icon: <AgricultureIcon sx={iconFeatureSx} />,
       color: '#2E7D32',
       amount: '$200',
       title: 'Seeds and tools',
       description: 'Goes toward inputs and training that help smallholder farmers — including persons with disabilities — grow resilient livelihoods.',
     },
     {
-      icon: <PeopleIcon sx={{ fontSize: 32 }} />,
+      icon: <PeopleIcon sx={iconFeatureSx} />,
       color: '#0D5C63',
       amount: '$500+',
       title: 'Community projects',
@@ -231,7 +233,7 @@ const DonatePage: React.FC = () => {
           <Card elevation={0} sx={{ ...outlineCard, textAlign: 'center', overflow: 'hidden' }}>
             <Box sx={{ bgcolor: 'rgba(46,125,50,0.08)', py: 5, px: 3 }}>
               <Avatar sx={{ bgcolor: 'success.main', width: 72, height: 72, mx: 'auto', mb: 2 }}>
-                <HeartIcon sx={{ fontSize: 36 }} />
+                <HeartIcon sx={iconFeatureSx} />
               </Avatar>
               <Typography variant="h4" sx={{ fontFamily: '"Merriweather", Georgia, serif', fontWeight: 700, mb: 1 }}>
                 Thank you
@@ -581,11 +583,11 @@ const DonatePage: React.FC = () => {
                     }}
                   >
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75 }}>
-                      <LockIcon sx={{ fontSize: 16 }} />
+                      <LockIcon sx={iconChromeSx} />
                       <Typography variant="caption">Your details stay private</Typography>
                     </Box>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75 }}>
-                      <ReceiptIcon sx={{ fontSize: 16 }} />
+                      <ReceiptIcon sx={iconChromeSx} />
                       <Typography variant="caption">Receipts provided where applicable</Typography>
                     </Box>
                   </Stack>
@@ -647,7 +649,7 @@ const DonatePage: React.FC = () => {
                         'Annual reports shared with partners and donors',
                       ].map((line) => (
                         <Box key={line} sx={{ display: 'flex', gap: 1, alignItems: 'flex-start' }}>
-                          <VerifiedIcon sx={{ fontSize: 18, color: 'success.main', mt: 0.25 }} />
+                          <VerifiedIcon sx={{ ...iconChromeSx, color: 'success.main', mt: 0.25 }} />
                           <Typography variant="body2">{line}</Typography>
                         </Box>
                       ))}
