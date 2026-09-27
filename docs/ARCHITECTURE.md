@@ -60,7 +60,7 @@ the `lazy(...)` import and the `<Route>`.
 `client/src/lib/sitePageLayout.ts` holds the shared MUI style tokens:
 `pageRoot`, `pageHero`, `pageOverline`, `pageH1`, `pageLead`, `outlineCard`,
 `outlineCardHover`, `sectionVerticalPadding`, `formCardHeader`,
-`closingCtaSectionSx(theme)`, the `SECTION_BG_ALT` wash, and public icon
+`closingCtaSectionSx(theme)`, `containedCtaSx`, the `SECTION_BG_ALT` wash, and public icon
 sizes (`ICON_SIZE`, `iconChromeSx` 20, `iconBodySx` 24, `iconFeatureSx` 32).
 Public pages use MUI **Outlined** icons; the staff portal may stay Filled.
 

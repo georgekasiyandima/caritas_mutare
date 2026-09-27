@@ -91,6 +91,19 @@ export const formCardHeader: SxProps<Theme> = {
   borderColor: 'divider',
 };
 
+/** Primary pill button on public forms and story actions. Maroon, not teal. */
+export const containedCtaSx: SxProps<Theme> = {
+  textTransform: 'none',
+  py: 1.75,
+  borderRadius: 999,
+  fontSize: '1rem',
+  fontWeight: 700,
+  boxShadow: 'none',
+  '&:hover': { boxShadow: '0 4px 12px rgba(125, 0, 0, 0.22)' },
+  '@media (prefers-reduced-motion: reduce)': { transition: 'none' },
+  transition: 'box-shadow .2s ease',
+};
+
 export function closingCtaSectionSx(theme: Theme): SxProps<Theme> {
   return {
     background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%)`,

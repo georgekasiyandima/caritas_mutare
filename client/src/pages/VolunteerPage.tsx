@@ -13,6 +13,7 @@ import {
   Chip,
   Avatar,
 } from '@mui/material';
+import type { SxProps, Theme } from '@mui/material';
 import {
   VolunteerActivismOutlined as VolunteerIcon,
   PeopleOutlined as PeopleIcon,
@@ -36,12 +37,14 @@ import {
   formCardHeader,
   iconChromeSx,
   iconFeatureSx,
+  containedCtaSx,
 } from '../lib/sitePageLayout';
 import { orgContact } from '../lib/organisation';
 import { apiPost, ApiError } from '../lib/api';
 import { Link as RouterLink } from 'react-router-dom';
 
 const volCardSx = { ...outlineCard, ...outlineCardHover };
+const volunteerSubmitSx: SxProps<Theme> = [containedCtaSx, { mt: 3 }] as SxProps<Theme>;
 
 const EMPTY_FORM = {
   full_name: '',
@@ -494,18 +497,7 @@ const VolunteerPage: React.FC = () => {
               size="large"
               fullWidth
                     disabled={isSubmitting}
-                    sx={{
-                      textTransform: 'none',
-                      py: 1.75,
-                      mt: 3,
-                      borderRadius: 999,
-                      fontSize: '1rem',
-                      fontWeight: 700,
-                      boxShadow: 'none',
-                      '&:hover': { boxShadow: '0 4px 12px rgba(13,92,99,0.18)' },
-                      '@media (prefers-reduced-motion: reduce)': { transition: 'none' },
-                      transition: 'box-shadow .2s ease',
-                    }}
+                    sx={volunteerSubmitSx}
                   >
                     {isSubmitting ? (
                       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>

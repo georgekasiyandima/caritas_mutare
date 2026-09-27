@@ -185,7 +185,11 @@
     "title": "Nhau neZvitsva",
     "readMore": "Verenga Zvimwe",
     "publishedOn": "Yakabudiswa musi wa",
-    "noArticles": "Hapana zvinyorwa zvinowanikwa"
+    "noArticles": "Hapana zvinyorwa zvinowanikwa",
+    "errorTitle": "Nhau hadzikuwanikwa parizvino",
+    "error": "Haitikwanise kuunza nhau parizvino. Edzai zvakare gare gare.",
+    "emptyTitle": "Hapana nyaya dzakabudiswa",
+    "emptyBody": "Nyaya itsva kubva muzvirongwa zvedu dzichabuda pano munguva pfupi. Parizvino, ongororai zvirongwa zvedu kana kutaura nehofisi."
   },
   "donate": {
     "title": "Tsigira Chinangwa Chedu",
@@ -220,6 +224,16 @@
   "contact": {
     "title": "Taura Nesu",
     "description": "Taura nesu kuti uwane rumwe ruzivo kana kuti ubatanidzwe",
+    "overline": "Tibatei",
+    "visitTitle": "Hofisi yedu",
+    "hoursTitle": "Nguva yehofisi",
+    "mapTitle": "Nzvimbo yehofisi",
+    "directions": "Nzira",
+    "formTitle": "Tumira shoko",
+    "seo": {
+      "title": "Taura naCaritas Mutare",
+      "description": "Nyora kuna Caritas Mutare pa admin@caritasmutare.org kana kushandisa fomu. Hofisi: Mai Maria Village, Dangamvura, Mutare."
+    },
     "address": "Kero",
     "phone": "Nhare",
     "tollFree": "Nhare isina mutero",

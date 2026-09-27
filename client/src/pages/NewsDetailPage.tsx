@@ -1,5 +1,6 @@
 import React from 'react';
-import { Container, Typography, Box, CircularProgress, Grid, Button, Stack, Divider } from '@mui/material';
+import { Container, Typography, Box, Grid, Button, Stack, Divider } from '@mui/material';
+import type { SxProps, Theme } from '@mui/material';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import {
@@ -10,12 +11,21 @@ import {
 } from '@mui/icons-material';
 import HeroBanner from '../components/HeroBanner';
 import SEO from '../components/SEO';
+import LoadingSpinner from '../components/LoadingSpinner';
 import {
   SECTION_BG_ALT,
   pageRoot,
   outlineCard,
+  containedCtaSx,
 } from '../lib/sitePageLayout';
 import { apiUrl } from '../lib/apiBase';
+
+const missingSx: SxProps<Theme> = [pageRoot, { pt: { xs: 14, md: 16 } }] as SxProps<Theme>;
+const articleCardSx: SxProps<Theme> = [
+  outlineCard,
+  { p: { xs: 3, md: 4 }, mb: 4 },
+] as SxProps<Theme>;
+const supportSx: SxProps<Theme> = [containedCtaSx, { px: 3, py: 1.1 }] as SxProps<Theme>;
 
 interface GalleryItem {
   src: string;
@@ -54,9 +64,9 @@ const NewsDetailPage: React.FC = () => {
 
   if (isLoading) {
     return (
-      <Box sx={{ ...pageRoot, pt: { xs: 14, md: 16 } }}>
-        <Container maxWidth="md" sx={{ py: 10, textAlign: 'center' }}>
-          <CircularProgress />
+      <Box sx={missingSx}>
+        <Container maxWidth="md" sx={{ py: 6 }}>
+          <LoadingSpinner />
         </Container>
       </Box>
     );
@@ -64,7 +74,7 @@ const NewsDetailPage: React.FC = () => {
 
   if (error || !data?.article) {
     return (
-      <Box sx={{ ...pageRoot, pt: { xs: 14, md: 16 } }}>
+      <Box sx={missingSx}>
         <Container maxWidth="md" sx={{ py: 6, textAlign: 'center' }}>
           <Typography variant="h5" color="error" sx={{ mb: 2, fontFamily: '"Merriweather", Georgia, serif', fontWeight: 700 }}>
             Article not found
@@ -139,7 +149,7 @@ const NewsDetailPage: React.FC = () => {
 
       <Box sx={{ bgcolor: SECTION_BG_ALT, py: { xs: 5, md: 7 }, mt: 2 }}>
         <Container maxWidth="md">
-          <Box sx={{ ...outlineCard, p: { xs: 3, md: 4 }, mb: 4 }}>
+          <Box sx={articleCardSx}>
             <Typography variant="body1" sx={{ lineHeight: 1.9, whiteSpace: 'pre-wrap', fontSize: '1.05rem' }}>
               {article.content_en}
             </Typography>
@@ -173,15 +183,7 @@ const NewsDetailPage: React.FC = () => {
                 onClick={() => navigate('/donate')}
                 variant="contained"
                 startIcon={<HeartIcon />}
-                sx={{
-                  textTransform: 'none',
-                  borderRadius: 999,
-                  fontWeight: 700,
-                  px: 3,
-                  py: 1.1,
-                  boxShadow: 'none',
-                  '&:hover': { boxShadow: '0 4px 12px rgba(13,92,99,0.18)' },
-                }}
+                sx={supportSx}
               >
                 Support this work
               </Button>

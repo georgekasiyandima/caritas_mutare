@@ -10,11 +10,10 @@ import {
   Alert,
   CircularProgress,
   Box,
-  Chip,
-  useTheme,
-  useMediaQuery,
-  Avatar,
+  Divider,
+  Stack,
 } from '@mui/material';
+import type { SxProps, Theme } from '@mui/material';
 import {
   LocationOnOutlined as LocationIcon,
   PhoneOutlined as PhoneIcon,
@@ -25,21 +24,30 @@ import {
 } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
 import BackToTopButton from '../components/BackToTopButton';
+import HeroBanner from '../components/HeroBanner';
+import SEO from '../components/SEO';
 import {
   pageRoot,
-  pageHero,
-  pageOverline,
-  pageH1,
-  pageLead,
   outlineCard,
-  outlineCardHover,
   formCardHeader,
+  iconBodySx,
   iconChromeSx,
+  containedCtaSx,
+  sectionVerticalPadding,
 } from '../lib/sitePageLayout';
 import { orgContact } from '../lib/organisation';
 import { apiPost, ApiError } from '../lib/api';
 
-const contactCardSx = { ...outlineCard, ...outlineCardHover };
+const heroImageSource = {
+  src: '/images/programs/serarp/serarp-citizen-monitoring-group.png',
+  alt: 'Caritas Mutare community members gathered together in the Diocese of Mutare',
+  objectPosition: 'center 35%',
+};
+
+const visitCardSx: SxProps<Theme> = [outlineCard, { mb: 3 }] as SxProps<Theme>;
+const formCardSx: SxProps<Theme> = [outlineCard, { overflow: 'hidden' }] as SxProps<Theme>;
+const submitSx: SxProps<Theme> = [containedCtaSx, { mt: 3 }] as SxProps<Theme>;
+const infoIconSx: SxProps<Theme> = [iconBodySx, { color: 'info.main', mt: 0.25 }] as SxProps<Theme>;
 
 const EMPTY_FORM = {
   name: '',
@@ -66,8 +74,6 @@ function fieldErrorsFromApi(details: unknown): Record<string, string> {
 
 const ContactPage: React.FC = () => {
   const { t } = useTranslation();
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [formData, setFormData] = useState(EMPTY_FORM);
   const [honeypot, setHoneypot] = useState('');
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
@@ -118,169 +124,134 @@ const ContactPage: React.FC = () => {
     }
   };
 
+  const linkSx = {
+    color: 'inherit',
+    textDecoration: 'none',
+    '&:hover': { color: 'primary.main' },
+  } as const;
+
   return (
     <Box sx={pageRoot}>
-      <Box sx={pageHero}>
-        <Container maxWidth="lg">
-          <Box sx={{ textAlign: 'center', maxWidth: 720, mx: 'auto' }}>
-            <Typography variant="overline" sx={{ ...pageOverline, display: 'block', mb: 1 }}>
-              Get in touch
-            </Typography>
-            <Typography variant={isMobile ? 'h3' : 'h2'} component="h1" sx={{ ...pageH1, mb: 2 }}>
-              {t('contact.title')}
-            </Typography>
-            <Typography variant="body1" sx={{ ...pageLead, mx: 'auto' }}>
-              {t('contact.description')}
-            </Typography>
-          </Box>
-        </Container>
-      </Box>
+      <SEO
+        title={t('contact.seo.title', 'Contact Caritas Mutare')}
+        description={t(
+          'contact.seo.description',
+          'Write to Caritas Mutare at admin@caritasmutare.org or use the form. Office: Mai Maria Village, Dangamvura, Mutare.'
+        )}
+        image={heroImageSource.src}
+        canonicalPath="/contact"
+      />
 
-      <Container maxWidth="lg" sx={{ py: { xs: 5, md: 7 } }}>
+      <HeroBanner
+        image={heroImageSource.src}
+        imageAlt={heroImageSource.alt}
+        imagePosition={heroImageSource.objectPosition}
+        size="standard"
+        overlay={0.58}
+        eyebrow={t('contact.overline', 'Get in touch')}
+        title={t('contact.title')}
+        subtitle={t('contact.description')}
+      />
 
-      <Grid container spacing={6}>
-        {/* Contact Information */}
-        <Grid item xs={12} md={4}>
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-            {/* Address Card */}
-            <Card elevation={0} sx={contactCardSx}>
-              <CardContent sx={{ p: 3 }}>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
-                  <Avatar sx={{ bgcolor: 'rgba(13, 92, 99, 0.12)', color: 'info.dark' }}>
-                    <LocationIcon />
-                  </Avatar>
-                  <Typography variant="h6" sx={{ fontWeight: 600 }}>
-                    {t('contact.address')}
-                  </Typography>
-                </Box>
-                <Typography variant="body1" color="text.secondary" sx={{ lineHeight: 1.6 }}>
-                  {orgContact.address.lines.map((line, idx) => (
-                    <React.Fragment key={line}>
-                      {line}
-                      {idx < orgContact.address.lines.length - 1 && <br />}
-                    </React.Fragment>
-                  ))}
-                </Typography>
-                <Chip
-                  label="Mai Maria Village"
-                  size="small"
-                  color="primary"
-                  sx={{ mt: 2 }}
-                />
-              </CardContent>
-            </Card>
-
-            {/* Phone Card */}
-            <Card elevation={0} sx={contactCardSx}>
-              <CardContent sx={{ p: 3 }}>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
-                  <Avatar sx={{ bgcolor: 'rgba(13, 92, 99, 0.12)', color: 'info.dark' }}>
-                    <PhoneIcon />
-                  </Avatar>
-                  <Typography variant="h6" sx={{ fontWeight: 600 }}>
-                    {t('contact.phone')}
-                  </Typography>
-                </Box>
-                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-                  <Typography variant="body1" color="text.secondary">
-                    <strong>Main:</strong>{' '}
-                    <Box
-                      component="a"
-                      href={`tel:${orgContact.phones.main.replace(/\s/g, '')}`}
-                      sx={{ color: 'inherit', textDecoration: 'none', '&:hover': { color: 'primary.main' } }}
-                    >
-                      {orgContact.phones.main}
-                    </Box>
-                  </Typography>
-                  <Typography variant="body1" color="text.secondary">
-                    <strong>{t('contact.tollFree')}:</strong>{' '}
-                    <Box
-                      component="a"
-                      href={`tel:${orgContact.phones.tollFree.replace(/\s/g, '')}`}
-                      sx={{ color: 'inherit', textDecoration: 'none', '&:hover': { color: 'primary.main' } }}
-                    >
-                      {orgContact.phones.tollFree}
-                    </Box>
-                  </Typography>
-                  <Typography variant="body1" color="text.secondary">
-                    <strong>Office:</strong> {orgContact.phones.office}
-                  </Typography>
-                  <Typography variant="body1" color="text.secondary">
-                    <strong>Fax:</strong> {orgContact.phones.fax}
-                  </Typography>
-                </Box>
-              </CardContent>
-            </Card>
-
-            {/* Email Card */}
-            <Card elevation={0} sx={contactCardSx}>
-              <CardContent sx={{ p: 3 }}>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
-                  <Avatar sx={{ bgcolor: 'rgba(13, 92, 99, 0.12)', color: 'info.dark' }}>
-                    <EmailIcon />
-                  </Avatar>
-                  <Typography variant="h6" sx={{ fontWeight: 600 }}>
-                    {t('contact.email')}
-                  </Typography>
-                </Box>
-                <Box
-                  component="a"
-                  href={`mailto:${orgContact.email.primary}`}
-                  sx={{ color: 'text.secondary', textDecoration: 'none', '&:hover': { color: 'primary.main' }, display: 'block', mb: 2 }}
-                >
-                  <Typography variant="body1" color="inherit">
-                    {orgContact.email.primary}
-                  </Typography>
-                </Box>
-                <Chip
-                  label="Response within 24 hours"
-                  size="small"
-                  color="info"
-                />
-              </CardContent>
-            </Card>
-
-            {/* Office Hours Card */}
-            <Card elevation={0} sx={contactCardSx}>
-              <CardContent sx={{ p: 3 }}>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
-                  <Avatar sx={{ bgcolor: 'rgba(13, 92, 99, 0.12)', color: 'info.dark' }}>
-                    <ScheduleIcon />
-                  </Avatar>
-                  <Typography variant="h6" sx={{ fontWeight: 600 }}>
-                    Office Hours
-                  </Typography>
-                </Box>
-                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-                  {orgContact.hours.map((h) => (
-                    <Typography key={h.days} variant="body1" color="text.secondary">
-                      <strong>{h.days}:</strong> {h.time}
-                    </Typography>
-                  ))}
-                </Box>
-              </CardContent>
-            </Card>
-
-            {/* Map Card */}
-            <Card elevation={0} sx={contactCardSx}>
-              <CardContent sx={{ p: 3 }}>
-                <Box
+      <Container maxWidth="lg" sx={sectionVerticalPadding}>
+        <Grid container spacing={4}>
+          <Grid item xs={12} md={5}>
+            <Card elevation={0} sx={visitCardSx}>
+              <CardContent sx={{ p: { xs: 3, md: 3.5 } }}>
+                <Typography
+                  variant="h2"
                   sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    gap: 2,
-                    mb: 3,
+                    fontFamily: '"Merriweather", Georgia, serif',
+                    fontWeight: 700,
+                    fontSize: '1.25rem',
+                    mb: 2.5,
                   }}
                 >
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                    <Avatar sx={{ bgcolor: 'rgba(13, 92, 99, 0.12)', color: 'info.dark' }}>
-                      <MapIcon />
-                    </Avatar>
-                    <Typography variant="h6" sx={{ fontWeight: 600 }}>
-                      Office Location
+                  {t('contact.visitTitle', 'Our office')}
+                </Typography>
+
+                <Stack spacing={2.5} divider={<Divider flexItem />}>
+                  <Stack direction="row" spacing={1.5} alignItems="flex-start">
+                    <LocationIcon sx={infoIconSx} />
+                    <Box>
+                      <Typography variant="subtitle2" sx={{ fontWeight: 700, mb: 0.5 }}>
+                        {t('contact.address')}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.65 }}>
+                        {orgContact.address.lines.map((line, idx) => (
+                          <React.Fragment key={line}>
+                            {line}
+                            {idx < orgContact.address.lines.length - 1 && <br />}
+                          </React.Fragment>
+                        ))}
+                      </Typography>
+                    </Box>
+                  </Stack>
+
+                  <Stack direction="row" spacing={1.5} alignItems="flex-start">
+                    <PhoneIcon sx={infoIconSx} />
+                    <Box>
+                      <Typography variant="subtitle2" sx={{ fontWeight: 700, mb: 0.5 }}>
+                        {t('contact.phone')}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.7 }}>
+                        <Box component="a" href={`tel:${orgContact.phones.main.replace(/\s/g, '')}`} sx={linkSx}>
+                          {orgContact.phones.main}
+                        </Box>
+                        <br />
+                        {t('contact.tollFree')}:{' '}
+                        <Box component="a" href={`tel:${orgContact.phones.tollFree.replace(/\s/g, '')}`} sx={linkSx}>
+                          {orgContact.phones.tollFree}
+                        </Box>
+                        <br />
+                        {orgContact.phones.office}
+                      </Typography>
+                    </Box>
+                  </Stack>
+
+                  <Stack direction="row" spacing={1.5} alignItems="flex-start">
+                    <EmailIcon sx={infoIconSx} />
+                    <Box>
+                      <Typography variant="subtitle2" sx={{ fontWeight: 700, mb: 0.5 }}>
+                        {t('contact.email')}
+                      </Typography>
+                      <Typography
+                        component="a"
+                        href={`mailto:${orgContact.email.primary}`}
+                        variant="body2"
+                        sx={{ ...linkSx, color: 'text.secondary', display: 'block' }}
+                      >
+                        {orgContact.email.primary}
+                      </Typography>
+                    </Box>
+                  </Stack>
+
+                  <Stack direction="row" spacing={1.5} alignItems="flex-start">
+                    <ScheduleIcon sx={infoIconSx} />
+                    <Box>
+                      <Typography variant="subtitle2" sx={{ fontWeight: 700, mb: 0.5 }}>
+                        {t('contact.hoursTitle', 'Office hours')}
+                      </Typography>
+                      {orgContact.hours.map((h) => (
+                        <Typography key={h.days} variant="body2" color="text.secondary" sx={{ lineHeight: 1.7 }}>
+                          {h.days}: {h.time}
+                        </Typography>
+                      ))}
+                    </Box>
+                  </Stack>
+                </Stack>
+              </CardContent>
+            </Card>
+
+            <Card elevation={0} sx={outlineCard}>
+              <CardContent sx={{ p: { xs: 3, md: 3.5 } }}>
+                <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 2 }} spacing={2}>
+                  <Stack direction="row" spacing={1.25} alignItems="center">
+                    <MapIcon sx={{ ...iconBodySx, color: 'info.main' }} />
+                    <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>
+                      {t('contact.mapTitle', 'Office location')}
                     </Typography>
-                  </Box>
+                  </Stack>
                   <Button
                     component="a"
                     href={orgContact.maps.directionsUrl}
@@ -288,15 +259,15 @@ const ContactPage: React.FC = () => {
                     rel="noopener noreferrer"
                     size="small"
                     endIcon={<OpenInNewIcon sx={iconChromeSx} />}
-                    sx={{ textTransform: 'none', fontWeight: 600, color: 'primary.main' }}
+                    sx={{ textTransform: 'none', fontWeight: 700, color: 'primary.main', flexShrink: 0 }}
                   >
-                    Directions
+                    {t('contact.directions', 'Directions')}
                   </Button>
-                </Box>
+                </Stack>
                 <Box
                   sx={{
                     width: '100%',
-                    height: 250,
+                    height: 220,
                     borderRadius: 2,
                     overflow: 'hidden',
                     border: '1px solid',
@@ -312,161 +283,135 @@ const ContactPage: React.FC = () => {
                     title="Caritas Mutare · Mai Maria Village, Dangamvura"
                   />
                 </Box>
-                <Typography variant="body2" color="text.secondary" sx={{ mt: 2 }}>
+                <Typography variant="body2" color="text.secondary" sx={{ mt: 1.5 }}>
                   {orgContact.address.short}
                 </Typography>
               </CardContent>
             </Card>
-          </Box>
-        </Grid>
+          </Grid>
 
-        {/* Contact Form */}
-        <Grid item xs={12} md={8}>
-          <Card elevation={0} sx={{ ...outlineCard, overflow: 'hidden' }}>
-            <Box sx={formCardHeader}>
-              <Typography variant="h5" sx={{ fontFamily: '"Merriweather", Georgia, serif', fontWeight: 700, mb: 1 }}>
-                Send us a message
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                We will respond as soon as we can — usually within one working day.
-              </Typography>
-            </Box>
-            <CardContent sx={{ p: 4 }}>
-              <form onSubmit={handleSubmit} noValidate style={{ position: 'relative' }}>
-                <Box
-                  aria-hidden="true"
-                  sx={{
-                    position: 'absolute',
-                    left: '-10000px',
-                    width: 1,
-                    height: 1,
-                    overflow: 'hidden',
-                  }}
-                >
-                  <TextField
-                    name="company_website"
-                    label="Company website"
-                    tabIndex={-1}
-                    autoComplete="off"
-                    value={honeypot}
-                    onChange={(e) => setHoneypot(e.target.value)}
-                  />
-                </Box>
-                <Grid container spacing={3}>
-                  <Grid item xs={12} sm={6}>
+          <Grid item xs={12} md={7}>
+            <Card elevation={0} sx={formCardSx}>
+              <Box sx={formCardHeader}>
+                <Typography variant="h5" sx={{ fontFamily: '"Merriweather", Georgia, serif', fontWeight: 700 }}>
+                  {t('contact.formTitle', 'Send us a message')}
+                </Typography>
+              </Box>
+              <CardContent sx={{ p: { xs: 3, md: 4 } }}>
+                <form onSubmit={handleSubmit} noValidate style={{ position: 'relative' }}>
+                  <Box
+                    aria-hidden="true"
+                    sx={{
+                      position: 'absolute',
+                      left: '-10000px',
+                      width: 1,
+                      height: 1,
+                      overflow: 'hidden',
+                    }}
+                  >
                     <TextField
-                      fullWidth
-                      label={t('contact.form.name')}
-                      name="name"
-                      value={formData.name}
-                      onChange={handleInputChange}
-                      required
-                      error={Boolean(fieldErrors.name)}
-                      helperText={fieldErrors.name}
+                      name="company_website"
+                      label="Company website"
+                      tabIndex={-1}
+                      autoComplete="off"
+                      value={honeypot}
+                      onChange={(e) => setHoneypot(e.target.value)}
                     />
+                  </Box>
+                  <Grid container spacing={3}>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        fullWidth
+                        label={t('contact.form.name')}
+                        name="name"
+                        value={formData.name}
+                        onChange={handleInputChange}
+                        required
+                        error={Boolean(fieldErrors.name)}
+                        helperText={fieldErrors.name}
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        fullWidth
+                        label={t('contact.form.email')}
+                        name="email"
+                        type="email"
+                        value={formData.email}
+                        onChange={handleInputChange}
+                        required
+                        error={Boolean(fieldErrors.email)}
+                        helperText={fieldErrors.email}
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <TextField
+                        fullWidth
+                        label={t('contact.form.subject')}
+                        name="subject"
+                        value={formData.subject}
+                        onChange={handleInputChange}
+                        required
+                        error={Boolean(fieldErrors.subject)}
+                        helperText={fieldErrors.subject}
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <TextField
+                        fullWidth
+                        multiline
+                        rows={6}
+                        label={t('contact.form.message')}
+                        name="message"
+                        value={formData.message}
+                        onChange={handleInputChange}
+                        required
+                        error={Boolean(fieldErrors.message)}
+                        helperText={fieldErrors.message}
+                      />
+                    </Grid>
                   </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <TextField
-                      fullWidth
-                      label={t('contact.form.email')}
-                      name="email"
-                      type="email"
-                      value={formData.email}
-                      onChange={handleInputChange}
-                      required
-                      error={Boolean(fieldErrors.email)}
-                      helperText={fieldErrors.email}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      fullWidth
-                      label={t('contact.form.subject')}
-                      name="subject"
-                      value={formData.subject}
-                      onChange={handleInputChange}
-                      required
-                      error={Boolean(fieldErrors.subject)}
-                      helperText={fieldErrors.subject}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      fullWidth
-                      multiline
-                      rows={6}
-                      label={t('contact.form.message')}
-                      name="message"
-                      value={formData.message}
-                      onChange={handleInputChange}
-                      required
-                      error={Boolean(fieldErrors.message)}
-                      helperText={fieldErrors.message}
-                    />
-                  </Grid>
-                </Grid>
 
-                {submitStatus === 'success' && (
-                  <Alert severity="success" sx={{ mt: 3 }}>
-                    {t('contact.form.thankYou')}
-                  </Alert>
-                )}
-
-                {submitStatus === 'error' && (
-                  <Alert severity="error" sx={{ mt: 3 }}>
-                    {errorMessage || 'There was an error sending your message. Please try again.'}
-                  </Alert>
-                )}
-
-                <Button
-                  type="submit"
-                  variant="contained"
-                  size="large"
-                  fullWidth
-                  disabled={isSubmitting}
-                            sx={{
-                              textTransform: 'none',
-                              py: 1.75,
-                              mt: 3,
-                              borderRadius: 999,
-                              fontSize: '1rem',
-                              fontWeight: 700,
-                              boxShadow: 'none',
-                              '&:hover': { boxShadow: '0 4px 12px rgba(13,92,99,0.18)' },
-                              '@media (prefers-reduced-motion: reduce)': { transition: 'none' },
-                              transition: 'box-shadow .2s ease',
-                            }}
-                >
-                  {isSubmitting ? (
-                              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                                <CircularProgress size={24} color="inherit" />
-                                <Typography variant="body1">
-                      {t('contact.form.processing')}
-                                </Typography>
-                    </Box>
-                  ) : (
-                              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                                <EmailIcon />
-                                {t('contact.form.submit')}
-                              </Box>
+                  {submitStatus === 'success' && (
+                    <Alert severity="success" sx={{ mt: 3 }}>
+                      {t('contact.form.thankYou')}
+                    </Alert>
                   )}
-                </Button>
-              </form>
-            </CardContent>
-          </Card>
+
+                  {submitStatus === 'error' && (
+                    <Alert severity="error" sx={{ mt: 3 }}>
+                      {errorMessage || 'There was an error sending your message. Please try again.'}
+                    </Alert>
+                  )}
+
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    size="large"
+                    fullWidth
+                    disabled={isSubmitting}
+                    startIcon={!isSubmitting ? <EmailIcon /> : undefined}
+                    sx={submitSx}
+                  >
+                    {isSubmitting ? (
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                        <CircularProgress size={22} color="inherit" />
+                        {t('contact.form.processing')}
+                      </Box>
+                    ) : (
+                      t('contact.form.submit')
+                    )}
+                  </Button>
+                </form>
+              </CardContent>
+            </Card>
+          </Grid>
         </Grid>
-      </Grid>
       </Container>
 
-      {/* Floating Components */}
       <BackToTopButton />
     </Box>
   );
 };
 
 export default ContactPage;
-
-
-
-
-

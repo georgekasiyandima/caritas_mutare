@@ -185,7 +185,11 @@
     "title": "News & Updates",
     "readMore": "Read More",
     "publishedOn": "Published on",
-    "noArticles": "No articles found"
+    "noArticles": "No articles found",
+    "errorTitle": "Stories are not available just now",
+    "error": "We couldn’t load the news right now. Please try again later.",
+    "emptyTitle": "No stories published yet",
+    "emptyBody": "New stories from our programmes will appear here soon. In the meantime, explore our programmes or get in touch with the office."
   },
   "donate": {
     "title": "Support Our Mission",
@@ -220,6 +224,16 @@
   "contact": {
     "title": "Contact Us",
     "description": "Get in touch with us for more information or to get involved",
+    "overline": "Get in touch",
+    "visitTitle": "Our office",
+    "hoursTitle": "Office hours",
+    "mapTitle": "Office location",
+    "directions": "Directions",
+    "formTitle": "Send us a message",
+    "seo": {
+      "title": "Contact Caritas Mutare",
+      "description": "Write to Caritas Mutare at admin@caritasmutare.org or use the form. Office: Mai Maria Village, Dangamvura, Mutare."
+    },
     "address": "Address",
     "phone": "Phone",
     "tollFree": "Toll-free",
