@@ -124,6 +124,31 @@ becomes worth the complexity).
 
 ---
 
+## 2026-09-27 — Dependencies live with the code that uses them
+
+**Decision:** The root `package.json` holds only the dev helper scripts
+(`dev`, `install-all`, `test`, `build`) plus `concurrently` and `cross-env`.
+App dependencies live only in `client/package.json` (React, MUI) and
+`server/package.json` (Express, Knex, pg, bcryptjs). `sqlite3` is a server
+devDependency; Render installs with `npm ci --omit=dev`, and the API refuses
+to start in production without a Postgres `DATABASE_URL`.
+
+**Context:** The root file dated from September 2025, before `client/` and
+`server/` had their own packages. It duplicated React, MUI and Express, had
+drifted (`@testing-library/react` 14 at root vs 13 in client), and listed
+packages nothing imports (`axios`, `styled-components`, `framer-motion`,
+`yup`, a webpack/Babel toolchain). Neither Vercel nor Render ever read it.
+
+**Password hashing stays on `bcryptjs`:** pure JS, so installs never need a
+C++ toolchain and never break on a Node upgrade or OS change. It is ~2–3×
+slower than native `bcrypt` and runs on the main thread, which is irrelevant
+at a few staff logins a day. Hashes are compatible, so switching is cheap.
+
+**Revisit if:** Public self-service accounts or heavy login traffic appear —
+then move to native `bcrypt` or `argon2`.
+
+---
+
 ## Open questions — not yet decided
 
 - **Email system status:** Awaiting confirmation from Angela on what system
@@ -136,3 +161,15 @@ becomes worth the complexity).
 - **Marathon registration process (current state):** Need to confirm with
   Angela's team what they currently use, before deciding if/when to build
   a v2 with real backend registration.
+
+  ## 2026-08-21 — Contact table: keep existing simpler schema, defer enhancements
+
+**Decision:** Use the already-migrated `contact_messages` table as-is
+(auto-increment id, no updated_at/ip_address/user_agent) rather than
+building the richer schema drafted earlier.
+
+**Context:** Table already exists and matches the working route. Rebuilding
+it before launch adds risk and time for fields that aren't launch-critical.
+
+**Revisit if:** Spam becomes a real problem post-launch, or an audit trail
+on submissions is specifically requested.

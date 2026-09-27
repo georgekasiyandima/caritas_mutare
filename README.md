@@ -113,7 +113,12 @@ caritas_mutare/
 - `npm run server` - Start only the backend server
 - `npm run client` - Start only the frontend development server
 - `npm run build` - Build the frontend for production
+- `npm test` - Run the API test suite (`server/tests`)
 - `npm run install-all` - Install dependencies for all projects
+
+The root `package.json` only holds these helper scripts. App dependencies
+live in `client/package.json` and `server/package.json` — install packages
+in the folder whose code uses them.
 
 ## 🌍 Internationalization
 

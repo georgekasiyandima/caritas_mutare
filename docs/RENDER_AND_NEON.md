@@ -181,7 +181,7 @@ Manual create (same result):
 3. Settings:
    - **Root directory:** `server`
    - **Runtime:** Node
-   - **Build command:** `npm install`
+   - **Build command:** `npm ci --omit=dev`
    - **Start command:** `node index.js`
    - **Health check path:** `/api/health`
    - **Instance:** Free

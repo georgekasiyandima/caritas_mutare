@@ -75,7 +75,7 @@ can create the service automatically.
 
 6. Click **Apply**. Render will:
    - Clone the repo
-   - Run `npm install` in `/server`
+   - Run `npm ci --omit=dev` in `/server` (exact lockfile, no dev tools or SQLite)
    - Start the service with `node index.js`
    - Run the Knex migrations automatically on first boot (the server does
      this before listening)
