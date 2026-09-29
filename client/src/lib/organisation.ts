@@ -41,6 +41,8 @@ export const orgContact = {
   social: {
     facebook: 'https://www.facebook.com/share/1DoS9a5mzU/',
     linkedin: 'https://www.linkedin.com/in/caritas-zimbabwe-diocese-of-mutare-460272300',
+    instagram: 'https://www.instagram.com/caritasmutare/',
+    x: 'https://x.com/CaritasMutare',
   },
   /** OpenStreetMap / Google Maps link for Mai Maria Village, Dangamvura. */
   maps: {

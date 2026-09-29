@@ -35,7 +35,7 @@ import type { SxProps, Theme } from '@mui/material';
 import { getActiveProjects, generalImpactImages } from '../lib/caritasProjects';
 import { SECTION_BG_ALT, outlineCard, iconFeatureSx } from '../lib/sitePageLayout';
 import { marathonEvent } from '../lib/marathonEvent';
-import { apiUrl } from '../lib/apiBase';
+import { apiGet } from '../lib/api';
 
 const thematicIconSx = { ...iconFeatureSx, color: 'info.main' } as const;
 const marathonStripSx: SxProps<Theme> = [outlineCard, { overflow: 'hidden' }] as SxProps<Theme>;
@@ -55,10 +55,17 @@ const HomePage: React.FC = () => {
 
   const { data: newsData } = useQuery(
     'latestNews',
-    async () => {
-      const response = await fetch(apiUrl('/api/news/featured/latest?limit=3'));
-      return response.json();
-    },
+    () =>
+      apiGet<{
+        articles?: Array<{
+          id: number;
+          title_en: string;
+          excerpt_en?: string;
+          featured_image?: string;
+          published_at: string;
+          read_time_minutes?: number;
+        }>;
+      }>('/api/news/featured/latest', { limit: 3 }),
     {
       initialData: { articles: [] },
     }
@@ -680,15 +687,7 @@ const HomePage: React.FC = () => {
             </Stack>
 
             <Grid container spacing={3}>
-              {newsData.articles.map(
-                (article: {
-                  id: number;
-                  title_en: string;
-                  excerpt_en?: string;
-                  featured_image?: string;
-                  published_at: string;
-                  read_time_minutes?: number;
-                }) => {
+              {newsData.articles.map((article) => {
                   const dateLabel = new Date(article.published_at).toLocaleDateString(undefined, {
                     year: 'numeric',
                     month: 'short',

@@ -3,6 +3,7 @@ const { body, param, validationResult } = require('express-validator');
 const { dbGet, dbAll, dbRun } = require('../database/database');
 const { daysAgo } = require('../database/sqlCompat');
 const { authenticateToken, requireAdmin } = require('../middleware/auth');
+const { writeAudit } = require('../middleware/audit');
 
 const router = express.Router();
 
@@ -195,6 +196,13 @@ router.post('/', [
 
     const article = await dbGet('SELECT * FROM news WHERE id = ?', [result.id]);
 
+    await writeAudit(req, {
+      action: 'create',
+      entity: 'news',
+      entityId: result.id,
+      after: article,
+    });
+
     res.status(201).json({
       message: 'Article created successfully',
       article
@@ -229,7 +237,7 @@ router.put('/:id', [
     } = req.body;
 
     // Get current article to check status change
-    const currentArticle = await dbGet('SELECT status FROM news WHERE id = ?', [req.params.id]);
+    const currentArticle = await dbGet('SELECT * FROM news WHERE id = ?', [req.params.id]);
     if (!currentArticle) {
       return res.status(404).json({ message: 'Article not found' });
     }
@@ -258,6 +266,14 @@ router.put('/:id', [
 
     const article = await dbGet('SELECT * FROM news WHERE id = ?', [req.params.id]);
 
+    await writeAudit(req, {
+      action: 'update',
+      entity: 'news',
+      entityId: Number(req.params.id),
+      before: currentArticle,
+      after: article,
+    });
+
     res.json({
       message: 'Article updated successfully',
       article
@@ -271,11 +287,19 @@ router.put('/:id', [
 // Delete news article
 router.delete('/:id', async (req, res) => {
   try {
-    const result = await dbRun('DELETE FROM news WHERE id = ?', [req.params.id]);
-
-    if (result.changes === 0) {
+    const before = await dbGet('SELECT * FROM news WHERE id = ?', [req.params.id]);
+    if (!before) {
       return res.status(404).json({ message: 'Article not found' });
     }
+
+    await dbRun('DELETE FROM news WHERE id = ?', [req.params.id]);
+
+    await writeAudit(req, {
+      action: 'delete',
+      entity: 'news',
+      entityId: Number(req.params.id),
+      before,
+    });
 
     res.json({ message: 'Article deleted successfully' });
   } catch (error) {

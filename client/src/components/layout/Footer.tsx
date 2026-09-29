@@ -13,7 +13,6 @@ import {
   Facebook as FacebookIcon,
   LinkedIn as LinkedInIcon,
   Instagram as InstagramIcon,
-  YouTube as YouTubeIcon,
   WhatsApp as WhatsAppIcon,
   EmailOutlined as EmailIcon,
   PhoneOutlined as PhoneIcon,
@@ -55,14 +54,14 @@ const FOOTER_SOCIALS: Array<{
   {
     key: 'instagram',
     label: 'Instagram',
-    href: 'https://www.instagram.com/caritasmutare/',
+    href: orgContact.social.instagram,
     icon: <InstagramIcon fontSize="small" />,
     brand: '#E1306C',
   },
   {
     key: 'x',
     label: 'X (Twitter)',
-    href: 'https://x.com/CaritasMutare',
+    href: orgContact.social.x,
     icon: (
       <Box
         component="span"
@@ -77,13 +76,6 @@ const FOOTER_SOCIALS: Array<{
       </Box>
     ),
     brand: '#000000',
-  },
-  {
-    key: 'youtube',
-    label: 'YouTube',
-    href: 'https://www.youtube.com/',
-    icon: <YouTubeIcon fontSize="small" />,
-    brand: '#FF0000',
   },
   {
     key: 'whatsapp',

@@ -256,8 +256,10 @@ now validated against `ASSIGNABLE_ROLES`. Only `admin` is assignable, because
 `requireAdmin` gates every staff endpoint — adding a lesser role without
 relaxing those guards would create accounts that can log in but do nothing.
 
-**F. `GET /api/donations/stats` is public** and exposes aggregate donation
-totals with no auth (`donations.js`). Confirm that is intended.
+**~~F. `GET /api/donations/stats` is public~~ FIXED.** The route sits behind
+`authenticateToken` + `requireAdmin` with the rest of donation admin. Totals
+are a staff figure, not a public fundraising number. Revisit only if
+Communications asks for a published “we received X” block.
 
 ### Maintainability
 
@@ -274,16 +276,19 @@ the call — which is how these endpoints lost validation in the first place.
 `routes/system.js` still uses its local `sendValidation()`; migrate it when
 that file is next touched rather than in a separate churn-only change.
 
-**I. Audit logging is partial.** Only `system.js` and `auth.js` write to
-`audit_logs`. Admin mutations to news, content, donations, volunteers and
-contact messages leave no trail.
+**~~I. Audit logging is partial.~~ FIXED for CMS writes.** News create,
+update and delete, programme create, update and delete, and site-settings
+updates now call `writeAudit`, alongside the existing trail on `system.js`,
+auth, donations, volunteers and contact. The public pages still do not
+edit these tables.
 
 **~~J. `discardHoneypot` is copy-pasted~~ FIXED.** Extracted to
 `middleware/honeypot.js` as a factory taking a log label and success message.
 
-**K. Contact details bypass `orgContact`.** `WhatsAppWidget.tsx:33` hardcodes
-`+263774671893`; `SocialRail.tsx:4` still imports `mockContactInfo`, whose
-social URLs differ from `orgContact.social`.
+**~~K. Contact details bypass `orgContact`.~~ FIXED.** WhatsAppWidget and
+SocialRail read `orgContact`. Footer social hrefs do too. Instagram and X
+live in `organisation.ts`; the generic YouTube homepage was dropped until
+there is a real channel.
 
 **L. Oversized files.** `server/routes/system.js` is 1034 lines;
 `HomePage.tsx` 784; `DonatePage.tsx` 711; `BeneficiariesPage.tsx` 684. The
@@ -296,10 +301,11 @@ a quarter to a third of visible UI strings go through i18n; `MarathonPage`,
 `LeadershipPage`, `ProgrammeDetailPage` and the whole admin console are
 hardcoded English.
 
-**N. Dead code.** `data/contentManager.ts`, `config/content.ts`,
-`WorkInProgressPage.tsx` are imported nowhere. `data/mockData.ts` survives only
-through `SocialRail`. The `system_documents` table has no routes, and `multer`
-plus `UPLOAD_PATH`/`MAX_FILE_SIZE` are declared but unwired.
+**N. Dead code left.** The mock layer is gone (`contentManager.ts`,
+`config/content.ts`, `WorkInProgressPage.tsx`, `mockData.ts`, `data/types.ts`).
+`data/index.ts` remains as a `caritasProjects` re-export. The
+`system_documents` table still has no routes, and `multer` plus
+`UPLOAD_PATH`/`MAX_FILE_SIZE` are declared but unwired.
 
 ---
 

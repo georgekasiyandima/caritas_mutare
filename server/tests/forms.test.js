@@ -195,6 +195,24 @@ describe('POST /api/donations', () => {
     expect(await knex('donations').select('id')).toHaveLength(0);
   });
 
+  it('hides completed-pledge totals from the public', async () => {
+    const res = await request(app).get('/api/donations/stats');
+    expect(res.status).toBe(401);
+  });
+
+  it('lets an admin read completed-pledge totals', async () => {
+    const token = await loginAsAdmin(app);
+    const res = await request(app)
+      .get('/api/donations/stats')
+      .set('Authorization', `Bearer ${token}`);
+
+    expect(res.status).toBe(200);
+    expect(res.body.total).toMatchObject({
+      donations: expect.any(Number),
+      amount: expect.anything(),
+    });
+  });
+
   it('lets an admin mark a pledge received', async () => {
     await request(app).post('/api/donations').send(valid);
     const token = await loginAsAdmin(app);
@@ -214,5 +232,48 @@ describe('POST /api/donations', () => {
       .first();
     expect(audit).toBeDefined();
     expect(audit.actor_username).toBe('admin');
+  });
+});
+
+describe('CMS audit trail', () => {
+  afterEach(async () => {
+    await resetTables('news', 'programs');
+    await knex('audit_logs').whereIn('entity', ['news', 'programs']).del();
+  });
+
+  it('records a news article create', async () => {
+    const token = await loginAsAdmin(app);
+    const res = await request(app)
+      .post('/api/news')
+      .set('Authorization', `Bearer ${token}`)
+      .send({
+        title_en: 'Field note',
+        content_en: 'A short report from the diocese.',
+        status: 'draft',
+      });
+
+    expect(res.status).toBe(201);
+    const audit = await knex('audit_logs')
+      .where({ entity: 'news', action: 'create', entity_id: res.body.article.id })
+      .first();
+    expect(audit).toBeDefined();
+    expect(audit.actor_username).toBe('admin');
+  });
+
+  it('records a programme create', async () => {
+    const token = await loginAsAdmin(app);
+    const res = await request(app)
+      .post('/api/content/programs')
+      .set('Authorization', `Bearer ${token}`)
+      .send({
+        title_en: 'Water points',
+        description_en: 'Borehole repair across the diocese.',
+      });
+
+    expect(res.status).toBe(201);
+    const audit = await knex('audit_logs')
+      .where({ entity: 'programs', action: 'create', entity_id: res.body.program.id })
+      .first();
+    expect(audit).toBeDefined();
   });
 });

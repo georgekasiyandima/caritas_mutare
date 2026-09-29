@@ -22,7 +22,7 @@ import {
   outlineCard,
   sectionVerticalPadding,
 } from '../lib/sitePageLayout';
-import { apiUrl } from '../lib/apiBase';
+import { apiGet } from '../lib/api';
 
 const newsSectionSx: SxProps<Theme> = [
   sectionVerticalPadding,
@@ -60,10 +60,9 @@ const NewsPage: React.FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
-  const { data: newsData, isLoading, error } = useQuery('news', async () => {
-    const response = await fetch(apiUrl('/api/news?limit=24&page=1'));
-    return response.json();
-  });
+  const { data: newsData, isLoading, error } = useQuery('news', () =>
+    apiGet<{ news?: NewsArticle[] }>('/api/news', { limit: 24, page: 1 })
+  );
 
   const heroImageSource = {
     src: '/images/general/community-gathering-1.png',

@@ -23,6 +23,9 @@ import {
   MessageOutlined as MessageIcon,
 } from '@mui/icons-material';
 import { iconFeatureSx } from '../lib/sitePageLayout';
+import { orgContact } from '../lib/organisation';
+
+const officeHoursLabel = orgContact.hours.map((h) => `${h.days} ${h.time}`).join(' · ');
 
 interface WhatsAppWidgetProps {
   phoneNumber?: string;
@@ -31,7 +34,7 @@ interface WhatsAppWidgetProps {
 }
 
 const WhatsAppWidget: React.FC<WhatsAppWidgetProps> = ({
-  phoneNumber = '+263774671893', // Default Caritas phone number
+  phoneNumber = orgContact.phones.main,
   welcomeMessage = 'Hello! How can we help you today?',
   position = 'bottom-right'
 }) => {
@@ -187,7 +190,7 @@ const WhatsAppWidget: React.FC<WhatsAppWidgetProps> = ({
           </Box>
 
           <Typography variant="caption" color="text.secondary" sx={{ textAlign: 'center', display: 'block' }}>
-            Available Monday - Friday, 8:00 AM - 5:00 PM
+            {officeHoursLabel}
           </Typography>
         </DialogContent>
 

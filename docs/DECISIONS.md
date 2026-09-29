@@ -149,6 +149,40 @@ then move to native `bcrypt` or `argon2`.
 
 ---
 
+## 2026-09-27 — One public contact record; donation totals are staff-only
+
+**Decision:** Every public phone, email and social URL comes from
+`client/src/lib/organisation.ts`. `GET /api/donations/stats` requires an
+admin JWT. There is no public “we received X” figure until Communications
+asks for one.
+
+**Context:** WhatsApp and the homepage social rail still read a leftover
+mock file whose Twitter/Instagram links were the LinkedIn profile. The
+footer YouTube button opened youtube.com, not a Caritas channel. Donation
+totals sat on an unauthenticated route.
+
+**Trade-offs accepted:** YouTube is omitted until a real channel URL exists.
+
+**Revisit if:** A YouTube channel is confirmed, or the office wants a
+published fundraising total on the site.
+
+---
+
+## 2026-09-29 — Staff news and programme edits are audited
+
+**Decision:** Creating, updating or deleting a news article or CMS programme,
+and updating site settings, writes a row to `audit_logs`. Public news reads
+go through `apiGet`, so a failed request is an error rather than an empty
+list.
+
+**Context:** The operations console already audited its own changes. News
+and programme writes did not, so a staff edit left no trail. News pages
+also called `fetch` directly and treated a failed response as success.
+
+**Revisit if:** A public CMS is built and needs a different audit shape.
+
+---
+
 ## Open questions — not yet decided
 
 - **Email system status:** Awaiting confirmation from Angela on what system

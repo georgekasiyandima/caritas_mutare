@@ -97,15 +97,17 @@ router.post(
   }
 );
 
-// Get donation statistics (public)
+// Admin routes (require authentication)
+router.use(authenticateToken);
+router.use(requireAdmin);
+
+// Completed-pledge totals — staff only. Not a public fundraising figure.
 router.get('/stats', async (req, res) => {
   try {
-    // Get total donations
     const totalStats = await dbGet(
       "SELECT COUNT(*) as total_donations, SUM(amount) as total_amount, AVG(amount) as average_amount FROM donations WHERE payment_status = 'completed'"
     );
 
-    // Get recent donations (last 30 days)
     const recentStats = await dbGet(
       `SELECT COUNT(*) as recent_donations, SUM(amount) as recent_amount 
        FROM donations 
@@ -113,7 +115,6 @@ router.get('/stats', async (req, res) => {
       [daysAgo(30)]
     );
 
-    // Get donations by currency
     const currencyStats = await dbAll(
       "SELECT currency, COUNT(*) as count, SUM(amount) as total FROM donations WHERE payment_status = 'completed' GROUP BY currency"
     );
@@ -135,10 +136,6 @@ router.get('/stats', async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 });
-
-// Admin routes (require authentication)
-router.use(authenticateToken);
-router.use(requireAdmin);
 
 // Get all donations (admin)
 router.get('/admin', async (req, res) => {

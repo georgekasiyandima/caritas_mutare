@@ -3,6 +3,7 @@ const { body, validationResult } = require('express-validator');
 const { dbGet, dbAll, dbRun } = require('../database/database');
 const { authenticateToken, requireAdmin } = require('../middleware/auth');
 const { idParam, runValidation } = require('../middleware/validate');
+const { writeAudit } = require('../middleware/audit');
 
 const router = express.Router();
 
@@ -92,6 +93,13 @@ router.post('/programs', [
 
     const program = await dbGet('SELECT * FROM programs WHERE id = ?', [result.id]);
 
+    await writeAudit(req, {
+      action: 'create',
+      entity: 'programs',
+      entityId: result.id,
+      after: program,
+    });
+
     res.status(201).json({
       message: 'Program created successfully',
       program
@@ -120,7 +128,12 @@ router.put('/programs/:id', [
       order_index
     } = req.body;
 
-    const result = await dbRun(
+    const before = await dbGet('SELECT * FROM programs WHERE id = ?', [req.params.id]);
+    if (!before) {
+      return res.status(404).json({ message: 'Program not found' });
+    }
+
+    await dbRun(
       `UPDATE programs 
        SET title_en = ?, title_sh = ?, description_en = ?, description_sh = ?, 
            image = ?, status = ?, order_index = ?, updated_at = CURRENT_TIMESTAMP
@@ -128,11 +141,15 @@ router.put('/programs/:id', [
       [title_en, title_sh, description_en, description_sh, image, status, order_index, req.params.id]
     );
 
-    if (result.changes === 0) {
-      return res.status(404).json({ message: 'Program not found' });
-    }
-
     const program = await dbGet('SELECT * FROM programs WHERE id = ?', [req.params.id]);
+
+    await writeAudit(req, {
+      action: 'update',
+      entity: 'programs',
+      entityId: Number(req.params.id),
+      before,
+      after: program,
+    });
 
     res.json({
       message: 'Program updated successfully',
@@ -147,11 +164,19 @@ router.put('/programs/:id', [
 // Delete program
 router.delete('/programs/:id', [idParam(), runValidation], async (req, res) => {
   try {
-    const result = await dbRun('DELETE FROM programs WHERE id = ?', [req.params.id]);
-
-    if (result.changes === 0) {
+    const before = await dbGet('SELECT * FROM programs WHERE id = ?', [req.params.id]);
+    if (!before) {
       return res.status(404).json({ message: 'Program not found' });
     }
+
+    await dbRun('DELETE FROM programs WHERE id = ?', [req.params.id]);
+
+    await writeAudit(req, {
+      action: 'delete',
+      entity: 'programs',
+      entityId: Number(req.params.id),
+      before,
+    });
 
     res.json({ message: 'Program deleted successfully' });
   } catch (error) {
@@ -182,6 +207,14 @@ router.put('/settings', async (req, res) => {
       return res.status(400).json({ message: 'Invalid settings format' });
     }
 
+    const keys = Object.keys(settings);
+    const before = keys.length
+      ? await dbAll(
+          `SELECT key, value_en, value_sh FROM site_settings WHERE key IN (${keys.map(() => '?').join(', ')})`,
+          keys
+        )
+      : [];
+
     const updatePromises = Object.entries(settings).map(async ([key, value]) => {
       if (typeof value === 'object' && value.en !== undefined) {
         return dbRun(
@@ -197,6 +230,13 @@ router.put('/settings', async (req, res) => {
     });
 
     await Promise.all(updatePromises);
+
+    await writeAudit(req, {
+      action: 'update',
+      entity: 'site_settings',
+      before,
+      after: settings,
+    });
 
     res.json({ message: 'Settings updated successfully' });
   } catch (error) {

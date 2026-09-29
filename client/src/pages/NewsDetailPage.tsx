@@ -18,7 +18,7 @@ import {
   outlineCard,
   containedCtaSx,
 } from '../lib/sitePageLayout';
-import { apiUrl } from '../lib/apiBase';
+import { apiGet } from '../lib/api';
 
 const missingSx: SxProps<Theme> = [pageRoot, { pt: { xs: 14, md: 16 } }] as SxProps<Theme>;
 const articleCardSx: SxProps<Theme> = [
@@ -32,15 +32,25 @@ interface GalleryItem {
   caption: string;
 }
 
+interface NewsArticleDetail {
+  title_en: string;
+  excerpt_en?: string | null;
+  content_en?: string | null;
+  featured_image?: string | null;
+  published_at: string;
+  read_time_minutes?: number | null;
+  category?: string | null;
+  gallery?: GalleryItem[] | string | null;
+}
+
 const NewsDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [copied, setCopied] = React.useState(false);
 
-  const { data, isLoading, error } = useQuery(['news', id], async () => {
-    const response = await fetch(apiUrl(`/api/news/${id}`));
-    return response.json();
-  });
+  const { data, isLoading, error } = useQuery(['news', id], () =>
+    apiGet<{ article?: NewsArticleDetail }>(`/api/news/${id}`)
+  );
 
   const handleShare = async () => {
     const url = typeof window !== 'undefined' ? window.location.href : '';

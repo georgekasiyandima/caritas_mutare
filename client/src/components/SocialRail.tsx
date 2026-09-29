@@ -1,8 +1,13 @@
 import React from 'react';
 import { Box, IconButton, Tooltip, useMediaQuery, useTheme } from '@mui/material';
-import { Facebook, Instagram, EmailOutlined as Email } from '@mui/icons-material';
+import {
+  Facebook,
+  LinkedIn,
+  Instagram,
+  EmailOutlined as Email,
+} from '@mui/icons-material';
 import { iconChromeSx } from '../lib/sitePageLayout';
-import { mockContactInfo } from '../data/mockData';
+import { orgContact } from '../lib/organisation';
 
 const SocialRail: React.FC = () => {
   const theme = useTheme();
@@ -12,13 +17,25 @@ const SocialRail: React.FC = () => {
     {
       key: 'facebook',
       label: 'Facebook',
-      href: mockContactInfo.social_media.facebook,
+      href: orgContact.social.facebook,
       icon: <Facebook sx={iconChromeSx} />,
     },
     {
-      key: 'twitter',
+      key: 'linkedin',
+      label: 'LinkedIn',
+      href: orgContact.social.linkedin,
+      icon: <LinkedIn sx={iconChromeSx} />,
+    },
+    {
+      key: 'instagram',
+      label: 'Instagram',
+      href: orgContact.social.instagram,
+      icon: <Instagram sx={iconChromeSx} />,
+    },
+    {
+      key: 'x',
       label: 'X (Twitter)',
-      href: mockContactInfo.social_media.twitter,
+      href: orgContact.social.x,
       icon: (
         <Box
           sx={{
@@ -39,45 +56,10 @@ const SocialRail: React.FC = () => {
       ),
     },
     {
-      key: 'instagram',
-      label: 'Instagram',
-      href: mockContactInfo.social_media.instagram,
-      icon: <Instagram sx={iconChromeSx} />,
-    },
-    {
       key: 'email',
       label: 'Email',
-      href: `mailto:${mockContactInfo.email.general}`,
+      href: `mailto:${orgContact.email.primary}`,
       icon: <Email sx={iconChromeSx} />,
-    },
-    {
-      key: 'youtube',
-      label: 'YouTube',
-      href: '#',
-      icon: (
-        <Box
-          sx={{
-            width: 20,
-            height: 14,
-            borderRadius: '6px',
-            backgroundColor: '#FF0000',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <Box
-            component="span"
-            sx={{
-              width: 8,
-              height: 8,
-              borderLeft: '6px solid white',
-              borderTop: '4px solid transparent',
-              borderBottom: '4px solid transparent',
-            }}
-          />
-        </Box>
-      ),
     },
   ];
 
@@ -136,4 +118,3 @@ const SocialRail: React.FC = () => {
 };
 
 export default SocialRail;
-
