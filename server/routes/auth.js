@@ -38,13 +38,18 @@ router.post('/login', [
       [username, username]
     );
 
-    const loginMetadata = (success, reason = null) => ({ success, reason, username });
+    // Never store the typed username. People paste passwords into that box,
+    // and a failed login would keep the secret in audit_logs forever.
+    // A known account (wrong password) is recorded by its real username.
+    const loginMetadata = (success, reason = null) => (
+      reason ? { success, reason } : { success }
+    );
 
     if (!user) {
       await writeAudit(req, {
         action: 'login_failed',
         entity: 'auth',
-        actor: null,
+        actor: { username: 'unknown' },
         metadata: loginMetadata(false, 'unknown_user'),
       });
       return res.status(401).json({ message: 'Invalid credentials' });

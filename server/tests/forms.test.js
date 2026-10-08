@@ -238,7 +238,6 @@ describe('POST /api/donations', () => {
 describe('CMS audit trail', () => {
   afterEach(async () => {
     await resetTables('news', 'programs');
-    await knex('audit_logs').whereIn('entity', ['news', 'programs']).del();
   });
 
   it('records a news article create', async () => {

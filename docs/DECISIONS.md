@@ -168,6 +168,27 @@ published fundraising total on the site.
 
 ---
 
+## 2026-10-08 — Audit rows are insert-only, and failed logins keep no typed text
+
+**Decision:** `audit_logs` rejects UPDATE and DELETE with a database trigger.
+The stored IP is `req.ip` (the address Render's proxy reports), not the
+first value in `X-Forwarded-For`. A failed login records `unknown` or the
+real account name. It does not record the username that was typed.
+
+**Context:** The header is set by the visitor, so they could write any
+address and the log would believe it. People paste passwords into the
+username box. "Append-only" was a comment; the same database connection
+could change or delete a row.
+
+**Trade-offs accepted:** A failed guess no longer shows which name was
+tried. Someone who owns the database can still drop the trigger. The
+browser's user-agent string is still whatever the browser sends.
+
+**Revisit if:** Caritas wants a separate database user that cannot drop
+triggers, or a published log that must show attempted usernames.
+
+---
+
 ## 2026-09-29 — Staff news and programme edits are audited
 
 **Decision:** Creating, updating or deleting a news article or CMS programme,

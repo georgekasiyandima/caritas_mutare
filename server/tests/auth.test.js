@@ -76,6 +76,39 @@ describe('POST /api/auth/login', () => {
     expect(res.body.token).toBeUndefined();
   });
 
+  it('does not store a failed login attempt, and ignores a spoofed forwarding header', async () => {
+    const pasted = 'PastedPassword!23456';
+    const res = await request(app)
+      .post('/api/auth/login')
+      .set('X-Forwarded-For', '203.0.113.9, 198.51.100.10')
+      .send({ username: pasted, password: 'whatever-long-enough' });
+
+    expect(res.status).toBe(401);
+
+    const row = await knex('audit_logs').where({ action: 'login_failed' }).orderBy('id', 'desc').first();
+    const stored = JSON.stringify(row);
+    expect(stored).not.toContain(pasted);
+    expect(row.actor_username).toBe('unknown');
+
+    const metadata = JSON.parse(row.metadata_json);
+    expect(metadata.reason).toBe('unknown_user');
+    expect(metadata.ip).toBe('198.51.100.10');
+    expect(metadata.username).toBeUndefined();
+  });
+
+  it('refuses to update or delete an audit row', async () => {
+    const row = await knex('audit_logs').orderBy('id', 'desc').first();
+    expect(row).toBeDefined();
+
+    await expect(knex('audit_logs').where({ id: row.id }).update({ action: 'tampered' })).rejects.toThrow(
+      /append-only/
+    );
+    await expect(knex('audit_logs').where({ id: row.id }).del()).rejects.toThrow(/append-only/);
+
+    const still = await knex('audit_logs').where({ id: row.id }).first();
+    expect(still.action).toBe(row.action);
+  });
+
   it('does not reveal whether the username exists', async () => {
     // Different messages for "no such user" and "wrong password" let an
     // attacker enumerate valid accounts.

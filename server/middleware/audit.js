@@ -1,10 +1,13 @@
 /**
- * Append-only audit trail for admin mutations.
+ * Audit trail for staff actions.
  *
  * Usage from a route handler (after the change has succeeded):
  *   await writeAudit(req, { action: 'update', entity: 'projects', entityId: id, before, after });
  *
- * The table is append-only by convention — never expose UPDATE/DELETE on it.
+ * Rows are insert-only. A database trigger rejects UPDATE and DELETE
+ * (see the audit_logs_append_only migration). The application user can
+ * still drop that trigger if they have the database password — the
+ * trigger stops accidental or buggy edits, not a person who owns the database.
  */
 
 const knex = require('../database/knex');
@@ -24,14 +27,23 @@ function safeSnapshot(value) {
   }
 }
 
+/**
+ * Client address after Express has applied `trust proxy`.
+ *
+ * Do not read X-Forwarded-For here. The browser can put any address at the
+ * front of that header. With `trust proxy` set to 1, req.ip is the address
+ * the one trusted hop (Render) appended, not the value the visitor invented.
+ */
+function clientAddress(req) {
+  if (!req) return null;
+  if (req.ip) return req.ip;
+  return req.socket?.remoteAddress || req.connection?.remoteAddress || null;
+}
+
 function buildMetadata(req, extra = {}) {
   const headers = req.headers || {};
   return {
-    ip:
-      headers['x-forwarded-for']?.split(',')[0]?.trim() ||
-      req.ip ||
-      req.connection?.remoteAddress ||
-      null,
+    ip: clientAddress(req),
     userAgent: headers['user-agent'] || null,
     method: req.method || null,
     path: req.originalUrl || null,
