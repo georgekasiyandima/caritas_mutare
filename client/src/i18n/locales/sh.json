@@ -5,22 +5,22 @@
     "leadership": "Hutungamiri",
     "programs": "Zvirongwa",
     "news": "Nhau",
-    "events": "Marathon",
+    "events": "Marathoni",
     "donate": "Ipa",
-    "volunteer": "Zvipira",
+    "volunteer": "Kuzvipira",
     "contact": "Taura Nesu",
-    "admin": "Admin",
+    "admin": "Mutangamiri",
     "staffSignIn": "Kupinda kwevashandi",
     "privacy": "Kuvanzika"
   },
   "seo": {
     "home": {
-      "title": "Kushandira nharaunda nezvikudzo netariro",
-      "description": "Caritas Mutare ndiyo sangano rekusimudzira nerubatsiro reChechi yeCatholic, Diocese yeMutare, Zimbabwe — tichipa chikafu, hupenyu, kuunganidzwa, WASH nerubatsiro rwekukurumidza zvakamira paCatholic Social Teaching."
+      "title": "Kushandira nharaunda nerukudzo netariro",
+      "description": "Caritas Mutare ndiro sangano rekusimudzira nerubatsiro rweChechi yechiKatorike, Diocese reMutare, Zimbabwe — tichipa chikafu, hupenyu, kuunganidzwa, WASH nerubatsiro rwekukurumidza zvakamira paCatholic Social Teaching."
     }
   },
   "stickyDonate": {
-    "title": "Chipo chenyu chinosvika mhuri chaidzo muDiocese yeMutare.",
+    "title": "Chipo chenyu chinosvika kumhuri chaidzo muDiocese yeMutare.",
     "subtitle": "Zvese zvamunopa zvinoenda kuzvirongwa zvepamberi — chikafu, hupenyu, kuunganidzwa.",
     "cta": "Ipa",
     "dismiss": "Vhara",
@@ -28,7 +28,7 @@
   },
   "hero": {
     "title": "Caritas Mutare",
-    "subtitle": "Sangano revaCatholic rinobatsira nharaunda",
+    "subtitle": "Sangano revaKatorike rinobatsira nharaunda",
     "description": "Tinobatsira Diocese yeMutare, Zimbabwe nechinzwiro, tariro, uye zvirongwa zvekusimudzira nharaunda.",
     "learnMore": "Dzidza Zvimwe",
     "donateNow": "Ipa Zvino"
@@ -45,7 +45,7 @@
     },
     "mission": {
       "overline": "Sei tiripo",
-      "statement": "Hurombo harusi tsaona. Kwete zvakare tariro. MuDiocese yeMutare, tinoshandura kubatana kuita shanduko inooneka — chikudzo chemunhu wese chiri pakati."
+      "statement": "Hurombo haisi tsaona. Kwete zvakare tariro. MuDiocese yeMutare, tinoshandura kubatana kuita shanduko inoonekwa — rukudzo nekuremekedzwa kwemunhu wese kuri pakati pabasa redu."
     },
     "spotlight": {
       "eyebrow": "Chirongwa chakakosha",
@@ -63,17 +63,17 @@
     "heroImageCaption": "Hupenyu hwenharaunda nebasa rezvirongwa muDiocese yeMutare",
     "stats": {
       "overline": "Chidimbu",
-      "headline": "Hukuru hunobva mubasa, kwete mashoko chete",
+      "headline": "Hukuru hunobva mubasa, kwete mumashoko chete",
       "familiesServed": "Mhuri dzakabatsirwa",
-      "communitiesReached": "Nharaunda dzakasvika",
-      "livesImpacted": "Hupenyu hwakakanganiswa",
-      "yearsOfService": "Makore esevhisi"
+      "communitiesReached": "Nharaunda dzakasvikwa",
+      "livesImpacted": "Hupenyu hwevanhu watakabata nebasa redu",
+      "yearsOfService": "Makore ebasa redu"
     },
     "thematic": {
       "overline": "Tinoshandira kupi",
       "title": "Zvinangwa zvebasa",
       "intro": "Zvirongwa zvedu zvinotevera Catholic Social Teaching: kukudzwa, kubatana, uye kuchengetedza varombo — kusanganisira vanhu vane disabilities.",
-      "cta": "Verenga chinangwa nemhunhu hwedu",
+      "cta": "Verenga chinangwa chebasa redu",
       "items": {
         "food": {
           "title": "Kudya kwakachengeteka nehupenyu",
