@@ -12,6 +12,8 @@
 const express = require('express');
 const { body, validationResult, param, query } = require('express-validator');
 const knex = require('../database/knex');
+const { iLikeSql, iLikeTerm } = require('../database/sqlCompat');
+const { rowsToCsv } = require('../lib/csv');
 const { authenticateToken, requireAdmin } = require('../middleware/auth');
 const { writeAudit } = require('../middleware/audit');
 
@@ -63,27 +65,6 @@ function parseVulnerabilityTags(value) {
 function beneficiaryOut(row) {
   if (!row) return row;
   return { ...row, vulnerability_tags: parseVulnerabilityTags(row.vulnerability_tags) };
-}
-
-function escapeCsv(value) {
-  if (value === null || value === undefined) return '';
-  const str = typeof value === 'string' ? value : JSON.stringify(value);
-  if (/[",\n\r]/.test(str)) {
-    return `"${str.replace(/"/g, '""')}"`;
-  }
-  return str;
-}
-
-function rowsToCsv(rows, columns) {
-  const header = columns.map((c) => escapeCsv(c.label)).join(',');
-  const body = rows
-    .map((row) =>
-      columns
-        .map((c) => escapeCsv(typeof c.value === 'function' ? c.value(row) : row[c.value]))
-        .join(',')
-    )
-    .join('\n');
-  return `${header}\n${body}\n`;
 }
 
 function sendCsv(res, filename, csv) {
@@ -167,16 +148,14 @@ function projectFilters(qb, req) {
   if (thematic_area) qb.where('thematic_area', thematic_area);
   if (district) qb.where('district', district);
   if (q) {
-    const like = `%${String(q).trim()}%`;
-    qb.andWhere((b) =>
-      b
-        .where('name', 'like', like)
-        .orWhere('code', 'like', like)
-        .orWhere('donor', 'like', like)
-        .orWhere('district', 'like', like)
-        .orWhere('ward', 'like', like)
-        .orWhere('notes', 'like', like)
-    );
+    const like = iLikeTerm(q);
+    const columns = ['name', 'code', 'donor', 'district', 'ward', 'notes'];
+    qb.andWhere((inner) => {
+      columns.forEach((column, index) => {
+        const call = index === 0 ? 'whereRaw' : 'orWhereRaw';
+        inner[call](iLikeSql(column), [like]);
+      });
+    });
   }
 }
 
@@ -412,16 +391,21 @@ function beneficiaryFilters(qb, req) {
   if (gender) qb.where('b.gender', gender);
   if (disability_inclusion) qb.where('b.disability_inclusion', disability_inclusion);
   if (q) {
-    const like = `%${String(q).trim()}%`;
-    qb.andWhere((w) =>
-      w
-        .where('b.full_name', 'like', like)
-        .orWhere('b.household_name', 'like', like)
-        .orWhere('b.phone', 'like', like)
-        .orWhere('b.district', 'like', like)
-        .orWhere('b.ward', 'like', like)
-        .orWhere('b.village', 'like', like)
-    );
+    const like = iLikeTerm(q);
+    const columns = [
+      'b.full_name',
+      'b.household_name',
+      'b.phone',
+      'b.district',
+      'b.ward',
+      'b.village',
+    ];
+    qb.andWhere((inner) => {
+      columns.forEach((column, index) => {
+        const call = index === 0 ? 'whereRaw' : 'orWhereRaw';
+        inner[call](iLikeSql(column), [like]);
+      });
+    });
   }
 }
 
@@ -824,7 +808,7 @@ router.get('/soup-kitchen', async (req, res) => {
     const base = knex('system_soup_kitchen_logs');
     if (from) base.where('service_date', '>=', from);
     if (to) base.where('service_date', '<=', to);
-    if (location) base.where('location', 'like', `%${location}%`);
+    if (location) base.whereRaw(iLikeSql('location'), [iLikeTerm(location)]);
 
     const countBase = base.clone();
     const [{ count }] = await countBase.count({ count: '*' });

@@ -1,7 +1,8 @@
 const express = require('express');
 const { body, validationResult } = require('express-validator');
 const { dbGet, dbAll, dbRun } = require('../database/database');
-const { daysAgo } = require('../database/sqlCompat');
+const { daysAgo, iLikeAny, iLikeTerm } = require('../database/sqlCompat');
+const { rowsToCsv } = require('../lib/csv');
 const { authenticateToken, requireAdmin } = require('../middleware/auth');
 const { discardHoneypot } = require('../middleware/honeypot');
 const { writeAudit } = require('../middleware/audit');
@@ -123,8 +124,8 @@ router.get('/', async (req, res) => {
     }
 
     if (search) {
-      whereClause += ' AND (full_name LIKE ? OR email LIKE ?)';
-      const searchTerm = `%${search}%`;
+      whereClause += ` AND (${iLikeAny(['full_name', 'email'])})`;
+      const searchTerm = iLikeTerm(search);
       params.push(searchTerm, searchTerm);
     }
 
@@ -207,23 +208,18 @@ router.get('/export/csv', async (req, res) => {
       'SELECT full_name, email, phone, skills, availability, interests, status, created_at FROM volunteers ORDER BY created_at DESC'
     );
 
-    const csvHeader = 'Full Name,Email,Phone,Skills,Availability,Interests,Status,Created At\n';
-    const csvData = volunteers.map(volunteer => {
-      return [
-        `"${volunteer.full_name}"`,
-        `"${volunteer.email}"`,
-        `"${volunteer.phone || ''}"`,
-        `"${volunteer.skills || ''}"`,
-        `"${volunteer.availability || ''}"`,
-        `"${volunteer.interests || ''}"`,
-        `"${volunteer.status}"`,
-        `"${volunteer.created_at}"`
-      ].join(',');
-    }).join('\n');
+    const csv = rowsToCsv(volunteers, [
+      { label: 'Full Name', value: 'full_name' },
+      { label: 'Email', value: 'email' },
+      { label: 'Phone', value: 'phone' },
+      { label: 'Skills', value: 'skills' },
+      { label: 'Availability', value: 'availability' },
+      { label: 'Interests', value: 'interests' },
+      { label: 'Status', value: 'status' },
+      { label: 'Created At', value: 'created_at' },
+    ]);
 
-    const csv = csvHeader + csvData;
-
-    res.setHeader('Content-Type', 'text/csv');
+    res.setHeader('Content-Type', 'text/csv; charset=utf-8');
     res.setHeader('Content-Disposition', 'attachment; filename=volunteers.csv');
     res.send(csv);
   } catch (error) {

@@ -165,11 +165,9 @@ actually work now.**
 
 ### 3c. Optional: narrow CORS once you're happy
 
-Once the rewrite is confirmed working, Vercel requests reach the API as
-same-origin (from the API's perspective they come from the Render domain
-itself, not the Vercel domain — because the rewrite runs server-side). You
-can safely remove `ALLOW_VERCEL_PREVIEWS=true` from Render if you want to
-lock things down.
+Once the site is confirmed, leave `ALLOW_VERCEL_PREVIEWS` unset or `false`.
+If you turn it on to check a preview, only hostnames starting with
+`caritas-mutare` are accepted. Any other `*.vercel.app` site is refused.
 
 ---
 
@@ -210,8 +208,8 @@ Sketch of the work:
 2. Create an R2 API token with read/write scope to that bucket.
 3. Add `@aws-sdk/client-s3` + `@aws-sdk/s3-request-presigner` to
    `server/package.json`.
-4. Refactor the multer upload middleware to stream directly to R2 instead
-   of local disk; store the public URL in the DB instead of a local path.
+4. Add an upload handler that streams directly to R2 instead of local disk;
+   store the public URL in the DB instead of a local path.
 5. Add `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`,
    `R2_BUCKET`, `R2_PUBLIC_URL` env vars to Render.
 

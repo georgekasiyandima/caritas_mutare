@@ -2,16 +2,12 @@
  * First-run seed — idempotent, safe to run on every boot.
  *
  * Behaviour in different environments:
- *   - Local development: if no admin user exists, create one using
- *     `admin / password` so we can log in without faffing. This default has
- *     been in the project since day one.
- *   - Production (NODE_ENV === 'production'): we REFUSE to insert the weak
- *     default admin. Instead, if both `BOOTSTRAP_ADMIN_USERNAME` and
- *     `BOOTSTRAP_ADMIN_PASSWORD` are provided (and no admin exists yet), we
- *     create the first admin from those values. The password is hashed on
- *     the fly so we never have to commit a hash. If those env vars are not
- *     set, we simply skip the admin insert — the operator can create the
- *     first user via a one-shot script.
+ *   - Local development and tests (NODE_ENV is exactly development or test):
+ *     if no admin user exists, create one using admin / password.
+ *   - Every other value, including production and an unset NODE_ENV: never
+ *     insert that weak password. In production, if BOOTSTRAP_ADMIN_USERNAME
+ *     and BOOTSTRAP_ADMIN_PASSWORD are set and no user exists yet, create
+ *     the first admin from those values.
  *
  * The site-settings seed is safe for all environments and runs unchanged.
  */
@@ -42,15 +38,21 @@ const DEFAULT_SETTINGS = [
 ];
 
 async function seedFirstAdmin(knex) {
-  const isProduction = process.env.NODE_ENV === 'production';
+  const nodeEnv = process.env.NODE_ENV;
+  const allowDevAdmin = nodeEnv === 'development' || nodeEnv === 'test';
   const existingAdmin = await knex('users').first();
 
   // Someone already exists — never touch the users table from a seed.
   if (existingAdmin) return;
 
-  if (!isProduction) {
+  if (allowDevAdmin) {
     await knex('users').insert(DEV_DEFAULT_ADMIN).onConflict('username').ignore();
     console.log('🌱 Seeded development admin (admin / password)');
+    return;
+  }
+
+  if (nodeEnv !== 'production') {
+    console.warn('⚠️  Skipping admin seed: NODE_ENV must be development, test, or production.');
     return;
   }
 

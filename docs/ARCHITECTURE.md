@@ -156,12 +156,14 @@ dotenv → knex migrate → (seed) → helmet → compression → rate limits
 Rate limiting is tiered: 100 requests per 15 min across `/api/`, 10 per 15 min
 on login, and 5 per 15 min on each public form POST.
 
-CORS reads a comma-separated `CLIENT_URL`, optionally allows `*.vercel.app`
-previews via `ALLOW_VERCEL_PREVIEWS`, and is permissive for localhost and LAN
-addresses outside production.
+CORS reads a comma-separated `CLIENT_URL`. `ALLOW_VERCEL_PREVIEWS=true`
+allows only `caritas-mutare` and `caritas-mutare-*.vercel.app`, not every
+Vercel site. Localhost and LAN addresses are allowed outside production.
 
-Migrations run automatically at boot. Seeds run automatically outside
-production, and in production only when `RUN_SEEDS_ON_BOOT=true`.
+Migrations run automatically at boot. Seeds run when `NODE_ENV` is exactly
+`development` or `test`. In production they run only when
+`RUN_SEEDS_ON_BOOT=true`. The password `admin` / `password` is inserted
+only for development and test, never when `NODE_ENV` is missing or mistyped.
 
 ### Two generations of route code
 
@@ -304,8 +306,8 @@ hardcoded English.
 **N. Dead code left.** The mock layer is gone (`contentManager.ts`,
 `config/content.ts`, `WorkInProgressPage.tsx`, `mockData.ts`, `data/types.ts`).
 `data/index.ts` remains as a `caritasProjects` re-export. The
-`system_documents` table still has no routes, and `multer` plus
-`UPLOAD_PATH`/`MAX_FILE_SIZE` are declared but unwired.
+`system_documents` table still has no routes. `multer` has been removed
+until there is storage that survives a restart.
 
 ---
 

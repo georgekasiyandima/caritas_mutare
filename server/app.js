@@ -99,11 +99,11 @@ function createApp({ rateLimit: enableRateLimit = true, logging = true } = {}) {
   // In production we expect traffic from a small, known set of origins:
   //   - the Vercel production URL (e.g. https://caritas-mutare.vercel.app)
   //   - the eventual custom domain (https://www.caritasmutare.org)
-  //   - any Vercel preview deployments we want to allow for testing
+  //   - any caritas-mutare Vercel preview, only when ALLOW_VERCEL_PREVIEWS=true
   //
-  // `CLIENT_URL` can be a single origin or a comma-separated list. We also
-  // optionally allow `*.vercel.app` preview URLs when `ALLOW_VERCEL_PREVIEWS`
-  // is set to "true" — handy while we iterate, and easy to turn off later.
+  // `CLIENT_URL` can be a single origin or a comma-separated list. Preview
+  // matching is limited to this project's hostnames. A random *.vercel.app
+  // site is not the Caritas frontend and must not receive credentialed responses.
   //
   // Locally, CRA prints both localhost and a LAN address. Browsers also treat
   // 127.0.0.1 as a different origin from localhost. Rejecting those as a thrown
@@ -113,7 +113,11 @@ function createApp({ rateLimit: enableRateLimit = true, logging = true } = {}) {
     .map((value) => value.trim())
     .filter(Boolean);
 
+  // Preview deploys are off unless ALLOW_VERCEL_PREVIEWS=true, and even then
+  // only this project's Vercel hostnames are accepted. Any other *.vercel.app
+  // site must not be treated as the Caritas frontend.
   const allowVercelPreviews = process.env.ALLOW_VERCEL_PREVIEWS === 'true';
+  const vercelPreviewOrigin = /^https:\/\/caritas-mutare(?:-[a-z0-9-]+)?\.vercel\.app$/i;
 
   app.use(
     cors({
@@ -130,7 +134,7 @@ function createApp({ rateLimit: enableRateLimit = true, logging = true } = {}) {
           return callback(null, true);
         }
 
-        if (allowVercelPreviews && /^https:\/\/[a-z0-9-]+\.vercel\.app$/i.test(origin)) {
+        if (allowVercelPreviews && vercelPreviewOrigin.test(origin)) {
           return callback(null, true);
         }
 

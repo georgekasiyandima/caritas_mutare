@@ -1,7 +1,7 @@
 const express = require('express');
 const { body, param, validationResult } = require('express-validator');
 const { dbGet, dbAll, dbRun } = require('../database/database');
-const { daysAgo } = require('../database/sqlCompat');
+const { daysAgo, iLikeAny, iLikeTerm } = require('../database/sqlCompat');
 const { authenticateToken, requireAdmin } = require('../middleware/auth');
 const { writeAudit } = require('../middleware/audit');
 
@@ -132,8 +132,8 @@ router.get('/admin/all', async (req, res) => {
     }
 
     if (search) {
-      whereClause += ' AND (title_en LIKE ? OR title_sh LIKE ? OR content_en LIKE ?)';
-      const searchTerm = `%${search}%`;
+      whereClause += ` AND (${iLikeAny(['title_en', 'title_sh', 'content_en'])})`;
+      const searchTerm = iLikeTerm(search);
       params.push(searchTerm, searchTerm, searchTerm);
     }
 

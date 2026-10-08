@@ -100,8 +100,11 @@ Neon OAuth prompt the first time a Neon MCP tool runs.
    | `BOOTSTRAP_ADMIN_EMAIL` | `admin@caritasmutare.org` |
    | `BOOTSTRAP_ADMIN_PASSWORD` | The long password you stored |
 
-   Leave `NODE_ENV=production`, `RUN_SEEDS_ON_BOOT=true`, and
-   `ALLOW_VERCEL_PREVIEWS=true` as the blueprint already sets them.
+   Leave `NODE_ENV=production`. Leave `RUN_SEEDS_ON_BOOT=false` and
+   `ALLOW_VERCEL_PREVIEWS=false`. To create the first admin, set
+   `RUN_SEEDS_ON_BOOT=true` for one deploy together with the bootstrap
+   variables, confirm you can log in, then set `RUN_SEEDS_ON_BOOT` back
+   to `false` and clear the bootstrap password.
 
 6. Click **Apply**. Wait until the service is **Live** (2–5 minutes).
    Free tier can be slow the first time.

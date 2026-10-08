@@ -168,6 +168,29 @@ published fundraising total on the site.
 
 ---
 
+## 2026-10-08 — Production defaults no longer trust every Vercel site or a weak admin
+
+**Decision:** `ALLOW_VERCEL_PREVIEWS` and `RUN_SEEDS_ON_BOOT` default to
+false. Preview CORS, when enabled, accepts only `caritas-mutare*.vercel.app`.
+The `admin` / `password` user is created only when `NODE_ENV` is exactly
+`development` or `test`. Admin search uses `LOWER(...) LIKE` so Postgres
+matches the case-insensitive SQLite behaviour. CSV cells that look like
+formulas are prefixed with a quote. CI runs the API tests on Postgres.
+Every route not on a public allowlist must return 401 without a token.
+Production dependencies are the patched releases from `npm audit fix`.
+`multer` is removed. The Dockerfile uses Node 20.
+
+**Context:** The blueprint allowed any Vercel hostname and re-ran seeds on
+every boot. A missing or mistyped `NODE_ENV` inserted the known password.
+Spreadsheet exports would run formulas typed into public forms. Search
+tests passed on SQLite and could miss on Neon. Auth depended on route
+order with no test.
+
+**Revisit if:** A second Vercel project name is used for previews, or
+file uploads are built on storage that survives a restart.
+
+---
+
 ## 2026-10-08 — Audit rows are insert-only, and failed logins keep no typed text
 
 **Decision:** `audit_logs` rejects UPDATE and DELETE with a database trigger.

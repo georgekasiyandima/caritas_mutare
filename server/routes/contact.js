@@ -3,6 +3,7 @@ const { body, param, validationResult } = require('express-validator');
 const { dbRun, dbGet, dbAll } = require('../database/database');
 const { authenticateToken, requireAdmin } = require('../middleware/auth');
 const { discardHoneypot } = require('../middleware/honeypot');
+const { iLikeAny, iLikeTerm } = require('../database/sqlCompat');
 const { writeAudit } = require('../middleware/audit');
 
 const router = express.Router();
@@ -128,8 +129,8 @@ router.get('/', async (req, res) => {
     }
 
     if (q) {
-      where += ' AND (name LIKE ? OR email LIKE ? OR subject LIKE ?)';
-      const term = `%${q}%`;
+      where += ` AND (${iLikeAny(['name', 'email', 'subject'])})`;
+      const term = iLikeTerm(q);
       params.push(term, term, term);
     }
 

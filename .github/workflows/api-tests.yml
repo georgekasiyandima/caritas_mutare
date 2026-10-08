@@ -17,6 +17,23 @@ jobs:
     defaults:
       run:
         working-directory: server
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: caritas
+          POSTGRES_PASSWORD: caritas
+          POSTGRES_DB: caritas_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U caritas -d caritas_test"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      # Throwaway database for this job. Not the Neon production URL.
+      TEST_DATABASE_URL: postgres://caritas:caritas@localhost:5432/caritas_test
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -27,4 +44,5 @@ jobs:
       - name: Install
         run: npm ci
       - name: Test
-        run: npm test
+        # One database, so the two test files must not run in parallel.
+        run: npx jest --runInBand

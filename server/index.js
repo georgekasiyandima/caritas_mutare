@@ -17,11 +17,13 @@ async function main() {
     process.exit(1);
   }
 
-  // Seeds run automatically in development (nice DX) and are opt-in for
-  // production. Set RUN_SEEDS_ON_BOOT=true on Render when you want the
-  // seed file to attempt to bootstrap the first admin + site settings.
+  // Seeds run for local development and tests. Production runs them only
+  // when explicitly asked, so a mistyped NODE_ENV cannot create admin/password.
+  const nodeEnv = process.env.NODE_ENV;
   const shouldRunSeeds =
-    process.env.NODE_ENV !== 'production' || process.env.RUN_SEEDS_ON_BOOT === 'true';
+    nodeEnv === 'development' ||
+    nodeEnv === 'test' ||
+    (nodeEnv === 'production' && process.env.RUN_SEEDS_ON_BOOT === 'true');
 
   if (shouldRunSeeds) {
     try {
@@ -32,7 +34,7 @@ async function main() {
       process.exit(1);
     }
   } else {
-    console.log('ℹ️  Skipping seeds (set RUN_SEEDS_ON_BOOT=true to enable in production)');
+    console.log('ℹ️  Skipping seeds (production runs them only when RUN_SEEDS_ON_BOOT=true)');
   }
 
   const { createApp } = require('./app');

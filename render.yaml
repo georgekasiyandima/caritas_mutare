@@ -31,6 +31,8 @@ services:
     envVars:
       - key: NODE_ENV
         value: production
+      - key: NODE_VERSION
+        value: "20"
       # Neon direct (non-pooler) connection string with sslmode=require.
       # Do not paste the hostname that contains `-pooler` — Knex migrates
       # on boot and already pools connections.
@@ -45,12 +47,14 @@ services:
       # Example:  https://caritas-mutare.vercel.app,https://www.caritasmutare.org
       - key: CLIENT_URL
         sync: false
+      # Preview deploys are not a trusted frontend. Turn this on only while
+      # checking a caritas-mutare-*.vercel.app preview, then turn it off.
       - key: ALLOW_VERCEL_PREVIEWS
-        value: "true"
-      # First admin bootstrap — set these once for the first deploy, then
-      # remove/rotate after successful login.
+        value: "false"
+      # Seeds do not run on boot. Turn this on once, with the bootstrap
+      # variables below, to create the first admin, then set it back to false.
       - key: RUN_SEEDS_ON_BOOT
-        value: "true"
+        value: "false"
       - key: BOOTSTRAP_ADMIN_USERNAME
         sync: false
       - key: BOOTSTRAP_ADMIN_EMAIL

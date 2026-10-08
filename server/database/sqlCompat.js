@@ -46,4 +46,21 @@ function monthBucket(column) {
   return isPg ? `to_char(${column}, 'YYYY-MM')` : `strftime('%Y-%m', ${column})`;
 }
 
-module.exports = { isPg, toSqlTimestamp, daysAgo, monthsAgo, monthBucket };
+function iLikeSql(column) {
+  if (!/^[A-Za-z_][A-Za-z0-9_]*(\.[A-Za-z_][A-Za-z0-9_]*)?$/.test(column)) {
+    throw new Error(`Refusing to search untrusted column ${column}`);
+  }
+  // SQLite LIKE is case-insensitive for ASCII. Postgres LIKE is not.
+  // LOWER on both sides makes a search for "chipo" find "Chipo" in production.
+  return `LOWER(${column}) LIKE ?`;
+}
+
+function iLikeTerm(term) {
+  return `%${String(term).toLowerCase()}%`;
+}
+
+function iLikeAny(columns) {
+  return columns.map((column) => iLikeSql(column)).join(' OR ');
+}
+
+module.exports = { isPg, toSqlTimestamp, daysAgo, monthsAgo, monthBucket, iLikeSql, iLikeTerm, iLikeAny };

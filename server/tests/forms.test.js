@@ -54,6 +54,18 @@ describe('POST /api/contact', () => {
     });
   });
 
+  it('finds a message when the search uses different capital letters', async () => {
+    await request(app).post('/api/contact').send(valid);
+    const token = await loginAsAdmin(app);
+    const res = await request(app)
+      .get('/api/contact')
+      .query({ q: 'chipo' })
+      .set('Authorization', `Bearer ${token}`);
+
+    expect(res.status).toBe(200);
+    expect(res.body.data.map((row) => row.name)).toContain(valid.name);
+  });
+
   it('rejects a short message', async () => {
     const res = await request(app)
       .post('/api/contact')
