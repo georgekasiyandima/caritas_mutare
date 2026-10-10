@@ -38,7 +38,6 @@ export { default as Schedule } from '@mui/icons-material/Schedule';
 export { default as School } from '@mui/icons-material/School';
 export { default as Security } from '@mui/icons-material/Security';
 export { default as Send } from '@mui/icons-material/Send';
-export { default as Twitter } from '@mui/icons-material/Twitter';
 export { default as Verified } from '@mui/icons-material/Verified';
 export { default as VolunteerActivism } from '@mui/icons-material/VolunteerActivism';
 export { default as WhatsApp } from '@mui/icons-material/WhatsApp';

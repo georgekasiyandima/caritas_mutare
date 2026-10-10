@@ -26,29 +26,6 @@ const SocialRail: React.FC = () => {
       icon: <LinkedIn sx={iconChromeSx} />,
     },
     {
-      key: 'x',
-      label: 'X (Twitter)',
-      href: orgContact.social.x,
-      icon: (
-        <Box
-          sx={{
-            width: 18,
-            height: 18,
-            borderRadius: '4px',
-            border: '1.5px solid currentColor',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: 11,
-            fontWeight: 700,
-            fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
-          }}
-        >
-          X
-        </Box>
-      ),
-    },
-    {
       key: 'email',
       label: 'Email',
       href: `mailto:${orgContact.email.primary}`,

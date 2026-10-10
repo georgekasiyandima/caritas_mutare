@@ -51,25 +51,6 @@ const FOOTER_SOCIALS: Array<{
     brand: '#0A66C2',
   },
   {
-    key: 'x',
-    label: 'X (Twitter)',
-    href: orgContact.social.x,
-    icon: (
-      <Box
-        component="span"
-        sx={{
-          fontWeight: 700,
-          fontSize: '0.95rem',
-          lineHeight: 1,
-          fontFamily: 'system-ui, -apple-system, sans-serif',
-        }}
-      >
-        X
-      </Box>
-    ),
-    brand: '#000000',
-  },
-  {
     key: 'whatsapp',
     label: 'WhatsApp',
     href: `https://wa.me/${orgContact.phones.main.replace(/[^\d]/g, '')}`,
