@@ -19,7 +19,6 @@ export { default as FamilyRestroom } from '@mui/icons-material/FamilyRestroom';
 export { default as Favorite } from '@mui/icons-material/Favorite';
 export { default as Handshake } from '@mui/icons-material/Handshake';
 export { default as Home } from '@mui/icons-material/Home';
-export { default as Instagram } from '@mui/icons-material/Instagram';
 export { default as KeyboardArrowUp } from '@mui/icons-material/KeyboardArrowUp';
 export { default as Language } from '@mui/icons-material/Language';
 export { default as LocalDining } from '@mui/icons-material/LocalDining';

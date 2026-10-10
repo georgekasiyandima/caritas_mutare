@@ -3,7 +3,6 @@ import { Box, IconButton, Tooltip, useMediaQuery, useTheme } from '@mui/material
 import {
   Facebook,
   LinkedIn,
-  Instagram,
   EmailOutlined as Email,
 } from '@mui/icons-material';
 import { iconChromeSx } from '../lib/sitePageLayout';
@@ -25,12 +24,6 @@ const SocialRail: React.FC = () => {
       label: 'LinkedIn',
       href: orgContact.social.linkedin,
       icon: <LinkedIn sx={iconChromeSx} />,
-    },
-    {
-      key: 'instagram',
-      label: 'Instagram',
-      href: orgContact.social.instagram,
-      icon: <Instagram sx={iconChromeSx} />,
     },
     {
       key: 'x',

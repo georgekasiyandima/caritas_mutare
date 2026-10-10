@@ -12,7 +12,6 @@ import {
 import {
   Facebook as FacebookIcon,
   LinkedIn as LinkedInIcon,
-  Instagram as InstagramIcon,
   WhatsApp as WhatsAppIcon,
   EmailOutlined as EmailIcon,
   PhoneOutlined as PhoneIcon,
@@ -50,13 +49,6 @@ const FOOTER_SOCIALS: Array<{
     href: orgContact.social.linkedin,
     icon: <LinkedInIcon fontSize="small" />,
     brand: '#0A66C2',
-  },
-  {
-    key: 'instagram',
-    label: 'Instagram',
-    href: orgContact.social.instagram,
-    icon: <InstagramIcon fontSize="small" />,
-    brand: '#E1306C',
   },
   {
     key: 'x',
